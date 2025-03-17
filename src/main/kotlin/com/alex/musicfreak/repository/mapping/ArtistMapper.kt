@@ -9,6 +9,8 @@ import java.util.Date
 
 fun ApiModelArtistPost.toDbModel() = DbModelArtist(0, name, Date().time, Date().time)
 
+fun ApiModelArtistPost.toDbModel(dbModelExisting: DbModelArtist) = DbModelArtist(dbModelExisting.id, name, dbModelExisting.createdAt, Date().time)
+
 // from database to api
 
 fun Iterable<DbModelArtist>.toApiModelGet() = map { it.toApiModelGet() }
