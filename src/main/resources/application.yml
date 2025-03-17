@@ -1,0 +1,15 @@
+quarkus:
+  http:
+    port: 9000
+  log:
+    level: DEBUG
+  hibernate-orm:
+    database:
+      generation: update
+  datasource:
+    db-kind: postgresql
+    reactive: false
+    jdbc:
+      url: jdbc:postgresql://localhost:5432/musicfreak
+    username: admin
+    password: admin
