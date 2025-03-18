@@ -1,8 +1,8 @@
 plugins {
-    kotlin("jvm") version "2.1.10"
-    kotlin("plugin.allopen") version "2.1.10"
-    kotlin("plugin.jpa") version "2.1.10"
-    id("io.quarkus")
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.jpa)
+    alias(libs.plugins.kotlin.allopen)
+    alias(libs.plugins.quarkus)
 }
 
 kotlin {
@@ -17,26 +17,26 @@ repositories {
     mavenLocal()
 }
 
-val quarkusPlatformGroupId: String by project
-val quarkusPlatformArtifactId: String by project
-val quarkusPlatformVersion: String by project
-
 dependencies {
-    implementation(enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}"))
-    implementation("io.quarkus:quarkus-rest")
-    implementation("io.quarkus:quarkus-rest-jackson")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("io.quarkus:quarkus-kotlin")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.1.10")
-    implementation("io.quarkus:quarkus-arc")
+    // project-libraries
+    implementation(enforcedPlatform(libs.quarkus.platform))
+    implementation(libs.kotlin.stdlib)
+    implementation(libs.jackson.kotlin)
 
-    implementation("io.quarkus:quarkus-hibernate-orm-panache")
-    implementation("io.quarkus:quarkus-jdbc-postgresql")
+    implementation(libs.quarkus.kotlin)
+    implementation(libs.quarkus.rest)
+    implementation(libs.quarkus.rest.jackson)
 
-    implementation("io.quarkus:quarkus-config-yaml")
+    implementation(libs.quarkus.hibernate.orm.panache)
+    implementation(libs.quarkus.jdbc.postgresql)
 
-    testImplementation("io.quarkus:quarkus-junit5")
-    testImplementation("io.rest-assured:rest-assured")
+    implementation(libs.quarkus.arc)
+
+    implementation(libs.quarkus.config.yaml)
+
+    // test-libraries
+    testImplementation(libs.quarkus.junit5)
+    testImplementation(libs.rest.assured)
 }
 
 group = "com.alex"

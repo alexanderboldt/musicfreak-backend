@@ -1,0 +1,26 @@
+[versions]
+kotlin-version = "2.1.10"
+quarkus-version = "3.19.3"
+rest-assured-version = "5.5.1"
+
+[libraries]
+kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version.ref = "kotlin-version" }
+jackson-kotlin = { group = "com.fasterxml.jackson.module", name = "jackson-module-kotlin" }
+
+quarkus-platform = { group = "io.quarkus.platform", name = "quarkus-bom", version.ref = "quarkus-version" }
+quarkus-kotlin = { group = "io.quarkus", name = "quarkus-kotlin", version.ref = "quarkus-version" }
+quarkus-rest = { group = "io.quarkus", name = "quarkus-rest", version.ref = "quarkus-version" }
+quarkus-rest-jackson = { group = "io.quarkus", name = "quarkus-rest-jackson", version.ref = "quarkus-version" }
+quarkus-hibernate-orm-panache = { group = "io.quarkus", name = "quarkus-hibernate-orm-panache", version.ref = "quarkus-version" }
+quarkus-jdbc-postgresql = { group = "io.quarkus", name = "quarkus-jdbc-postgresql", version.ref = "quarkus-version" }
+quarkus-arc = { group = "io.quarkus", name = "quarkus-arc", version.ref = "quarkus-version" }
+quarkus-config-yaml = { group = "io.quarkus", name = "quarkus-config-yaml", version.ref = "quarkus-version" }
+
+quarkus-junit5 = { group = "io.quarkus", name = "quarkus-junit5", version.ref = "quarkus-version" }
+rest-assured = { group = "io.rest-assured", name = "rest-assured", version.ref = "rest-assured-version" }
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-version" }
+kotlin-jpa = { id = "org.jetbrains.kotlin.plugin.jpa", version.ref = "kotlin-version" }
+kotlin-allopen = { id = "org.jetbrains.kotlin.plugin.allopen", version.ref = "kotlin-version" }
+quarkus = { id = "io.quarkus", version.ref = "quarkus-version" }
