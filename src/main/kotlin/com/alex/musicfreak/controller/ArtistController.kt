@@ -5,6 +5,9 @@ import com.alex.musicfreak.repository.database.ArtistRepository
 import com.alex.musicfreak.repository.mapping.toApiModelGet
 import com.alex.musicfreak.repository.mapping.toDbModel
 import com.alex.musicfreak.util.badRequest
+import com.alex.musicfreak.util.created
+import com.alex.musicfreak.util.noContent
+import com.alex.musicfreak.util.ok
 import jakarta.persistence.EntityManager
 import jakarta.transaction.Transactional
 import jakarta.ws.rs.Consumes
@@ -32,7 +35,7 @@ class ArtistController(
     @Transactional
     fun post(artist: ApiModelArtistPost): Response {
         artistRepository.persist(artist.toDbModel())
-        return Response.status(Response.Status.CREATED).entity(artist).build()
+        return created(artist)
     }
 
     // read
@@ -48,7 +51,7 @@ class ArtistController(
         return artistRepository
             .findById(id)
             ?.toApiModelGet()
-            ?.let { Response.ok(it).build() }
+            ?.let { ok(it) }
             ?: badRequest("id not found")
     }
 
@@ -60,7 +63,7 @@ class ArtistController(
     fun update(@PathParam("id") id: Long, artist: ApiModelArtistPost): Response {
         val artistSaved = artistRepository.findById(id)
         return when (artistSaved != null) {
-            true -> Response.ok(entityManager.merge(artist.toDbModel(artistSaved))).build()
+            true -> ok(entityManager.merge(artist.toDbModel(artistSaved)))
             false -> badRequest("id not found")
         }
     }
@@ -72,7 +75,7 @@ class ArtistController(
     @Transactional
     fun delete(@PathParam("id") id: Long): Response {
         return when (artistRepository.deleteById(id)) {
-            true -> Response.noContent().build()
+            true -> noContent()
             false -> badRequest("id not found")
         }
     }
