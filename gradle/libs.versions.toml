@@ -17,7 +17,7 @@ quarkus-arc = { group = "io.quarkus", name = "quarkus-arc", version.ref = "quark
 quarkus-config-yaml = { group = "io.quarkus", name = "quarkus-config-yaml", version.ref = "quarkus-version" }
 
 quarkus-junit5 = { group = "io.quarkus", name = "quarkus-junit5", version.ref = "quarkus-version" }
-rest-assured = { group = "io.rest-assured", name = "rest-assured", version.ref = "rest-assured-version" }
+rest-assured = { group = "io.rest-assured", name = "kotlin-extensions", version.ref = "rest-assured-version" }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-version" }
