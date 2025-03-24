@@ -34,8 +34,9 @@ class ArtistController(
     @POST
     @Transactional
     fun post(artist: ApiModelArtistPost): Response {
-        artistRepository.persist(artist.toDbModel())
-        return created(artist)
+        val dbModelArtist = artist.toDbModel()
+        artistRepository.persist(dbModelArtist)
+        return created(dbModelArtist)
     }
 
     // read
