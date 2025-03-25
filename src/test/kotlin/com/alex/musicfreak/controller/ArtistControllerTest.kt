@@ -1,6 +1,6 @@
 package com.alex.musicfreak.controller
 
-import com.alex.musicfreak.repository.api.ApiModelArtistPost
+import com.alex.musicfreak.repository.api.ApiModelArtist
 import com.alex.musicfreak.repository.database.ArtistRepository
 import io.quarkus.test.junit.QuarkusTest
 import io.restassured.http.ContentType
@@ -30,8 +30,8 @@ class ArtistControllerTest {
     }
 
     private object Artists {
-        val korn = ApiModelArtistPost("Korn")
-        val slipknot = ApiModelArtistPost("Slipknot")
+        val korn = ApiModelArtist(0, "Korn", 0, 0)
+        val slipknot = ApiModelArtist(0, "Slipknot", 0, 0)
     }
 
     @AfterEach
@@ -195,7 +195,7 @@ class ArtistControllerTest {
 
     // endregion
 
-    private fun postArtist(artist: ApiModelArtistPost): Int {
+    private fun postArtist(artist: ApiModelArtist): Int {
         return Given {
             accept(MediaType.APPLICATION_JSON)
             contentType(MediaType.APPLICATION_JSON)
@@ -209,14 +209,14 @@ class ArtistControllerTest {
         }
     }
 
-    private fun ValidatableResponse.assertArtist(artist: ApiModelArtistPost) {
+    private fun ValidatableResponse.assertArtist(artist: ApiModelArtist) {
         body("id", Matchers.greaterThan(0))
         body("name", equalTo(artist.name))
         body("createdAt", Matchers.greaterThan(0L))
         body("updatedAt", Matchers.greaterThan(0L))
     }
 
-    private fun ValidatableResponse.assertArtistInArray(artist: ApiModelArtistPost) {
+    private fun ValidatableResponse.assertArtistInArray(artist: ApiModelArtist) {
         body("id[0]", Matchers.greaterThan(0))
         body("name[0]", equalTo(artist.name))
         body("createdAt[0]", Matchers.greaterThan(0L))

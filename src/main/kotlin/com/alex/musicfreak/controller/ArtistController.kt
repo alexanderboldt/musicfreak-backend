@@ -1,13 +1,12 @@
 package com.alex.musicfreak.controller
 
-import com.alex.musicfreak.repository.api.ApiModelArtistPost
+import com.alex.musicfreak.repository.api.ApiModelArtist
 import com.alex.musicfreak.repository.database.ArtistRepository
-import com.alex.musicfreak.repository.mapping.toApiModelGet
-import com.alex.musicfreak.repository.mapping.toDbModel
-import com.alex.musicfreak.util.badRequest
-import com.alex.musicfreak.util.created
-import com.alex.musicfreak.util.noContent
-import com.alex.musicfreak.util.ok
+import com.alex.musicfreak.repository.mapper.mergeDbModel
+import com.alex.musicfreak.repository.mapper.newDbModel
+import com.alex.musicfreak.repository.mapper.toApiModel
+import com.alex.musicfreak.repository.mapper.toApiModels
+import com.alex.musicfreak.util.Answer
 import jakarta.persistence.EntityManager
 import jakarta.transaction.Transactional
 import jakarta.ws.rs.Consumes
@@ -29,21 +28,19 @@ class ArtistController(
     private val entityManager: EntityManager
 ) {
 
+    private val errorId = "id not found"
+
     // create
 
     @POST
     @Transactional
-    fun post(artist: ApiModelArtistPost): Response {
-        val dbModelArtist = artist.toDbModel()
-        artistRepository.persist(dbModelArtist)
-        return created(dbModelArtist)
-    }
+    fun post(artist: ApiModelArtist) = Answer.created(artistRepository.save(artist.newDbModel()).toApiModel())
 
     // read
 
     @GET
     @Transactional
-    fun getAll() = artistRepository.listAll().toApiModelGet()
+    fun getAll() = Answer.ok(artistRepository.listAll().toApiModels())
 
     @GET
     @Path("{id}")
@@ -51,9 +48,9 @@ class ArtistController(
     fun get(@PathParam("id") id: Long): Response {
         return artistRepository
             .findById(id)
-            ?.toApiModelGet()
-            ?.let { ok(it) }
-            ?: badRequest("id not found")
+            ?.toApiModel()
+            ?.let { Answer.ok(it) }
+            ?: Answer.badRequest(errorId)
     }
 
     // update
@@ -61,11 +58,11 @@ class ArtistController(
     @PUT
     @Path("{id}")
     @Transactional
-    fun update(@PathParam("id") id: Long, artist: ApiModelArtistPost): Response {
+    fun update(@PathParam("id") id: Long, artist: ApiModelArtist): Response {
         val artistSaved = artistRepository.findById(id)
         return when (artistSaved != null) {
-            true -> ok(entityManager.merge(artist.toDbModel(artistSaved)))
-            false -> badRequest("id not found")
+            true -> Answer.ok(entityManager.merge(artist.mergeDbModel(artistSaved)))
+            false -> Answer.badRequest(errorId)
         }
     }
 
@@ -76,8 +73,8 @@ class ArtistController(
     @Transactional
     fun delete(@PathParam("id") id: Long): Response {
         return when (artistRepository.deleteById(id)) {
-            true -> noContent()
-            false -> badRequest("id not found")
+            true -> Answer.noContent()
+            false -> Answer.badRequest(errorId)
         }
     }
 }
