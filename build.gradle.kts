@@ -37,6 +37,7 @@ dependencies {
     // test-libraries
     testImplementation(libs.quarkus.junit5)
     testImplementation(libs.rest.assured)
+    testImplementation(libs.strikt)
 }
 
 group = "com.alex"
