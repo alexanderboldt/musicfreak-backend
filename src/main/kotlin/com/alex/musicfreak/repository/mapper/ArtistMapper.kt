@@ -1,7 +1,7 @@
 package com.alex.musicfreak.repository.mapper
 
 import com.alex.musicfreak.repository.api.ApiModelArtist
-import com.alex.musicfreak.repository.database.DbModelArtist
+import com.alex.musicfreak.repository.database.artist.DbModelArtist
 import java.util.Date
 
 // from api to database

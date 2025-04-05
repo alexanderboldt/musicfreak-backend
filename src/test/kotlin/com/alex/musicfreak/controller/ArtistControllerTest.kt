@@ -1,7 +1,7 @@
 package com.alex.musicfreak.controller
 
 import com.alex.musicfreak.repository.api.ApiModelArtist
-import com.alex.musicfreak.repository.database.ArtistRepository
+import com.alex.musicfreak.repository.database.artist.ArtistRepository
 import io.quarkus.test.junit.QuarkusTest
 import io.restassured.http.ContentType
 import io.restassured.module.kotlin.extensions.Extract
