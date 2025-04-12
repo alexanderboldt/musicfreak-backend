@@ -7,12 +7,12 @@ import java.util.Date
 
 // from api to database
 
-fun ApiModelAlbum.newDbModel() = DbModelAlbum(0, artistId, name, year, tracks, Date().time, Date().time)
+fun ApiModelAlbum.newDbModel() = DbModelAlbum(0, artistId, name, year, tracks)
 
-fun ApiModelAlbum.mergeDbModel(existing: DbModelAlbum) = DbModelAlbum(existing.id, artistId, name, year, tracks, existing.createdAt, Date().time)
+fun ApiModelAlbum.mergeDbModel(existing: DbModelAlbum) = DbModelAlbum(existing.id, artistId, name, year, tracks)
 
 // from database to api
 
 fun Iterable<DbModelAlbum>.toApiModels() = map { it.toApiModel() }
 
-fun DbModelAlbum.toApiModel() = ApiModelAlbum(id, artistId, name, year, tracks, createdAt, updatedAt)
+fun DbModelAlbum.toApiModel() = ApiModelAlbum(id, artistId, name, year, tracks)

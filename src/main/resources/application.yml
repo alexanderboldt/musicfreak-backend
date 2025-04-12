@@ -3,9 +3,6 @@ quarkus:
     port: 9000
   log:
     level: DEBUG
-  hibernate-orm:
-    database:
-      generation: update
   datasource:
     db-kind: postgresql
     reactive: false
@@ -13,3 +10,7 @@ quarkus:
       url: jdbc:postgresql://localhost:5432/musicfreak
     username: admin
     password: admin
+  flyway:
+    enabled: true
+    migrate-at-start: true
+    baseline-on-migrate: true

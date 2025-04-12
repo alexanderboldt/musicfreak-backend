@@ -2,16 +2,17 @@ package com.alex.musicfreak.repository.mapper
 
 import com.alex.musicfreak.repository.api.ApiModelArtist
 import com.alex.musicfreak.repository.database.artist.DbModelArtist
+import java.time.Instant
 import java.util.Date
 
 // from api to database
 
-fun ApiModelArtist.newDbModel() = DbModelArtist(0, name, Date().time, Date().time)
+fun ApiModelArtist.newDbModel() = DbModelArtist(0, name)
 
-fun ApiModelArtist.mergeDbModel(existing: DbModelArtist) = DbModelArtist(existing.id, name, existing.createdAt, Date().time)
+fun ApiModelArtist.mergeDbModel(existing: DbModelArtist) = DbModelArtist(existing.id, name)
 
 // from database to api
 
 fun Iterable<DbModelArtist>.toApiModels() = map { it.toApiModel() }
 
-fun DbModelArtist.toApiModel() = ApiModelArtist(id, name, createdAt, updatedAt)
+fun DbModelArtist.toApiModel() = ApiModelArtist(id, name)

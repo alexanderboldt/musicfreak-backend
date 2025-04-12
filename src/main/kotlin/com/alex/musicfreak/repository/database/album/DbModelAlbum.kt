@@ -17,9 +17,5 @@ data class DbModelAlbum(
 
     val year: Int,
 
-    val tracks: Int,
-
-    val createdAt: Long,
-
-    val updatedAt: Long
+    val tracks: Int
 )

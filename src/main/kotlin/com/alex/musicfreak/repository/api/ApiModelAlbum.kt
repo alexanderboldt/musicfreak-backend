@@ -5,7 +5,5 @@ data class ApiModelAlbum(
     val artistId: Long,
     val name: String,
     val year: Int,
-    val tracks: Int,
-    val createdAt: Long,
-    val updatedAt: Long
+    val tracks: Int
 )

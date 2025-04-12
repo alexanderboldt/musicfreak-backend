@@ -29,6 +29,8 @@ dependencies {
 
     implementation(libs.quarkus.hibernate.orm.panache)
     implementation(libs.quarkus.jdbc.postgresql)
+    implementation(libs.quarkus.flyway)
+    implementation(libs.flyway.postgres)
 
     implementation(libs.quarkus.arc)
 

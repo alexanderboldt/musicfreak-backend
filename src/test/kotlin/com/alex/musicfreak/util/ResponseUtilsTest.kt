@@ -7,12 +7,13 @@ import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 import strikt.assertions.isNull
+import java.time.Instant
 
 class ResponseUtilsTest {
 
     private object Artists {
-        val korn = ApiModelArtist(1, "Korn", 436784242, 436784242)
-        val slipknot = ApiModelArtist(2, "Slipknot", 436784242, 436784242)
+        val korn = ApiModelArtist(1, "Korn",)
+        val slipknot = ApiModelArtist(2, "Slipknot")
 
         val all = listOf(korn, slipknot)
     }
