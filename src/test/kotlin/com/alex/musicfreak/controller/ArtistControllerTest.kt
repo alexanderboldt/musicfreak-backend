@@ -17,6 +17,7 @@ import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.Matchers
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
+import java.sql.Timestamp
 import java.time.Instant
 
 @QuarkusTest
@@ -31,8 +32,8 @@ class ArtistControllerTest {
     }
 
     private object Artists {
-        val korn = ApiModelArtist(0, "Korn")
-        val slipknot = ApiModelArtist(0, "Slipknot")
+        val korn = ApiModelArtist(0, "Korn", Timestamp.from(Instant.now()), Timestamp.from(Instant.now()))
+        val slipknot = ApiModelArtist(0, "Slipknot", Timestamp.from(Instant.now()), Timestamp.from(Instant.now()))
     }
 
     @AfterEach

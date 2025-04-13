@@ -4,6 +4,8 @@ quarkus:
   log:
     level: DEBUG
   datasource:
+    blocking:
+      db-kind: postgresql
     db-kind: postgresql
     reactive: false
     jdbc:

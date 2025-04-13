@@ -38,7 +38,7 @@ class AlbumController(
     @POST
     @Transactional
     fun post(album: ApiModelAlbum): Response {
-        if (!artistRepository.exists(album.artistId)) return Answer.badRequest(errorArtistId)
+        if (!artistRepository.exists(album.artistId!!)) return Answer.badRequest(errorArtistId)
 
         return Answer.created(albumRepository.save(album.newDbModel()).toApiModel())
     }
@@ -70,7 +70,7 @@ class AlbumController(
 
         // check if album and artist are valid
         if (albumSaved == null) return Answer.badRequest(errorId)
-        if (!artistRepository.exists(album.artistId)) return Answer.badRequest(errorArtistId)
+        if (!artistRepository.exists(album.artistId!!)) return Answer.badRequest(errorArtistId)
 
         return Answer.ok(entityManager.merge(album.mergeDbModel(albumSaved)))
     }
