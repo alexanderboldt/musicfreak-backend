@@ -2,6 +2,17 @@
 
 This is a backend application for managing the music-library like artists and albums.
 
-## Technologies
+## Tech-Stack
 
-Uses Kotlin, Quarkus, Gradle, PostgreSQL, Flyway, RestAssured and Strikt.
+### Development
+- Kotlin
+- Quarkus
+- Flyway
+- PostgreSQL
+
+### Test
+- RestAssured
+- Strikk
+
+### Buildsystem
+- Gradle
