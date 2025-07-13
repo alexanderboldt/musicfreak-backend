@@ -1,65 +1,52 @@
 package com.alex.musicfreak.util
 
+import com.alex.musicfreak.Fixtures
 import com.alex.musicfreak.repository.api.ApiModelArtist
 import com.alex.musicfreak.repository.api.ApiModelError
+import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.nulls.shouldBeNull
+import io.kotest.matchers.shouldBe
 import org.apache.http.HttpStatus
-import org.junit.jupiter.api.Test
-import strikt.api.expectThat
-import strikt.assertions.isEqualTo
-import strikt.assertions.isNull
-import java.sql.Timestamp
-import java.time.Instant
 
-class ResponseUtilsTest {
+class ResponseUtilsTest : StringSpec({
 
-    private object Artists {
-        val korn = ApiModelArtist(1, "Korn", Timestamp.from(Instant.now()), Timestamp.from(Instant.now()))
-        val slipknot = ApiModelArtist(2, "Slipknot", Timestamp.from(Instant.now()), Timestamp.from(Instant.now()))
+    "should set response to ok" {
+        val answer = Answer.ok(Fixtures.Artists.korn)
 
-        val all = listOf(korn, slipknot)
+        answer.status shouldBe HttpStatus.SC_OK
+        answer.entity shouldBe Fixtures.Artists.korn
     }
 
-    @Test
-    fun  testOkWithOneArtist() {
-        val answer = Answer.ok(Artists.korn)
+    "should set response to ok with multiple artists" {
+        val answer = Answer.ok(Fixtures.Artists.all)
 
-        expectThat(answer.status).isEqualTo(HttpStatus.SC_OK)
-        expectThat(answer.entity).isEqualTo(Artists.korn)
+        answer.status shouldBe HttpStatus.SC_OK
+        answer.entity as List<ApiModelArtist> shouldHaveSize Fixtures.Artists.all.size
+        answer.entity shouldBe Fixtures.Artists.all
     }
 
-    @Test
-    fun  testOkWithMultipleArtists() {
-        val answer = Answer.ok(Artists.all)
+    "should set response to created" {
+        val answer = Answer.created(Fixtures.Artists.korn)
 
-        expectThat(answer.status).isEqualTo(HttpStatus.SC_OK)
-        expectThat((answer.entity as List<ApiModelArtist>).size).isEqualTo(Artists.all.size)
-        expectThat(answer.entity).isEqualTo(Artists.all)
+        answer.status shouldBe HttpStatus.SC_CREATED
+        answer.entity shouldBe Fixtures.Artists.korn
     }
 
-    @Test
-    fun  testCreated() {
-        val answer = Answer.created(Artists.korn)
-
-        expectThat(answer.status).isEqualTo(HttpStatus.SC_CREATED)
-        expectThat(answer.entity).isEqualTo(Artists.korn)
-    }
-
-    @Test
-    fun  testNoContent() {
+    "should set response to no-content" {
         val answer = Answer.noContent()
 
-        expectThat(answer.status).isEqualTo(HttpStatus.SC_NO_CONTENT)
-        expectThat(answer.entity).isNull()
+        answer.status shouldBe HttpStatus.SC_NO_CONTENT
+        answer.entity.shouldBeNull()
     }
 
-    @Test
-    fun  testBadRequest() {
+    "should set response to bad-request" {
         val message = "id not found"
         val error = ApiModelError(HttpStatus.SC_BAD_REQUEST, message)
 
         val answer = Answer.badRequest(message)
 
-        expectThat(answer.status).isEqualTo(HttpStatus.SC_BAD_REQUEST)
-        expectThat(answer.entity).isEqualTo(error)
+        answer.status shouldBe HttpStatus.SC_BAD_REQUEST
+        answer.entity shouldBe error
     }
-}
+})

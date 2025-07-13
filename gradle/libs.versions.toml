@@ -4,8 +4,10 @@ quarkus-version = "3.24.2"
 rest-assured-version = "5.5.5"
 strikt-version = "0.35.1"
 flyway-version = "11.10.1"
+kotest-version = "5.9.1"
 
 [libraries]
+# development libraries
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version.ref = "kotlin-version" }
 jackson-kotlin = { group = "com.fasterxml.jackson.module", name = "jackson-module-kotlin" }
 
@@ -20,7 +22,10 @@ flyway-postgres = { group = "io.quarkus", name = "quarkus-jdbc-postgresql", vers
 quarkus-arc = { group = "io.quarkus", name = "quarkus-arc", version.ref = "quarkus-version" }
 quarkus-config-yaml = { group = "io.quarkus", name = "quarkus-config-yaml", version.ref = "quarkus-version" }
 
+# test libraries
 quarkus-junit5 = { group = "io.quarkus", name = "quarkus-junit5", version.ref = "quarkus-version" }
+kotest-runner-junit = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest-version" }
+kotest-assertions-core = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest-version" }
 rest-assured = { group = "io.rest-assured", name = "kotlin-extensions", version.ref = "rest-assured-version" }
 strikt = { group = "io.strikt", name = "strikt-core", version.ref = "strikt-version" }
 

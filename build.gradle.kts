@@ -18,7 +18,7 @@ repositories {
 }
 
 dependencies {
-    // project-libraries
+    // development libraries
     implementation(enforcedPlatform(libs.quarkus.platform))
     implementation(libs.kotlin.stdlib)
     implementation(libs.jackson.kotlin)
@@ -36,8 +36,10 @@ dependencies {
 
     implementation(libs.quarkus.config.yaml)
 
-    // test-libraries
+    // test libraries
     testImplementation(libs.quarkus.junit5)
+    testImplementation(libs.kotest.runner.junit)
+    testImplementation(libs.kotest.assertions.core)
     testImplementation(libs.rest.assured)
     testImplementation(libs.strikt)
 }
