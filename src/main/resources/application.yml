@@ -9,9 +9,9 @@ quarkus:
     db-kind: postgresql
     reactive: false
     jdbc:
-      url: ${DATABASE_URL}
-    username: ${PG_USERNAME}
-    password: ${PG_PASSWORD}
+      url: jdbc:postgresql://localhost:5432/musicfreak
+    username: admin
+    password: admin
   flyway:
     enabled: true
     migrate-at-start: true
