@@ -12,7 +12,7 @@ This is a backend application for managing the music-library like artists and al
 
 ### Test
 - RestAssured
-- Strikt
+- Kotest
 
 ### Buildsystem
 - Gradle

@@ -2,7 +2,6 @@
 kotlin-version = "2.2.0"
 quarkus-version = "3.24.2"
 rest-assured-version = "5.5.5"
-strikt-version = "0.35.1"
 flyway-version = "11.10.1"
 kotest-version = "5.9.1"
 
@@ -27,7 +26,6 @@ quarkus-junit5 = { group = "io.quarkus", name = "quarkus-junit5", version.ref = 
 kotest-runner-junit = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest-version" }
 kotest-assertions-core = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest-version" }
 rest-assured = { group = "io.rest-assured", name = "kotlin-extensions", version.ref = "rest-assured-version" }
-strikt = { group = "io.strikt", name = "strikt-core", version.ref = "strikt-version" }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-version" }
