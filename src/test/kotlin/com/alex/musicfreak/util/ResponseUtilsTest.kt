@@ -1,8 +1,8 @@
 package com.alex.musicfreak.util
 
 import com.alex.musicfreak.Fixtures
-import com.alex.musicfreak.repository.api.ApiModelArtist
-import com.alex.musicfreak.repository.api.ApiModelError
+import com.alex.musicfreak.domain.Artist
+import com.alex.musicfreak.domain.Error
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldBeNull
@@ -22,7 +22,7 @@ class ResponseUtilsTest : StringSpec({
         val answer = Answer.ok(Fixtures.Artists.all)
 
         answer.status shouldBe HttpStatus.SC_OK
-        answer.entity as List<ApiModelArtist> shouldHaveSize Fixtures.Artists.all.size
+        answer.entity as List<Artist> shouldHaveSize Fixtures.Artists.all.size
         answer.entity shouldBe Fixtures.Artists.all
     }
 
@@ -42,7 +42,7 @@ class ResponseUtilsTest : StringSpec({
 
     "should set response to bad-request" {
         val message = "id not found"
-        val error = ApiModelError(HttpStatus.SC_BAD_REQUEST, message)
+        val error = Error(HttpStatus.SC_BAD_REQUEST, message)
 
         val answer = Answer.badRequest(message)
 

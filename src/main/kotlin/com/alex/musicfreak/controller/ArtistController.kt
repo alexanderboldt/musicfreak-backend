@@ -1,12 +1,11 @@
 package com.alex.musicfreak.controller
 
-import com.alex.musicfreak.repository.api.ApiModelArtist
-import com.alex.musicfreak.repository.database.album.AlbumRepository
-import com.alex.musicfreak.repository.database.artist.ArtistRepository
-import com.alex.musicfreak.repository.mapper.mergeDbModel
-import com.alex.musicfreak.repository.mapper.newDbModel
-import com.alex.musicfreak.repository.mapper.toApiModel
-import com.alex.musicfreak.repository.mapper.toApiModels
+import com.alex.musicfreak.domain.Artist
+import com.alex.musicfreak.repository.album.AlbumRepository
+import com.alex.musicfreak.repository.artist.ArtistRepository
+import com.alex.musicfreak.mapper.plus
+import com.alex.musicfreak.mapper.toDomain
+import com.alex.musicfreak.mapper.toEntity
 import com.alex.musicfreak.util.Answer
 import io.quarkus.panache.common.Sort
 import jakarta.persistence.EntityManager
@@ -38,19 +37,19 @@ class ArtistController(
 
     @POST
     @Transactional
-    fun post(artist: ApiModelArtist) = Answer.created(artistRepository.save(artist.newDbModel()).toApiModel())
+    fun post(artist: Artist) = Answer.created(artistRepository.save(artist.toEntity()).toDomain())
 
     // read
 
     @GET
     @Transactional
-    fun getAll() = Answer.ok(artistRepository.listAll().toApiModels())
+    fun getAll() = Answer.ok(artistRepository.listAll().map { it.toDomain() })
 
     @GET
     @Path("{id}/albums")
     @Transactional
     fun getAllAlbumsFromArtist(@PathParam("id") id: Long, @QueryParam("sort") sort: String?): Response {
-        return Answer.ok(albumRepository.list("artistId", if (sort != null) Sort.by(sort) else Sort.by("year"), id).toApiModels())
+        return Answer.ok(albumRepository.list("artistId", if (sort != null) Sort.by(sort) else Sort.by("year"), id).map { it.toDomain() })
     }
 
     @GET
@@ -59,7 +58,7 @@ class ArtistController(
     fun get(@PathParam("id") id: Long): Response {
         return artistRepository
             .findById(id)
-            ?.toApiModel()
+            ?.toDomain()
             ?.let { Answer.ok(it) }
             ?: Answer.badRequest(errorId)
     }
@@ -69,10 +68,10 @@ class ArtistController(
     @PUT
     @Path("{id}")
     @Transactional
-    fun update(@PathParam("id") id: Long, artist: ApiModelArtist): Response {
+    fun update(@PathParam("id") id: Long, artist: Artist): Response {
         val artistSaved = artistRepository.findById(id)
         return when (artistSaved != null) {
-            true -> Answer.ok(entityManager.merge(artist.mergeDbModel(artistSaved)))
+            true -> Answer.ok(entityManager.merge(artist + artistSaved))
             false -> Answer.badRequest(errorId)
         }
     }

@@ -1,6 +1,6 @@
 package com.alex.musicfreak.util
 
-import com.alex.musicfreak.repository.api.ApiModelError
+import com.alex.musicfreak.domain.Error
 import jakarta.ws.rs.core.Response
 
 /**
@@ -40,5 +40,5 @@ object Answer {
      *
      * @return Returns the response.
      */
-    fun badRequest(message: String): Response = Response.status(Response.Status.BAD_REQUEST).entity(ApiModelError(Response.Status.BAD_REQUEST.statusCode, message)).build()
+    fun badRequest(message: String): Response = Response.status(Response.Status.BAD_REQUEST).entity(Error(Response.Status.BAD_REQUEST.statusCode, message)).build()
 }

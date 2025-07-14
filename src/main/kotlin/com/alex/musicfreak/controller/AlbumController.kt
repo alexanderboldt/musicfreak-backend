@@ -1,12 +1,11 @@
 package com.alex.musicfreak.controller
 
-import com.alex.musicfreak.repository.api.ApiModelAlbum
-import com.alex.musicfreak.repository.database.album.AlbumRepository
-import com.alex.musicfreak.repository.database.artist.ArtistRepository
-import com.alex.musicfreak.repository.mapper.mergeDbModel
-import com.alex.musicfreak.repository.mapper.newDbModel
-import com.alex.musicfreak.repository.mapper.toApiModel
-import com.alex.musicfreak.repository.mapper.toApiModels
+import com.alex.musicfreak.domain.Album
+import com.alex.musicfreak.repository.album.AlbumRepository
+import com.alex.musicfreak.repository.artist.ArtistRepository
+import com.alex.musicfreak.mapper.plus
+import com.alex.musicfreak.mapper.toDomain
+import com.alex.musicfreak.mapper.toEntity
 import com.alex.musicfreak.util.Answer
 import jakarta.persistence.EntityManager
 import jakarta.transaction.Transactional
@@ -37,17 +36,17 @@ class AlbumController(
 
     @POST
     @Transactional
-    fun post(album: ApiModelAlbum): Response {
+    fun post(album: Album): Response {
         if (!artistRepository.exists(album.artistId!!)) return Answer.badRequest(errorArtistId)
 
-        return Answer.created(albumRepository.save(album.newDbModel()).toApiModel())
+        return Answer.created(albumRepository.save(album.toEntity()).toDomain())
     }
 
     // read
 
     @GET
     @Transactional
-    fun getAll() = Answer.ok(albumRepository.listAll().toApiModels())
+    fun getAll() = Answer.ok(albumRepository.listAll().map { it.toDomain() })
 
     @GET
     @Path("{id}")
@@ -55,7 +54,7 @@ class AlbumController(
     fun get(@PathParam("id") id: Long): Response {
         return albumRepository
             .findById(id)
-            ?.toApiModel()
+            ?.toDomain()
             ?.let { Answer.ok(it) }
             ?: Answer.badRequest(errorId)
     }
@@ -65,14 +64,14 @@ class AlbumController(
     @PUT
     @Path("{id}")
     @Transactional
-    fun update(@PathParam("id") id: Long, album: ApiModelAlbum): Response {
+    fun update(@PathParam("id") id: Long, album: Album): Response {
         val albumSaved = albumRepository.findById(id)
 
         // check if album and artist are valid
         if (albumSaved == null) return Answer.badRequest(errorId)
         if (!artistRepository.exists(album.artistId!!)) return Answer.badRequest(errorArtistId)
 
-        return Answer.ok(entityManager.merge(album.mergeDbModel(albumSaved)))
+        return Answer.ok(entityManager.merge(album + albumSaved))
     }
 
     // delete

@@ -1,14 +1,14 @@
-package com.alex.musicfreak.repository.database.artist
+package com.alex.musicfreak.repository.artist
 
 import io.quarkus.hibernate.orm.panache.PanacheRepository
 import jakarta.enterprise.context.ApplicationScoped
 
 @ApplicationScoped
-class ArtistRepository : PanacheRepository<DbModelArtist> {
+class ArtistRepository : PanacheRepository<ArtistEntity> {
 
     fun exists(id: Long) = findById(id) != null
 
-    fun save(entity: DbModelArtist): DbModelArtist {
+    fun save(entity: ArtistEntity): ArtistEntity {
         persist(entity)
         return entity
     }

@@ -1,4 +1,4 @@
-package com.alex.musicfreak.repository.database.album
+package com.alex.musicfreak.repository.album
 
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -6,7 +6,7 @@ import jakarta.persistence.Id
 import java.sql.Timestamp
 
 @Entity
-data class DbModelAlbum(
+data class AlbumEntity(
 
     @Id
     @GeneratedValue

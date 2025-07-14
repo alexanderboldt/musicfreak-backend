@@ -1,8 +1,8 @@
 package com.alex.musicfreak.controller
 
 import com.alex.musicfreak.Fixtures
-import com.alex.musicfreak.repository.api.ApiModelArtist
-import com.alex.musicfreak.repository.database.artist.ArtistRepository
+import com.alex.musicfreak.domain.Artist
+import com.alex.musicfreak.repository.artist.ArtistRepository
 import io.quarkus.test.junit.QuarkusTest
 import io.restassured.RestAssured
 import io.restassured.http.ContentType
@@ -191,7 +191,7 @@ class ArtistControllerTest {
 
     // endregion
 
-    private fun postArtist(artist: ApiModelArtist): Int {
+    private fun postArtist(artist: Artist): Int {
         return Given {
             body(artist)
         } When {
@@ -203,14 +203,14 @@ class ArtistControllerTest {
         }
     }
 
-    private fun ValidatableResponse.assertArtist(artist: ApiModelArtist) {
+    private fun ValidatableResponse.assertArtist(artist: Artist) {
         body("id", Matchers.greaterThan(0))
         body("name", equalTo(artist.name))
         body("createdAt", Matchers.greaterThan(0L))
         body("updatedAt", Matchers.greaterThan(0L))
     }
 
-    private fun ValidatableResponse.assertArtistInArray(artist: ApiModelArtist) {
+    private fun ValidatableResponse.assertArtistInArray(artist: Artist) {
         body("id[0]", Matchers.greaterThan(0))
         body("name[0]", equalTo(artist.name))
         body("createdAt[0]", Matchers.greaterThan(0L))
