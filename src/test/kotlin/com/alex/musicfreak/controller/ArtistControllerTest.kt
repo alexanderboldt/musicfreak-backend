@@ -1,8 +1,10 @@
 package com.alex.musicfreak.controller
 
+import com.alex.musicfreak.Fixtures
 import com.alex.musicfreak.repository.api.ApiModelArtist
 import com.alex.musicfreak.repository.database.artist.ArtistRepository
 import io.quarkus.test.junit.QuarkusTest
+import io.restassured.RestAssured
 import io.restassured.http.ContentType
 import io.restassured.module.kotlin.extensions.Extract
 import io.restassured.module.kotlin.extensions.Given
@@ -11,14 +13,12 @@ import io.restassured.module.kotlin.extensions.When
 import io.restassured.response.ValidatableResponse
 import jakarta.inject.Inject
 import jakarta.transaction.Transactional
-import jakarta.ws.rs.core.MediaType
 import org.apache.http.HttpStatus
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.Matchers
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import java.sql.Timestamp
-import java.time.Instant
 
 @QuarkusTest
 class ArtistControllerTest {
@@ -26,14 +26,10 @@ class ArtistControllerTest {
     @Inject
     private lateinit var artistRepository: ArtistRepository
 
-    private object Routes {
-        val main = "/api/v1/artists"
-        val detail = "$main/{id}"
-    }
-
-    private object Artists {
-        val korn = ApiModelArtist(0, "Korn", Timestamp.from(Instant.now()), Timestamp.from(Instant.now()))
-        val slipknot = ApiModelArtist(0, "Slipknot", Timestamp.from(Instant.now()), Timestamp.from(Instant.now()))
+    @BeforeEach
+    @Transactional
+    fun beforeEach() {
+        RestAssured.requestSpecification = RestAssured.given().contentType(ContentType.JSON)
     }
 
     @AfterEach
@@ -48,14 +44,12 @@ class ArtistControllerTest {
     fun testPostWithValidRequest() {
         // execute and verify
         Given {
-            accept(MediaType.APPLICATION_JSON)
-            contentType(MediaType.APPLICATION_JSON)
-            body(Artists.korn)
+            body(Fixtures.Artists.korn)
         } When {
-            post(Routes.main)
+            post(Routes.Artist.MAIN)
         } Then {
             statusCode(HttpStatus.SC_CREATED)
-            assertArtist(Artists.korn)
+            assertArtist(Fixtures.Artists.korn)
         }
     }
 
@@ -67,7 +61,7 @@ class ArtistControllerTest {
     fun testGetAllWithNoArtists() {
         // execute and verify
         When {
-            get(Routes.main)
+            get(Routes.Artist.MAIN)
         } Then {
             statusCode(HttpStatus.SC_OK)
             body("size()", equalTo(0))
@@ -77,15 +71,15 @@ class ArtistControllerTest {
     @Test
     fun testGetAllWithOneArtist() {
         // precondition: post an artist
-        postArtist(Artists.korn)
+        postArtist(Fixtures.Artists.korn)
 
         // execute and verify
         When {
-            get(Routes.main)
+            get(Routes.Artist.MAIN)
         } Then {
             statusCode(HttpStatus.SC_OK)
             body("size()", equalTo(1))
-            assertArtistInArray(Artists.korn)
+            assertArtistInArray(Fixtures.Artists.korn)
         }
     }
 
@@ -96,11 +90,11 @@ class ArtistControllerTest {
     @Test
     fun testGetOneWithInvalidId() {
         // precondition: post an artist
-        postArtist(Artists.korn)
+        postArtist(Fixtures.Artists.korn)
 
         // execute and verify
         When {
-            get(Routes.detail, 100)
+            get(Routes.Artist.DETAIL, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -109,14 +103,14 @@ class ArtistControllerTest {
     @Test
     fun testGetOneWithValidId() {
         // precondition: post an artist
-        val id = postArtist(Artists.korn)
+        val id = postArtist(Fixtures.Artists.korn)
 
         // execute and verify
         When {
-            get(Routes.detail, id)
+            get(Routes.Artist.DETAIL, id)
         } Then {
             statusCode(HttpStatus.SC_OK)
-            assertArtist(Artists.korn)
+            assertArtist(Fixtures.Artists.korn)
         }
     }
 
@@ -127,15 +121,15 @@ class ArtistControllerTest {
     @Test
     fun testUpdateWithInvalidId() {
         // precondition: post an artist
-        postArtist(Artists.korn)
+        postArtist(Fixtures.Artists.korn)
 
         // execute the update and verify
         Given {
             accept(ContentType.JSON)
             contentType(ContentType.JSON)
-            body(Artists.slipknot)
+            body(Fixtures.Artists.slipknot)
         } When {
-            put(Routes.detail, 100)
+            put(Routes.Artist.DETAIL, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -144,18 +138,18 @@ class ArtistControllerTest {
     @Test
     fun testUpdateWithValidId() {
         // precondition: post an artist
-        val id = postArtist(Artists.korn)
+        val id = postArtist(Fixtures.Artists.korn)
 
         // execute the update and verify
         Given {
             accept(ContentType.JSON)
             contentType(ContentType.JSON)
-            body(Artists.slipknot)
+            body(Fixtures.Artists.slipknot)
         } When {
-            put(Routes.detail, id)
+            put(Routes.Artist.DETAIL, id)
         } Then {
             statusCode(HttpStatus.SC_OK)
-            assertArtist(Artists.slipknot)
+            assertArtist(Fixtures.Artists.slipknot)
         }
     }
 
@@ -166,14 +160,14 @@ class ArtistControllerTest {
     @Test
     fun testDeleteWithInvalidId() {
         // precondition: post an artist
-        postArtist(Artists.korn)
+        postArtist(Fixtures.Artists.korn)
 
         // execute the delete and verify
         Given {
             accept(ContentType.JSON)
             contentType(ContentType.JSON)
         } When {
-            delete(Routes.detail, 100)
+            delete(Routes.Artist.DETAIL, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -182,14 +176,14 @@ class ArtistControllerTest {
     @Test
     fun testDeleteWithValidRecipe() {
         // precondition: post an artist
-        val id = postArtist(Artists.korn)
+        val id = postArtist(Fixtures.Artists.korn)
 
         // execute the delete and verify
         Given {
             accept(ContentType.JSON)
             contentType(ContentType.JSON)
         } When {
-            delete(Routes.detail, id)
+            delete(Routes.Artist.DETAIL, id)
         } Then {
             statusCode(HttpStatus.SC_NO_CONTENT)
         }
@@ -199,11 +193,9 @@ class ArtistControllerTest {
 
     private fun postArtist(artist: ApiModelArtist): Int {
         return Given {
-            accept(MediaType.APPLICATION_JSON)
-            contentType(MediaType.APPLICATION_JSON)
             body(artist)
         } When {
-            post(Routes.main)
+            post(Routes.Artist.MAIN)
         } Then {
             statusCode(HttpStatus.SC_CREATED)
         } Extract {
