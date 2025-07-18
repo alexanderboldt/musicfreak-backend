@@ -1,8 +1,7 @@
 [versions]
 kotlin-version = "2.2.0"
-quarkus-version = "3.24.2"
+quarkus-version = "3.24.3"
 rest-assured-version = "5.5.5"
-flyway-version = "11.10.1"
 kotest-version = "5.9.1"
 
 [libraries]
@@ -16,8 +15,7 @@ quarkus-rest = { group = "io.quarkus", name = "quarkus-rest", version.ref = "qua
 quarkus-rest-jackson = { group = "io.quarkus", name = "quarkus-rest-jackson", version.ref = "quarkus-version" }
 quarkus-hibernate-orm-panache = { group = "io.quarkus", name = "quarkus-hibernate-orm-panache", version.ref = "quarkus-version" }
 quarkus-jdbc-postgresql = { group = "io.quarkus", name = "quarkus-jdbc-postgresql", version.ref = "quarkus-version" }
-quarkus-flyway = { group = "io.quarkus", name = "quarkus-flyway", version.ref = "flyway-version" }
-flyway-postgres = { group = "io.quarkus", name = "quarkus-jdbc-postgresql", version.ref = "flyway-version" }
+quarkus-flyway = { group = "io.quarkus", name = "quarkus-flyway", version.ref = "quarkus-version" }
 quarkus-arc = { group = "io.quarkus", name = "quarkus-arc", version.ref = "quarkus-version" }
 quarkus-config-yaml = { group = "io.quarkus", name = "quarkus-config-yaml", version.ref = "quarkus-version" }
 
