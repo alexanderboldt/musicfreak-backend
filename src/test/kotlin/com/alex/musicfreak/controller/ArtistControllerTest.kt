@@ -7,9 +7,7 @@ import io.kotest.matchers.comparables.shouldBeGreaterThan
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.quarkus.test.junit.QuarkusTest
-import io.restassured.RestAssured
 import io.restassured.common.mapper.TypeRef
-import io.restassured.http.ContentType
 import io.restassured.module.kotlin.extensions.Extract
 import io.restassured.module.kotlin.extensions.Given
 import io.restassured.module.kotlin.extensions.Then
@@ -20,21 +18,14 @@ import jakarta.transaction.Transactional
 import org.apache.http.HttpStatus
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import kotlin.collections.zip
 
 @QuarkusTest
-class ArtistControllerTest {
+class ArtistControllerTest : BaseControllerTest() {
 
     @Inject
     private lateinit var artistRepository: ArtistRepository
-
-    @BeforeEach
-    @Transactional
-    fun beforeEach() {
-        RestAssured.requestSpecification = RestAssured.given().contentType(ContentType.JSON)
-    }
 
     @AfterEach
     @Transactional
