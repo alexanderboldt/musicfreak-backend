@@ -3,22 +3,26 @@ package com.alex.musicfreak.controller
 import com.alex.musicfreak.Fixtures
 import com.alex.musicfreak.domain.Artist
 import com.alex.musicfreak.repository.artist.ArtistRepository
+import io.kotest.matchers.comparables.shouldBeGreaterThan
+import io.kotest.matchers.nulls.shouldNotBeNull
+import io.kotest.matchers.shouldBe
 import io.quarkus.test.junit.QuarkusTest
 import io.restassured.RestAssured
+import io.restassured.common.mapper.TypeRef
 import io.restassured.http.ContentType
 import io.restassured.module.kotlin.extensions.Extract
 import io.restassured.module.kotlin.extensions.Given
 import io.restassured.module.kotlin.extensions.Then
 import io.restassured.module.kotlin.extensions.When
-import io.restassured.response.ValidatableResponse
+import io.restassured.response.ResponseBodyExtractionOptions
 import jakarta.inject.Inject
 import jakarta.transaction.Transactional
 import org.apache.http.HttpStatus
 import org.hamcrest.CoreMatchers.equalTo
-import org.hamcrest.Matchers
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import kotlin.collections.zip
 
 @QuarkusTest
 class ArtistControllerTest {
@@ -43,14 +47,18 @@ class ArtistControllerTest {
     @Test
     fun testPostWithValidRequest() {
         // execute and verify
-        Given {
+        val artist = Given {
             body(Fixtures.Artists.korn)
         } When {
             post(Routes.Artist.MAIN)
         } Then {
             statusCode(HttpStatus.SC_CREATED)
-            assertArtist(Fixtures.Artists.korn)
+        } Extract {
+            asArtist()
         }
+
+        artist.shouldNotBeNull()
+        artist shouldBeArtist Fixtures.Artists.korn
     }
 
     // endregion
@@ -60,12 +68,17 @@ class ArtistControllerTest {
     @Test
     fun testGetAllWithNoArtists() {
         // execute and verify
-        When {
+        val artists = When {
             get(Routes.Artist.MAIN)
         } Then {
             statusCode(HttpStatus.SC_OK)
             body("size()", equalTo(0))
+        } Extract {
+            asArtists()
         }
+
+        artists.shouldNotBeNull()
+        artists shouldBe emptyList()
     }
 
     @Test
@@ -74,13 +87,16 @@ class ArtistControllerTest {
         postArtist(Fixtures.Artists.korn)
 
         // execute and verify
-        When {
+        val artists = When {
             get(Routes.Artist.MAIN)
         } Then {
             statusCode(HttpStatus.SC_OK)
-            body("size()", equalTo(1))
-            assertArtistInArray(Fixtures.Artists.korn)
+        } Extract {
+            asArtists()
         }
+
+        artists.shouldNotBeNull()
+        artists shouldBeArtists listOf(Fixtures.Artists.korn)
     }
 
     // endregion
@@ -106,12 +122,16 @@ class ArtistControllerTest {
         val id = postArtist(Fixtures.Artists.korn)
 
         // execute and verify
-        When {
+        val artist = When {
             get(Routes.Artist.DETAIL, id)
         } Then {
             statusCode(HttpStatus.SC_OK)
-            assertArtist(Fixtures.Artists.korn)
+        } Extract {
+            asArtist()
         }
+
+        artist.shouldNotBeNull()
+        artist shouldBeArtist Fixtures.Artists.korn
     }
 
     // endregion
@@ -125,8 +145,6 @@ class ArtistControllerTest {
 
         // execute the update and verify
         Given {
-            accept(ContentType.JSON)
-            contentType(ContentType.JSON)
             body(Fixtures.Artists.slipknot)
         } When {
             put(Routes.Artist.DETAIL, 100)
@@ -141,16 +159,18 @@ class ArtistControllerTest {
         val id = postArtist(Fixtures.Artists.korn)
 
         // execute the update and verify
-        Given {
-            accept(ContentType.JSON)
-            contentType(ContentType.JSON)
+        val artist = Given {
             body(Fixtures.Artists.slipknot)
         } When {
             put(Routes.Artist.DETAIL, id)
         } Then {
             statusCode(HttpStatus.SC_OK)
-            assertArtist(Fixtures.Artists.slipknot)
+        } Extract {
+            asArtist()
         }
+
+        artist.shouldNotBeNull()
+        artist shouldBeArtist Fixtures.Artists.slipknot
     }
 
     // endregion
@@ -163,10 +183,7 @@ class ArtistControllerTest {
         postArtist(Fixtures.Artists.korn)
 
         // execute the delete and verify
-        Given {
-            accept(ContentType.JSON)
-            contentType(ContentType.JSON)
-        } When {
+        When {
             delete(Routes.Artist.DETAIL, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
@@ -179,10 +196,7 @@ class ArtistControllerTest {
         val id = postArtist(Fixtures.Artists.korn)
 
         // execute the delete and verify
-        Given {
-            accept(ContentType.JSON)
-            contentType(ContentType.JSON)
-        } When {
+        When {
             delete(Routes.Artist.DETAIL, id)
         } Then {
             statusCode(HttpStatus.SC_NO_CONTENT)
@@ -203,17 +217,21 @@ class ArtistControllerTest {
         }
     }
 
-    private fun ValidatableResponse.assertArtist(artist: Artist) {
-        body("id", Matchers.greaterThan(0))
-        body("name", equalTo(artist.name))
-        body("createdAt", Matchers.greaterThan(0L))
-        body("updatedAt", Matchers.greaterThan(0L))
+    private fun ResponseBodyExtractionOptions.asArtists() = `as`(object : TypeRef<List<Artist>>() {})
+    private fun ResponseBodyExtractionOptions.asArtist() = `as`(object : TypeRef<Artist>() {})
+
+    private infix fun List<Artist>.shouldBeArtists(expected: List<Artist>) {
+        zip(expected).forEach { (artistActual, artistExpected) ->
+            artistActual shouldBeArtist artistExpected
+        }
     }
 
-    private fun ValidatableResponse.assertArtistInArray(artist: Artist) {
-        body("id[0]", Matchers.greaterThan(0))
-        body("name[0]", equalTo(artist.name))
-        body("createdAt[0]", Matchers.greaterThan(0L))
-        body("updatedAt[0]", Matchers.greaterThan(0L))
+    private infix fun Artist.shouldBeArtist(expected: Artist) {
+        id.shouldNotBeNull()
+        id shouldBeGreaterThan 0
+        name.shouldNotBeNull()
+        name shouldBe expected.name
+        createdAt.shouldNotBeNull()
+        updatedAt.shouldNotBeNull()
     }
 }
