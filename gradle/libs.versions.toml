@@ -3,6 +3,7 @@ kotlin-version = "2.2.0"
 quarkus-version = "3.24.3"
 rest-assured-version = "5.5.5"
 kotest-version = "5.9.1"
+testcontainer-version = "1.21.3"
 
 [libraries]
 # development libraries
@@ -24,6 +25,8 @@ quarkus-junit5 = { group = "io.quarkus", name = "quarkus-junit5", version.ref = 
 kotest-runner-junit = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest-version" }
 kotest-assertions-core = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest-version" }
 rest-assured = { group = "io.rest-assured", name = "kotlin-extensions", version.ref = "rest-assured-version" }
+testcontainers-junit-jupiter = { module = "org.testcontainers:junit-jupiter", version.ref = "testcontainer-version"  }
+testcontainers-postgresql = { module = "org.testcontainers:postgresql", version.ref = "testcontainer-version"  }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-version" }
