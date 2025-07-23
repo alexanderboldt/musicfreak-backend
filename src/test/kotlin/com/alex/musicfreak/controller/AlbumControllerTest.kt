@@ -5,7 +5,6 @@ import com.alex.musicfreak.domain.Album
 import com.alex.musicfreak.domain.Artist
 import com.alex.musicfreak.extension.asAlbum
 import com.alex.musicfreak.extension.asAlbums
-import com.alex.musicfreak.extension.asArtist
 import com.alex.musicfreak.repository.album.AlbumRepository
 import com.alex.musicfreak.repository.artist.ArtistRepository
 import io.kotest.matchers.collections.shouldHaveSize
@@ -27,7 +26,8 @@ import org.junit.jupiter.api.Test
 @QuarkusTest
 class AlbumControllerTest : BaseControllerTest() {
 
-    private lateinit var artist: Artist
+    private lateinit var artistPosted: Artist
+    private lateinit var albumWithArtistId: Album
 
     @Inject
     private lateinit var artistRepository: ArtistRepository
@@ -38,7 +38,8 @@ class AlbumControllerTest : BaseControllerTest() {
     @BeforeEach
     @Transactional
     fun beforeEach() {
-        artist = postArtist(Fixtures.Artists.korn)
+        artistPosted = postArtist(Fixtures.Artists.korn)
+        albumWithArtistId = Fixtures.Album.issues.copy(artistId = artistPosted.id)
     }
 
     @AfterEach
@@ -64,7 +65,7 @@ class AlbumControllerTest : BaseControllerTest() {
     @Test
     fun `should create an album with valid request`() {
         val album = Given {
-            body(Fixtures.Album.issues.copy(artistId = artist.id))
+            body(albumWithArtistId)
         } When {
             post(Routes.Album.MAIN)
         } Then {
@@ -74,7 +75,7 @@ class AlbumControllerTest : BaseControllerTest() {
         }
 
         album.shouldNotBeNull()
-        album shouldBeAlbum Fixtures.Album.issues.copy(artistId = artist.id)
+        album shouldBeAlbum albumWithArtistId
     }
 
     // endregion
@@ -97,7 +98,7 @@ class AlbumControllerTest : BaseControllerTest() {
 
     @Test
     fun `should return a list with one album`() {
-        postAlbum(Fixtures.Album.issues.copy(artistId = artist.id))
+        postAlbum(albumWithArtistId)
 
         val albums = When {
             get(Routes.Album.MAIN)
@@ -108,12 +109,12 @@ class AlbumControllerTest : BaseControllerTest() {
         }
 
         albums shouldHaveSize 1
-        albums shouldBeAlbums listOf(Fixtures.Album.issues.copy(artistId = artist.id))
+        albums shouldBeAlbums listOf(albumWithArtistId)
     }
 
     @Test
     fun `should return a list with ten albums`() {
-        val albumsRequest = (1..10).map { Fixtures.Album.issues.copy(artistId = artist.id) }
+        val albumsRequest = (1..10).map { albumWithArtistId }
 
         albumsRequest.forEach { postAlbum(it) }
 
@@ -130,18 +131,6 @@ class AlbumControllerTest : BaseControllerTest() {
     }
 
     // endregion
-
-    private fun postArtist(artist: Artist): Artist {
-        return Given {
-            body(artist)
-        } When {
-            post(Routes.Artist.MAIN)
-        } Then {
-            statusCode(HttpStatus.SC_CREATED)
-        } Extract {
-            asArtist()
-        }
-    }
 
     private fun postAlbum(album: Album): Album {
         return Given {

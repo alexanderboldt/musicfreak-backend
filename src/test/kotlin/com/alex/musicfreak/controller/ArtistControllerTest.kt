@@ -110,11 +110,11 @@ class ArtistControllerTest : BaseControllerTest() {
     @Test
     fun testGetOneWithValidId() {
         // precondition: post an artist
-        val id = postArtist(Fixtures.Artists.korn)
+        val artistPosted = postArtist(Fixtures.Artists.korn)
 
         // execute and verify
         val artist = When {
-            get(Routes.Artist.DETAIL, id)
+            get(Routes.Artist.DETAIL, artistPosted.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -147,13 +147,13 @@ class ArtistControllerTest : BaseControllerTest() {
     @Test
     fun testUpdateWithValidId() {
         // precondition: post an artist
-        val id = postArtist(Fixtures.Artists.korn)
+        val artistPosted = postArtist(Fixtures.Artists.korn)
 
         // execute the update and verify
         val artist = Given {
             body(Fixtures.Artists.slipknot)
         } When {
-            put(Routes.Artist.DETAIL, id)
+            put(Routes.Artist.DETAIL, artistPosted.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -184,29 +184,17 @@ class ArtistControllerTest : BaseControllerTest() {
     @Test
     fun testDeleteWithValidRecipe() {
         // precondition: post an artist
-        val id = postArtist(Fixtures.Artists.korn)
+        val artistPosted = postArtist(Fixtures.Artists.korn)
 
         // execute the delete and verify
         When {
-            delete(Routes.Artist.DETAIL, id)
+            delete(Routes.Artist.DETAIL, artistPosted.id)
         } Then {
             statusCode(HttpStatus.SC_NO_CONTENT)
         }
     }
 
     // endregion
-
-    private fun postArtist(artist: Artist): Int {
-        return Given {
-            body(artist)
-        } When {
-            post(Routes.Artist.MAIN)
-        } Then {
-            statusCode(HttpStatus.SC_CREATED)
-        } Extract {
-            path("id")
-        }
-    }
 
     private infix fun List<Artist>.shouldBeArtists(expected: List<Artist>) {
         zip(expected).forEach { (artistActual, artistExpected) ->

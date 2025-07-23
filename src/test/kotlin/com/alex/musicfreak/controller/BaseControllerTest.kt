@@ -1,8 +1,15 @@
 package com.alex.musicfreak.controller
 
+import com.alex.musicfreak.domain.Artist
+import com.alex.musicfreak.extension.asArtist
 import io.restassured.RestAssured
 import io.restassured.http.ContentType
+import io.restassured.module.kotlin.extensions.Extract
+import io.restassured.module.kotlin.extensions.Given
+import io.restassured.module.kotlin.extensions.Then
+import io.restassured.module.kotlin.extensions.When
 import jakarta.transaction.Transactional
+import org.apache.http.HttpStatus
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.testcontainers.containers.PostgreSQLContainer
@@ -33,5 +40,17 @@ open class BaseControllerTest {
     @Transactional
     fun beforeEachBase() {
         RestAssured.requestSpecification = RestAssured.given().contentType(ContentType.JSON)
+    }
+
+    protected fun postArtist(artist: Artist): Artist {
+        return Given {
+            body(artist)
+        } When {
+            post(Routes.Artist.MAIN)
+        } Then {
+            statusCode(HttpStatus.SC_CREATED)
+        } Extract {
+            asArtist()
+        }
     }
 }
