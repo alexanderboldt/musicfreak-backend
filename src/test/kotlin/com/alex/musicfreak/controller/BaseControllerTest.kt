@@ -20,7 +20,7 @@ open class BaseControllerTest {
 
         @JvmStatic
         @BeforeAll
-        fun setup() {
+        fun beforeAllBase() {
             postgres.start()
 
             System.setProperty("quarkus.datasource.jdbc.url", postgres.jdbcUrl)
@@ -31,7 +31,7 @@ open class BaseControllerTest {
 
     @BeforeEach
     @Transactional
-    fun beforeEach() {
+    fun beforeEachBase() {
         RestAssured.requestSpecification = RestAssured.given().contentType(ContentType.JSON)
     }
 }

@@ -2,17 +2,17 @@ package com.alex.musicfreak.controller
 
 import com.alex.musicfreak.Fixtures
 import com.alex.musicfreak.domain.Artist
+import com.alex.musicfreak.extension.asArtist
+import com.alex.musicfreak.extension.asArtists
 import com.alex.musicfreak.repository.artist.ArtistRepository
 import io.kotest.matchers.comparables.shouldBeGreaterThan
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.quarkus.test.junit.QuarkusTest
-import io.restassured.common.mapper.TypeRef
 import io.restassured.module.kotlin.extensions.Extract
 import io.restassured.module.kotlin.extensions.Given
 import io.restassured.module.kotlin.extensions.Then
 import io.restassured.module.kotlin.extensions.When
-import io.restassured.response.ResponseBodyExtractionOptions
 import jakarta.inject.Inject
 import jakarta.transaction.Transactional
 import org.apache.http.HttpStatus
@@ -207,9 +207,6 @@ class ArtistControllerTest : BaseControllerTest() {
             path("id")
         }
     }
-
-    private fun ResponseBodyExtractionOptions.asArtists() = `as`(object : TypeRef<List<Artist>>() {})
-    private fun ResponseBodyExtractionOptions.asArtist() = `as`(object : TypeRef<Artist>() {})
 
     private infix fun List<Artist>.shouldBeArtists(expected: List<Artist>) {
         zip(expected).forEach { (artistActual, artistExpected) ->
