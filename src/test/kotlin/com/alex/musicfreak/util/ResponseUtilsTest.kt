@@ -12,25 +12,25 @@ import org.apache.http.HttpStatus
 class ResponseUtilsTest : StringSpec({
 
     "should set response to ok" {
-        val answer = Answer.ok(Fixtures.Artists.korn)
+        val answer = Answer.ok(Fixtures.Artist.Domain.korn)
 
         answer.status shouldBe HttpStatus.SC_OK
-        answer.entity shouldBe Fixtures.Artists.korn
+        answer.entity shouldBe Fixtures.Artist.Domain.korn
     }
 
     "should set response to ok with multiple artists" {
-        val answer = Answer.ok(Fixtures.Artists.all)
+        val answer = Answer.ok(Fixtures.Artist.Domain.all)
 
         answer.status shouldBe HttpStatus.SC_OK
-        answer.entity as List<Artist> shouldHaveSize Fixtures.Artists.all.size
-        answer.entity shouldBe Fixtures.Artists.all
+        answer.entity as List<Artist> shouldHaveSize Fixtures.Artist.Domain.all.size
+        answer.entity shouldBe Fixtures.Artist.Domain.all
     }
 
     "should set response to created" {
-        val answer = Answer.created(Fixtures.Artists.korn)
+        val answer = Answer.created(Fixtures.Artist.Domain.korn)
 
         answer.status shouldBe HttpStatus.SC_CREATED
-        answer.entity shouldBe Fixtures.Artists.korn
+        answer.entity shouldBe Fixtures.Artist.Domain.korn
     }
 
     "should set response to no-content" {

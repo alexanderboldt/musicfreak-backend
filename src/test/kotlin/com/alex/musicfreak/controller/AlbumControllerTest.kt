@@ -38,8 +38,8 @@ class AlbumControllerTest : BaseControllerTest() {
     @BeforeEach
     @Transactional
     fun beforeEach() {
-        artistPosted = postArtist(Fixtures.Artists.korn)
-        albumWithArtistId = Fixtures.Album.issues.copy(artistId = artistPosted.id)
+        artistPosted = postArtist(Fixtures.Artist.Domain.korn)
+        albumWithArtistId = Fixtures.Album.Domain.issues.copy(artistId = artistPosted.id)
     }
 
     @AfterEach
@@ -54,7 +54,7 @@ class AlbumControllerTest : BaseControllerTest() {
     @Test
     fun `should not create an album with invalid artist-id`() {
         Given {
-            body(Fixtures.Album.issues.copy(artistId = 10))
+            body(Fixtures.Album.Domain.issues.copy(artistId = 10))
         } When {
             post(Routes.Album.MAIN)
         } Then {
@@ -170,7 +170,7 @@ class AlbumControllerTest : BaseControllerTest() {
         postAlbum(albumWithArtistId)
 
         Given {
-            body(Fixtures.Album.untouchables.copy(artistId = artistPosted.id))
+            body(Fixtures.Album.Domain.untouchables.copy(artistId = artistPosted.id))
         } When {
             put(Routes.Album.DETAIL, 100)
         } Then {
@@ -183,7 +183,7 @@ class AlbumControllerTest : BaseControllerTest() {
         val albumPosted = postAlbum(albumWithArtistId)
 
         Given {
-            body(Fixtures.Album.untouchables.copy(artistId = 100))
+            body(Fixtures.Album.Domain.untouchables.copy(artistId = 100))
         } When {
             put(Routes.Album.DETAIL, albumPosted.id)
         } Then {
@@ -194,7 +194,7 @@ class AlbumControllerTest : BaseControllerTest() {
     @Test
     fun `should update and return an album with valid id`() {
         val albumPosted = postAlbum(albumWithArtistId)
-        val albumUpdate = Fixtures.Album.untouchables.copy(artistId = artistPosted.id)
+        val albumUpdate = Fixtures.Album.Domain.untouchables.copy(artistId = artistPosted.id)
 
         val album = Given {
             body(albumUpdate)

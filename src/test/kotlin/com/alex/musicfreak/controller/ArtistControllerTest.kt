@@ -39,7 +39,7 @@ class ArtistControllerTest : BaseControllerTest() {
     fun testPostWithValidRequest() {
         // execute and verify
         val artist = Given {
-            body(Fixtures.Artists.korn)
+            body(Fixtures.Artist.Domain.korn)
         } When {
             post(Routes.Artist.MAIN)
         } Then {
@@ -49,7 +49,7 @@ class ArtistControllerTest : BaseControllerTest() {
         }
 
         artist.shouldNotBeNull()
-        artist shouldBeArtist Fixtures.Artists.korn
+        artist shouldBeArtist Fixtures.Artist.Domain.korn
     }
 
     // endregion
@@ -75,7 +75,7 @@ class ArtistControllerTest : BaseControllerTest() {
     @Test
     fun testGetAllWithOneArtist() {
         // precondition: post an artist
-        postArtist(Fixtures.Artists.korn)
+        postArtist(Fixtures.Artist.Domain.korn)
 
         // execute and verify
         val artists = When {
@@ -87,7 +87,7 @@ class ArtistControllerTest : BaseControllerTest() {
         }
 
         artists.shouldNotBeNull()
-        artists shouldBeArtists listOf(Fixtures.Artists.korn)
+        artists shouldBeArtists listOf(Fixtures.Artist.Domain.korn)
     }
 
     // endregion
@@ -97,7 +97,7 @@ class ArtistControllerTest : BaseControllerTest() {
     @Test
     fun testGetOneWithInvalidId() {
         // precondition: post an artist
-        postArtist(Fixtures.Artists.korn)
+        postArtist(Fixtures.Artist.Domain.korn)
 
         // execute and verify
         When {
@@ -110,7 +110,7 @@ class ArtistControllerTest : BaseControllerTest() {
     @Test
     fun testGetOneWithValidId() {
         // precondition: post an artist
-        val artistPosted = postArtist(Fixtures.Artists.korn)
+        val artistPosted = postArtist(Fixtures.Artist.Domain.korn)
 
         // execute and verify
         val artist = When {
@@ -122,7 +122,7 @@ class ArtistControllerTest : BaseControllerTest() {
         }
 
         artist.shouldNotBeNull()
-        artist shouldBeArtist Fixtures.Artists.korn
+        artist shouldBeArtist Fixtures.Artist.Domain.korn
     }
 
     // endregion
@@ -132,11 +132,11 @@ class ArtistControllerTest : BaseControllerTest() {
     @Test
     fun testUpdateWithInvalidId() {
         // precondition: post an artist
-        postArtist(Fixtures.Artists.korn)
+        postArtist(Fixtures.Artist.Domain.korn)
 
         // execute the update and verify
         Given {
-            body(Fixtures.Artists.slipknot)
+            body(Fixtures.Artist.Domain.slipknot)
         } When {
             put(Routes.Artist.DETAIL, 100)
         } Then {
@@ -147,11 +147,11 @@ class ArtistControllerTest : BaseControllerTest() {
     @Test
     fun testUpdateWithValidId() {
         // precondition: post an artist
-        val artistPosted = postArtist(Fixtures.Artists.korn)
+        val artistPosted = postArtist(Fixtures.Artist.Domain.korn)
 
         // execute the update and verify
         val artist = Given {
-            body(Fixtures.Artists.slipknot)
+            body(Fixtures.Artist.Domain.slipknot)
         } When {
             put(Routes.Artist.DETAIL, artistPosted.id)
         } Then {
@@ -161,7 +161,7 @@ class ArtistControllerTest : BaseControllerTest() {
         }
 
         artist.shouldNotBeNull()
-        artist shouldBeArtist Fixtures.Artists.slipknot
+        artist shouldBeArtist Fixtures.Artist.Domain.slipknot
     }
 
     // endregion
@@ -171,7 +171,7 @@ class ArtistControllerTest : BaseControllerTest() {
     @Test
     fun testDeleteWithInvalidId() {
         // precondition: post an artist
-        postArtist(Fixtures.Artists.korn)
+        postArtist(Fixtures.Artist.Domain.korn)
 
         // execute the delete and verify
         When {
@@ -184,7 +184,7 @@ class ArtistControllerTest : BaseControllerTest() {
     @Test
     fun testDeleteWithValidRecipe() {
         // precondition: post an artist
-        val artistPosted = postArtist(Fixtures.Artists.korn)
+        val artistPosted = postArtist(Fixtures.Artist.Domain.korn)
 
         // execute the delete and verify
         When {
