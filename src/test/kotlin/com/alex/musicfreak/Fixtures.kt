@@ -15,5 +15,6 @@ object Fixtures {
 
     object Album {
         val issues = Album(null, null, "Issues", 1999, 16, null, null)
+        val untouchables = Album(null, null, "Untouchables", 2002, 14, null, null)
     }
 }
