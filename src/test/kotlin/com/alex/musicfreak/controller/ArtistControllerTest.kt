@@ -36,7 +36,7 @@ class ArtistControllerTest : BaseControllerTest() {
     // region create
 
     @Test
-    fun testPostWithValidRequest() {
+    fun `should create an artist with valid request`() {
         // execute and verify
         val artist = Given {
             body(Fixtures.Artist.Domain.korn)
@@ -57,7 +57,7 @@ class ArtistControllerTest : BaseControllerTest() {
     // region read all
 
     @Test
-    fun testGetAllWithNoArtists() {
+    fun `should return an empty list`() {
         // execute and verify
         val artists = When {
             get(Routes.Artist.MAIN)
@@ -73,7 +73,7 @@ class ArtistControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun testGetAllWithOneArtist() {
+    fun `should return a list with one artist`() {
         // precondition: post an artist
         postArtist(Fixtures.Artist.Domain.korn)
 
@@ -95,7 +95,7 @@ class ArtistControllerTest : BaseControllerTest() {
     // region read one
 
     @Test
-    fun testGetOneWithInvalidId() {
+    fun `should throw bad-request with invalid id`() {
         // precondition: post an artist
         postArtist(Fixtures.Artist.Domain.korn)
 
@@ -108,7 +108,7 @@ class ArtistControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun testGetOneWithValidId() {
+    fun `should return one artist with valid id`() {
         // precondition: post an artist
         val artistPosted = postArtist(Fixtures.Artist.Domain.korn)
 
@@ -130,7 +130,7 @@ class ArtistControllerTest : BaseControllerTest() {
     // region update
 
     @Test
-    fun testUpdateWithInvalidId() {
+    fun `should not update an artist and throw bad-request with invalid id`() {
         // precondition: post an artist
         postArtist(Fixtures.Artist.Domain.korn)
 
@@ -145,7 +145,7 @@ class ArtistControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun testUpdateWithValidId() {
+    fun `should update and return an artist with valid id`() {
         // precondition: post an artist
         val artistPosted = postArtist(Fixtures.Artist.Domain.korn)
 
@@ -169,7 +169,7 @@ class ArtistControllerTest : BaseControllerTest() {
     // region delete
 
     @Test
-    fun testDeleteWithInvalidId() {
+    fun `should not delete an artist and throw bad-request with invalid id`() {
         // precondition: post an artist
         postArtist(Fixtures.Artist.Domain.korn)
 
@@ -182,7 +182,7 @@ class ArtistControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun testDeleteWithValidRecipe() {
+    fun `should delete an artist with valid id`() {
         // precondition: post an artist
         val artistPosted = postArtist(Fixtures.Artist.Domain.korn)
 
