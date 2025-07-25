@@ -1,13 +1,8 @@
 package com.alex.musicfreak.controller
 
 import com.alex.musicfreak.domain.Album
-import com.alex.musicfreak.repository.album.AlbumRepository
-import com.alex.musicfreak.repository.artist.ArtistRepository
-import com.alex.musicfreak.mapper.plus
-import com.alex.musicfreak.mapper.toDomain
-import com.alex.musicfreak.mapper.toEntity
+import com.alex.musicfreak.domain.AlbumService
 import com.alex.musicfreak.util.Answer
-import jakarta.persistence.EntityManager
 import jakarta.transaction.Transactional
 import jakarta.ws.rs.Consumes
 import jakarta.ws.rs.DELETE
@@ -23,11 +18,7 @@ import jakarta.ws.rs.core.Response
 @Path("api/v1/albums")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-class AlbumController(
-    private val albumRepository: AlbumRepository,
-    private val artistRepository: ArtistRepository,
-    private val entityManager: EntityManager
-) {
+class AlbumController(private val albumService: AlbumService) {
 
     private val errorId = "Album not found!"
     private val errorArtistId = "Artist not found!"
@@ -35,28 +26,31 @@ class AlbumController(
     // create
 
     @POST
-    @Transactional
     fun post(album: Album): Response {
-        if (!artistRepository.exists(album.artistId!!)) return Answer.badRequest(errorArtistId)
+        val albumCreated = albumService.create(album)
 
-        return Answer.created(albumRepository.save(album.toEntity()).toDomain())
+        return when (albumCreated != null) {
+            true -> Answer.created(albumCreated)
+            false -> Answer.badRequest(errorArtistId)
+        }
     }
 
     // read
 
     @GET
     @Transactional
-    fun getAll() = Answer.ok(albumRepository.listAll().map { it.toDomain() })
+    fun getAll() = Answer.ok(albumService.readAll())
 
     @GET
     @Path("{id}")
     @Transactional
     fun get(@PathParam("id") id: Long): Response {
-        return albumRepository
-            .findById(id)
-            ?.toDomain()
-            ?.let { Answer.ok(it) }
-            ?: Answer.badRequest(errorId)
+        val album = albumService.read(id)
+
+        return when (album != null) {
+            true -> Answer.ok(album)
+            false -> Answer.badRequest(errorId)
+        }
     }
 
     // update
@@ -65,13 +59,12 @@ class AlbumController(
     @Path("{id}")
     @Transactional
     fun update(@PathParam("id") id: Long, album: Album): Response {
-        val albumSaved = albumRepository.findById(id)
+        val albumUpdated = albumService.update(id, album)
 
-        // check if album and artist are valid
-        if (albumSaved == null) return Answer.badRequest(errorId)
-        if (!artistRepository.exists(album.artistId!!)) return Answer.badRequest(errorArtistId)
-
-        return Answer.ok(entityManager.merge(album + albumSaved))
+        return when (albumUpdated != null) {
+            true -> Answer.ok(albumUpdated)
+            false -> Answer.badRequest(errorId)
+        }
     }
 
     // delete
@@ -80,7 +73,7 @@ class AlbumController(
     @Path("{id}")
     @Transactional
     fun delete(@PathParam("id") id: Long): Response {
-        return when (albumRepository.deleteById(id)) {
+        return when (albumService.delete(id)) {
             true -> Answer.noContent()
             false -> Answer.badRequest(errorId)
         }
