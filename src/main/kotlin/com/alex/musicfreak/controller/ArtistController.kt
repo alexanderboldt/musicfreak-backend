@@ -3,6 +3,7 @@ package com.alex.musicfreak.controller
 import com.alex.musicfreak.domain.model.Artist
 import com.alex.musicfreak.domain.service.ArtistService
 import com.alex.musicfreak.util.Answer
+import com.alex.musicfreak.util.Resource
 import jakarta.ws.rs.Consumes
 import jakarta.ws.rs.DELETE
 import jakarta.ws.rs.GET
@@ -14,7 +15,7 @@ import jakarta.ws.rs.Produces
 import jakarta.ws.rs.core.MediaType
 import jakarta.ws.rs.core.Response
 
-@Path("api/v1/artists")
+@Path(Resource.Path.ARTISTS)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 class ArtistController(private val artistService: ArtistService) {
@@ -30,8 +31,8 @@ class ArtistController(private val artistService: ArtistService) {
     fun getAll() = Answer.ok(artistService.readAll())
 
     @GET
-    @Path("{id}")
-    fun get(@PathParam("id") id: Long): Response {
+    @Path(Resource.Path.ID)
+    fun get(@PathParam(Resource.Param.ID) id: Long): Response {
         val artist = artistService.read(id)
 
         return when (artist != null) {
@@ -43,8 +44,8 @@ class ArtistController(private val artistService: ArtistService) {
     // update
 
     @PUT
-    @Path("{id}")
-    fun update(@PathParam("id") id: Long, artist: Artist): Response {
+    @Path(Resource.Path.ID)
+    fun update(@PathParam(Resource.Param.ID) id: Long, artist: Artist): Response {
         val artistUpdated = artistService.update(id, artist)
 
         return when (artistUpdated != null) {
@@ -56,8 +57,8 @@ class ArtistController(private val artistService: ArtistService) {
     // delete
 
     @DELETE
-    @Path("{id}")
-    fun delete(@PathParam("id") id: Long): Response {
+    @Path(Resource.Path.ID)
+    fun delete(@PathParam(Resource.Param.ID) id: Long): Response {
         return when (artistService.delete(id)) {
             true -> Answer.noContent()
             false -> Answer.badRequest()
