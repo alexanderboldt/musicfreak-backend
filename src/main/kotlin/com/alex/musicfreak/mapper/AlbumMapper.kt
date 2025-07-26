@@ -1,6 +1,6 @@
 package com.alex.musicfreak.mapper
 
-import com.alex.musicfreak.domain.Album
+import com.alex.musicfreak.domain.model.Album
 import com.alex.musicfreak.repository.album.AlbumEntity
 import java.sql.Timestamp
 import java.time.Instant
@@ -10,9 +10,9 @@ import java.time.Instant
 fun Album.toEntity() = AlbumEntity(
     0,
     artistId!!,
-    name!!,
-    year!!,
-    tracks!!,
+    name,
+    year,
+    tracks,
     Timestamp.from(Instant.now()),
     Timestamp.from(Instant.now())
 )
@@ -20,9 +20,9 @@ fun Album.toEntity() = AlbumEntity(
 operator fun Album.plus(existing: AlbumEntity) = AlbumEntity(
     existing.id,
     artistId!!,
-    name!!,
-    year!!,
-    tracks!!,
+    name,
+    year,
+    tracks,
     existing.createdAt,
     Timestamp.from(Instant.now())
 )

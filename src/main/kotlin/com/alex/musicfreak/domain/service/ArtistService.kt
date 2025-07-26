@@ -1,5 +1,6 @@
-package com.alex.musicfreak.domain
+package com.alex.musicfreak.domain.service
 
+import com.alex.musicfreak.domain.model.Artist
 import com.alex.musicfreak.mapper.plus
 import com.alex.musicfreak.mapper.toDomain
 import com.alex.musicfreak.mapper.toEntity

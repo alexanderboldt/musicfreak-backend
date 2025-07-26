@@ -1,6 +1,6 @@
 package com.alex.musicfreak.controller
 
-import com.alex.musicfreak.domain.Artist
+import com.alex.musicfreak.domain.model.Artist
 import com.alex.musicfreak.extension.asArtist
 import io.restassured.RestAssured
 import io.restassured.http.ContentType

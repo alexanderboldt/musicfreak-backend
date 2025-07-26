@@ -1,8 +1,8 @@
 package com.alex.musicfreak.util
 
 import com.alex.musicfreak.Fixtures
-import com.alex.musicfreak.domain.Artist
-import com.alex.musicfreak.domain.Error
+import com.alex.musicfreak.domain.model.Artist
+import com.alex.musicfreak.domain.model.Error
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldBeNull
@@ -41,10 +41,10 @@ class ResponseUtilsTest : StringSpec({
     }
 
     "should set response to bad-request" {
-        val message = "id not found"
+        val message = "Invalid input"
         val error = Error(HttpStatus.SC_BAD_REQUEST, message)
 
-        val answer = Answer.badRequest(message)
+        val answer = Answer.badRequest()
 
         answer.status shouldBe HttpStatus.SC_BAD_REQUEST
         answer.entity shouldBe error

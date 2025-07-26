@@ -1,6 +1,6 @@
 package com.alex.musicfreak.mapper
 
-import com.alex.musicfreak.domain.Artist
+import com.alex.musicfreak.domain.model.Artist
 import com.alex.musicfreak.repository.artist.ArtistEntity
 import java.sql.Timestamp
 import java.time.Instant
@@ -9,14 +9,14 @@ import java.time.Instant
 
 fun Artist.toEntity() = ArtistEntity(
     0,
-    name!!,
+    name,
     Timestamp.from(Instant.now()),
     Timestamp.from(Instant.now())
 )
 
 operator fun Artist.plus(existing: ArtistEntity) = ArtistEntity(
     existing.id,
-    name!!,
+    name,
     existing.createdAt,
     Timestamp.from(Instant.now())
 )

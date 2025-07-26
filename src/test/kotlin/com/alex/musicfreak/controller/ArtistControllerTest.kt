@@ -1,7 +1,7 @@
 package com.alex.musicfreak.controller
 
 import com.alex.musicfreak.Fixtures
-import com.alex.musicfreak.domain.Artist
+import com.alex.musicfreak.domain.model.Artist
 import com.alex.musicfreak.extension.asArtist
 import com.alex.musicfreak.extension.asArtists
 import com.alex.musicfreak.repository.artist.ArtistRepository

@@ -1,9 +1,8 @@
 package com.alex.musicfreak.controller
 
-import com.alex.musicfreak.domain.Album
-import com.alex.musicfreak.domain.AlbumService
+import com.alex.musicfreak.domain.model.Album
+import com.alex.musicfreak.domain.service.AlbumService
 import com.alex.musicfreak.util.Answer
-import jakarta.transaction.Transactional
 import jakarta.ws.rs.Consumes
 import jakarta.ws.rs.DELETE
 import jakarta.ws.rs.GET
@@ -20,9 +19,6 @@ import jakarta.ws.rs.core.Response
 @Produces(MediaType.APPLICATION_JSON)
 class AlbumController(private val albumService: AlbumService) {
 
-    private val errorId = "Album not found!"
-    private val errorArtistId = "Artist not found!"
-
     // create
 
     @POST
@@ -31,25 +27,23 @@ class AlbumController(private val albumService: AlbumService) {
 
         return when (albumCreated != null) {
             true -> Answer.created(albumCreated)
-            false -> Answer.badRequest(errorArtistId)
+            false -> Answer.badRequest()
         }
     }
 
     // read
 
     @GET
-    @Transactional
     fun getAll() = Answer.ok(albumService.readAll())
 
     @GET
     @Path("{id}")
-    @Transactional
     fun get(@PathParam("id") id: Long): Response {
         val album = albumService.read(id)
 
         return when (album != null) {
             true -> Answer.ok(album)
-            false -> Answer.badRequest(errorId)
+            false -> Answer.badRequest()
         }
     }
 
@@ -57,13 +51,12 @@ class AlbumController(private val albumService: AlbumService) {
 
     @PUT
     @Path("{id}")
-    @Transactional
     fun update(@PathParam("id") id: Long, album: Album): Response {
         val albumUpdated = albumService.update(id, album)
 
         return when (albumUpdated != null) {
             true -> Answer.ok(albumUpdated)
-            false -> Answer.badRequest(errorId)
+            false -> Answer.badRequest()
         }
     }
 
@@ -71,11 +64,10 @@ class AlbumController(private val albumService: AlbumService) {
 
     @DELETE
     @Path("{id}")
-    @Transactional
     fun delete(@PathParam("id") id: Long): Response {
         return when (albumService.delete(id)) {
             true -> Answer.noContent()
-            false -> Answer.badRequest(errorId)
+            false -> Answer.badRequest()
         }
     }
 }

@@ -1,7 +1,7 @@
 package com.alex.musicfreak.controller
 
-import com.alex.musicfreak.domain.Artist
-import com.alex.musicfreak.domain.ArtistService
+import com.alex.musicfreak.domain.model.Artist
+import com.alex.musicfreak.domain.service.ArtistService
 import com.alex.musicfreak.util.Answer
 import jakarta.ws.rs.Consumes
 import jakarta.ws.rs.DELETE
@@ -18,8 +18,6 @@ import jakarta.ws.rs.core.Response
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 class ArtistController(private val artistService: ArtistService) {
-
-    private val errorId = "Artist not found!"
 
     // create
 
@@ -38,7 +36,7 @@ class ArtistController(private val artistService: ArtistService) {
 
         return when (artist != null) {
             true -> Answer.ok(artist)
-            false -> Answer.badRequest(errorId)
+            false -> Answer.badRequest()
         }
     }
 
@@ -51,7 +49,7 @@ class ArtistController(private val artistService: ArtistService) {
 
         return when (artistUpdated != null) {
             true -> Answer.ok(artistUpdated)
-            false -> Answer.badRequest(errorId)
+            false -> Answer.badRequest()
         }
     }
 
@@ -62,7 +60,7 @@ class ArtistController(private val artistService: ArtistService) {
     fun delete(@PathParam("id") id: Long): Response {
         return when (artistService.delete(id)) {
             true -> Answer.noContent()
-            false -> Answer.badRequest(errorId)
+            false -> Answer.badRequest()
         }
     }
 }

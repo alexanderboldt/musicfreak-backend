@@ -1,6 +1,6 @@
 package com.alex.musicfreak.util
 
-import com.alex.musicfreak.domain.Error
+import com.alex.musicfreak.domain.model.Error
 import jakarta.ws.rs.core.Response
 
 /**
@@ -24,7 +24,10 @@ object Answer {
      *
      * @return Returns the response.
      */
-    fun created(entity: Any): Response = Response.status(Response.Status.CREATED).entity(entity).build()
+    fun created(entity: Any): Response = Response
+        .status(Response.Status.CREATED)
+        .entity(entity)
+        .build()
 
     /**
      * Sends a response with status-code 204.
@@ -36,9 +39,10 @@ object Answer {
     /**
      * Sends a response with status-code 400.
      *
-     * @param message The message to display.
-     *
      * @return Returns the response.
      */
-    fun badRequest(message: String): Response = Response.status(Response.Status.BAD_REQUEST).entity(Error(Response.Status.BAD_REQUEST.statusCode, message)).build()
+    fun badRequest(): Response = Response
+        .status(Response.Status.BAD_REQUEST)
+        .entity(Error(Response.Status.BAD_REQUEST.statusCode, "Invalid input"))
+        .build()
 }
