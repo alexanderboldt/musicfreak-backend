@@ -12,7 +12,7 @@ import jakarta.ws.rs.QueryParam
 import jakarta.ws.rs.core.MediaType
 import jakarta.ws.rs.core.Response
 
-@Path(Resource.Path.ARTISTS_ALBUMS)
+@Path(Resource.Path.ARTIST_ALBUM)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 class ArtistAlbumController(private val artistAlbumService: ArtistAlbumService) {

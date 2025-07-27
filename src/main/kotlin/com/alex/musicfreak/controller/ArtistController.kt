@@ -15,7 +15,7 @@ import jakarta.ws.rs.Produces
 import jakarta.ws.rs.core.MediaType
 import jakarta.ws.rs.core.Response
 
-@Path(Resource.Path.ARTISTS)
+@Path(Resource.Path.ARTIST)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 class ArtistController(private val artistService: ArtistService) {

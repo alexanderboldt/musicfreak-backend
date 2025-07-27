@@ -7,6 +7,7 @@ import com.alex.musicfreak.extension.asAlbum
 import com.alex.musicfreak.extension.asAlbums
 import com.alex.musicfreak.repository.album.AlbumRepository
 import com.alex.musicfreak.repository.artist.ArtistRepository
+import com.alex.musicfreak.util.Resource
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.comparables.shouldBeGreaterThan
 import io.kotest.matchers.nulls.shouldNotBeNull
@@ -56,7 +57,7 @@ class AlbumControllerTest : BaseControllerTest() {
         Given {
             body(Fixtures.Album.Domain.issues.copy(artistId = 10))
         } When {
-            post(Routes.Album.MAIN)
+            post(Resource.Path.ALBUM)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -67,7 +68,7 @@ class AlbumControllerTest : BaseControllerTest() {
         val album = Given {
             body(albumWithArtistId)
         } When {
-            post(Routes.Album.MAIN)
+            post(Resource.Path.ALBUM)
         } Then {
             statusCode(HttpStatus.SC_CREATED)
         } Extract {
@@ -85,7 +86,7 @@ class AlbumControllerTest : BaseControllerTest() {
     @Test
     fun `should return an empty list`() {
         val albums = When {
-            get(Routes.Album.MAIN)
+            get(Resource.Path.ALBUM)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -101,7 +102,7 @@ class AlbumControllerTest : BaseControllerTest() {
         postAlbum(albumWithArtistId)
 
         val albums = When {
-            get(Routes.Album.MAIN)
+            get(Resource.Path.ALBUM)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -119,7 +120,7 @@ class AlbumControllerTest : BaseControllerTest() {
         albumsRequest.forEach { postAlbum(it) }
 
         val albums = When {
-            get(Routes.Album.MAIN)
+            get(Resource.Path.ALBUM)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -139,7 +140,7 @@ class AlbumControllerTest : BaseControllerTest() {
         postAlbum(albumWithArtistId)
 
         When {
-            get(Routes.Album.DETAIL, 100)
+            get(Resource.Path.ALBUM_ID, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -150,7 +151,7 @@ class AlbumControllerTest : BaseControllerTest() {
         val albumPosted = postAlbum(albumWithArtistId)
 
         val album = When {
-            get(Routes.Album.DETAIL, albumPosted.id)
+            get(Resource.Path.ALBUM_ID, albumPosted.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -172,7 +173,7 @@ class AlbumControllerTest : BaseControllerTest() {
         Given {
             body(Fixtures.Album.Domain.untouchables.copy(artistId = artistPosted.id))
         } When {
-            put(Routes.Album.DETAIL, 100)
+            put(Resource.Path.ALBUM_ID, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -185,7 +186,7 @@ class AlbumControllerTest : BaseControllerTest() {
         Given {
             body(Fixtures.Album.Domain.untouchables.copy(artistId = 100))
         } When {
-            put(Routes.Album.DETAIL, albumPosted.id)
+            put(Resource.Path.ALBUM_ID, albumPosted.id)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -199,7 +200,7 @@ class AlbumControllerTest : BaseControllerTest() {
         val album = Given {
             body(albumUpdate)
         } When {
-            put(Routes.Album.DETAIL, albumPosted.id)
+            put(Resource.Path.ALBUM_ID, albumPosted.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -219,7 +220,7 @@ class AlbumControllerTest : BaseControllerTest() {
         postAlbum(albumWithArtistId)
 
         When {
-            delete(Routes.Album.DETAIL, 100)
+            delete(Resource.Path.ALBUM_ID, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -230,25 +231,13 @@ class AlbumControllerTest : BaseControllerTest() {
         val albumPosted = postAlbum(albumWithArtistId)
 
         When {
-            delete(Routes.Album.DETAIL, albumPosted.id)
+            delete(Resource.Path.ALBUM_ID, albumPosted.id)
         } Then {
             statusCode(HttpStatus.SC_NO_CONTENT)
         }
     }
 
     // endregion
-
-    private fun postAlbum(album: Album): Album {
-        return Given {
-            body(album)
-        } When {
-            post(Routes.Album.MAIN)
-        } Then {
-            statusCode(HttpStatus.SC_CREATED)
-        } Extract {
-            asAlbum()
-        }
-    }
 
     private infix fun List<Album>.shouldBeAlbums(expected: List<Album>) {
         zip(expected).forEach { (albumActual, albumExpected) ->

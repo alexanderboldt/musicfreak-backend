@@ -5,6 +5,7 @@ import com.alex.musicfreak.domain.model.Artist
 import com.alex.musicfreak.extension.asArtist
 import com.alex.musicfreak.extension.asArtists
 import com.alex.musicfreak.repository.artist.ArtistRepository
+import com.alex.musicfreak.util.Resource
 import io.kotest.matchers.comparables.shouldBeGreaterThan
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
@@ -41,7 +42,7 @@ class ArtistControllerTest : BaseControllerTest() {
         val artist = Given {
             body(Fixtures.Artist.Domain.korn)
         } When {
-            post(Routes.Artist.MAIN)
+            post(Resource.Path.ARTIST)
         } Then {
             statusCode(HttpStatus.SC_CREATED)
         } Extract {
@@ -60,7 +61,7 @@ class ArtistControllerTest : BaseControllerTest() {
     fun `should return an empty list`() {
         // execute and verify
         val artists = When {
-            get(Routes.Artist.MAIN)
+            get(Resource.Path.ARTIST)
         } Then {
             statusCode(HttpStatus.SC_OK)
             body("size()", equalTo(0))
@@ -79,7 +80,7 @@ class ArtistControllerTest : BaseControllerTest() {
 
         // execute and verify
         val artists = When {
-            get(Routes.Artist.MAIN)
+            get(Resource.Path.ARTIST)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -101,7 +102,7 @@ class ArtistControllerTest : BaseControllerTest() {
 
         // execute and verify
         When {
-            get(Routes.Artist.DETAIL, 100)
+            get(Resource.Path.ARTIST_ID, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -114,7 +115,7 @@ class ArtistControllerTest : BaseControllerTest() {
 
         // execute and verify
         val artist = When {
-            get(Routes.Artist.DETAIL, artistPosted.id)
+            get(Resource.Path.ARTIST_ID, artistPosted.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -138,7 +139,7 @@ class ArtistControllerTest : BaseControllerTest() {
         Given {
             body(Fixtures.Artist.Domain.slipknot)
         } When {
-            put(Routes.Artist.DETAIL, 100)
+            put(Resource.Path.ARTIST_ID, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -153,7 +154,7 @@ class ArtistControllerTest : BaseControllerTest() {
         val artist = Given {
             body(Fixtures.Artist.Domain.slipknot)
         } When {
-            put(Routes.Artist.DETAIL, artistPosted.id)
+            put(Resource.Path.ARTIST_ID, artistPosted.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -175,7 +176,7 @@ class ArtistControllerTest : BaseControllerTest() {
 
         // execute the delete and verify
         When {
-            delete(Routes.Artist.DETAIL, 100)
+            delete(Resource.Path.ARTIST_ID, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -188,7 +189,7 @@ class ArtistControllerTest : BaseControllerTest() {
 
         // execute the delete and verify
         When {
-            delete(Routes.Artist.DETAIL, artistPosted.id)
+            delete(Resource.Path.ARTIST_ID, artistPosted.id)
         } Then {
             statusCode(HttpStatus.SC_NO_CONTENT)
         }
