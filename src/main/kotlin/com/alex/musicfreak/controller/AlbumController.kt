@@ -4,7 +4,9 @@ import com.alex.musicfreak.domain.model.Album
 import com.alex.musicfreak.domain.service.AlbumService
 import com.alex.musicfreak.util.Answer
 import com.alex.musicfreak.util.Resource
+import com.alex.musicfreak.util.Role
 import io.quarkus.security.Authenticated
+import jakarta.annotation.security.RolesAllowed
 import jakarta.ws.rs.Consumes
 import jakarta.ws.rs.DELETE
 import jakarta.ws.rs.GET
@@ -64,6 +66,13 @@ class AlbumController(private val albumService: AlbumService) {
     }
 
     // delete
+
+    @DELETE
+    @RolesAllowed(Role.ADMIN)
+    fun deleteAll(): Response {
+        albumService.deleteAll()
+        return Answer.noContent()
+    }
 
     @DELETE
     @Path(Resource.Path.ID)

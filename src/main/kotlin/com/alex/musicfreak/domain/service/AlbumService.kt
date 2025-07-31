@@ -42,5 +42,8 @@ class AlbumService(
     }
 
     @Transactional
+    fun deleteAll() = albumRepository.deleteAll()
+
+    @Transactional
     fun delete(id: Long) = albumRepository.deleteById(id)
 }
