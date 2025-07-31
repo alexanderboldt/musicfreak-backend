@@ -4,6 +4,7 @@ import com.alex.musicfreak.domain.model.Album
 import com.alex.musicfreak.domain.service.AlbumService
 import com.alex.musicfreak.util.Answer
 import com.alex.musicfreak.util.Resource
+import io.quarkus.security.Authenticated
 import jakarta.ws.rs.Consumes
 import jakarta.ws.rs.DELETE
 import jakarta.ws.rs.GET
@@ -18,6 +19,7 @@ import jakarta.ws.rs.core.Response
 @Path(Resource.Path.ALBUM)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
+@Authenticated
 class AlbumController(private val albumService: AlbumService) {
 
     // create

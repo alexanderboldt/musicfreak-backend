@@ -16,3 +16,11 @@ quarkus:
     enabled: true
     migrate-at-start: true
     locations: classpath:db/migration
+  oidc:
+    auth-server-url: http://localhost:8080/realms/musicfreak
+    application-type: service
+    token:
+      issuer: http://localhost:8080/realms/musicfreak
+    authentication:
+      jwt:
+        required: true

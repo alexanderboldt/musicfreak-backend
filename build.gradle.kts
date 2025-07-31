@@ -31,6 +31,9 @@ dependencies {
     implementation(libs.quarkus.jdbc.postgresql)
     implementation(libs.quarkus.flyway)
 
+    implementation(libs.quarkus.oidc)
+    implementation(libs.quarkus.security)
+
     implementation(libs.quarkus.arc)
 
     implementation(libs.quarkus.config.yaml)

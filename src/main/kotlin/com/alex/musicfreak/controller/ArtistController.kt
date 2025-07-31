@@ -4,6 +4,7 @@ import com.alex.musicfreak.domain.model.Artist
 import com.alex.musicfreak.domain.service.ArtistService
 import com.alex.musicfreak.util.Answer
 import com.alex.musicfreak.util.Resource
+import io.quarkus.security.Authenticated
 import jakarta.ws.rs.Consumes
 import jakarta.ws.rs.DELETE
 import jakarta.ws.rs.GET
@@ -18,6 +19,7 @@ import jakarta.ws.rs.core.Response
 @Path(Resource.Path.ARTIST)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
+@Authenticated
 class ArtistController(private val artistService: ArtistService) {
 
     // create

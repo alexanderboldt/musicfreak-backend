@@ -3,6 +3,7 @@ package com.alex.musicfreak.controller
 import com.alex.musicfreak.domain.service.ArtistAlbumService
 import com.alex.musicfreak.util.Answer
 import com.alex.musicfreak.util.Resource
+import io.quarkus.security.Authenticated
 import jakarta.ws.rs.Consumes
 import jakarta.ws.rs.GET
 import jakarta.ws.rs.Path
@@ -15,6 +16,7 @@ import jakarta.ws.rs.core.Response
 @Path(Resource.Path.ARTIST_ALBUM)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
+@Authenticated
 class ArtistAlbumController(private val artistAlbumService: ArtistAlbumService) {
 
     @GET
