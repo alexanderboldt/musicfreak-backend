@@ -2,7 +2,9 @@ quarkus:
   http:
     port: 9000
   log:
-    level: DEBUG
+    level: INFO
+  devservices:
+    enabled: false
   hibernate-orm:
     database:
       generation: none

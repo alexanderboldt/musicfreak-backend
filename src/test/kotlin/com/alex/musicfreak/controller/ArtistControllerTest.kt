@@ -10,6 +10,7 @@ import io.kotest.matchers.comparables.shouldBeGreaterThan
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.quarkus.test.junit.QuarkusTest
+import io.quarkus.test.security.TestSecurity
 import io.restassured.module.kotlin.extensions.Extract
 import io.restassured.module.kotlin.extensions.Given
 import io.restassured.module.kotlin.extensions.Then
@@ -23,6 +24,7 @@ import org.junit.jupiter.api.Test
 import kotlin.collections.zip
 
 @QuarkusTest
+@TestSecurity(user = "test-user", roles = ["user"])
 class ArtistControllerTest : BaseControllerTest() {
 
     @Inject

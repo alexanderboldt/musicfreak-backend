@@ -40,9 +40,13 @@ dependencies {
 
     // test libraries
     testImplementation(libs.quarkus.junit5)
+    testImplementation(libs.quarkus.test.security)
+
     testImplementation(libs.kotest.runner.junit)
     testImplementation(libs.kotest.assertions.core)
+
     testImplementation(libs.rest.assured)
+
     testImplementation(libs.testcontainers.junit.jupiter)
     testImplementation(libs.testcontainers.postgresql)
 }

@@ -19,7 +19,7 @@ class AlbumService(
 
     @Transactional
     fun create(album: Album): Album? {
-        if (!artistRepository.exists(album.artistId!!)) return null
+        if (artistRepository.notExists(album.artistId!!)) return null
 
         return albumRepository.save(album.toEntity()).toDomain()
     }
@@ -36,7 +36,7 @@ class AlbumService(
 
         // check if album and artist are valid
         if (albumSaved == null) return null
-        if (!artistRepository.exists(album.artistId!!)) return null
+        if (artistRepository.notExists(album.artistId!!)) return null
 
         return entityManager.merge(album + albumSaved).toDomain()
     }

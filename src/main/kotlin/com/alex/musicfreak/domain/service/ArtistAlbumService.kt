@@ -16,7 +16,7 @@ class ArtistAlbumService(
 
     @Transactional
     fun readAll(artistId: Long, sort: String?): List<Album>? {
-        if (!artistRepository.exists(artistId)) return null
+        if (artistRepository.notExists(artistId)) return null
 
         return albumRepository.list("artistId", if (sort != null) Sort.by(sort) else Sort.by("year"), artistId).map { it.toDomain() }
     }

@@ -6,7 +6,7 @@ import jakarta.enterprise.context.ApplicationScoped
 @ApplicationScoped
 class ArtistRepository : PanacheRepository<ArtistEntity> {
 
-    fun exists(id: Long) = findById(id) != null
+    fun notExists(id: Long) = findById(id) == null
 
     fun save(entity: ArtistEntity): ArtistEntity {
         persist(entity)

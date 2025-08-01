@@ -8,11 +8,13 @@ import com.alex.musicfreak.extension.asAlbums
 import com.alex.musicfreak.repository.album.AlbumRepository
 import com.alex.musicfreak.repository.artist.ArtistRepository
 import com.alex.musicfreak.util.Resource
+import com.alex.musicfreak.util.Role
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.comparables.shouldBeGreaterThan
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.quarkus.test.junit.QuarkusTest
+import io.quarkus.test.security.TestSecurity
 import io.restassured.module.kotlin.extensions.Extract
 import io.restassured.module.kotlin.extensions.Given
 import io.restassured.module.kotlin.extensions.Then
@@ -25,6 +27,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @QuarkusTest
+@TestSecurity(user = "test-user", roles = ["user"])
 class AlbumControllerTest : BaseControllerTest() {
 
     private lateinit var artistPosted: Artist
@@ -55,7 +58,7 @@ class AlbumControllerTest : BaseControllerTest() {
     @Test
     fun `should not create an album with invalid artist-id`() {
         Given {
-            body(Fixtures.Album.Domain.issues.copy(artistId = 10))
+            body(Fixtures.Album.Domain.issues)
         } When {
             post(Resource.Path.ALBUM)
         } Then {
@@ -214,6 +217,45 @@ class AlbumControllerTest : BaseControllerTest() {
     // endregion
 
     // region delete
+
+    @Test
+    fun `should not delete all albums with user-role`() {
+        // precondition: post an album
+        postAlbum(albumWithArtistId)
+
+        // delete all albums
+        When {
+            delete(Resource.Path.ALBUM)
+        } Then {
+            statusCode(HttpStatus.SC_FORBIDDEN)
+        }
+    }
+
+    @Test
+    @TestSecurity(user = "test-user", roles = [Role.ADMIN])
+    fun `should delete all albums with admin-role`() {
+        // precondition: post an album
+        postAlbum(albumWithArtistId)
+
+        // delete all albums
+        When {
+            delete(Resource.Path.ALBUM)
+        } Then {
+            statusCode(HttpStatus.SC_NO_CONTENT)
+        }
+
+        // verify that all albums are deleted
+        val albums = When {
+            get(Resource.Path.ALBUM)
+        } Then {
+            statusCode(HttpStatus.SC_OK)
+        } Extract {
+            asAlbums()
+        }
+
+        albums.shouldNotBeNull()
+        albums shouldBe emptyList()
+    }
 
     @Test
     fun `should not delete an album and throw bad-request with invalid id`() {
