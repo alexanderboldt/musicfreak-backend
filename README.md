@@ -10,6 +10,7 @@ This is a backend application for managing the music-library like artists and al
 - Hibernate
 - Flyway
 - PostgreSQL
+- Keycloak
 
 ### Test
 - RestAssured
