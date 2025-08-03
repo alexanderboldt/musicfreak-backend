@@ -14,8 +14,8 @@ import jakarta.ws.rs.Path
 import jakarta.ws.rs.PathParam
 import jakarta.ws.rs.Produces
 import jakarta.ws.rs.core.MediaType
-import jakarta.ws.rs.core.Response
 
+@Suppress("unused")
 @Path(Resource.Path.ARTIST)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -30,40 +30,21 @@ class ArtistController(private val artistService: ArtistService) {
     // read
 
     @GET
-    fun getAll() = Answer.ok(artistService.readAll())
+    fun getAll() = artistService.readAll()
 
     @GET
     @Path(Resource.Path.ID)
-    fun get(@PathParam(Resource.Param.ID) id: Long): Response {
-        val artist = artistService.read(id)
-
-        return when (artist != null) {
-            true -> Answer.ok(artist)
-            false -> Answer.badRequest()
-        }
-    }
+    fun get(@PathParam(Resource.Param.ID) id: Long) = artistService.read(id)
 
     // update
 
     @PUT
     @Path(Resource.Path.ID)
-    fun update(@PathParam(Resource.Param.ID) id: Long, artist: Artist): Response {
-        val artistUpdated = artistService.update(id, artist)
-
-        return when (artistUpdated != null) {
-            true -> Answer.ok(artistUpdated)
-            false -> Answer.badRequest()
-        }
-    }
+    fun update(@PathParam(Resource.Param.ID) id: Long, artist: Artist) = artistService.update(id, artist)
 
     // delete
 
     @DELETE
     @Path(Resource.Path.ID)
-    fun delete(@PathParam(Resource.Param.ID) id: Long): Response {
-        return when (artistService.delete(id)) {
-            true -> Answer.noContent()
-            false -> Answer.badRequest()
-        }
-    }
+    fun delete(@PathParam(Resource.Param.ID) id: Long) = artistService.delete(id)
 }

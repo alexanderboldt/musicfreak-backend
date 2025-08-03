@@ -1,6 +1,7 @@
 package com.alex.musicfreak.domain.service
 
 import com.alex.musicfreak.domain.model.Artist
+import com.alex.musicfreak.exception.BadRequestException
 import com.alex.musicfreak.mapper.plus
 import com.alex.musicfreak.mapper.toDomain
 import com.alex.musicfreak.mapper.toEntity
@@ -22,16 +23,18 @@ class ArtistService(
     fun readAll() = artistRepository.listAll().map { it.toDomain() }
 
     @Transactional
-    fun read(id: Long): Artist? = artistRepository.findById(id)?.toDomain()
+    fun read(id: Long): Artist {
+        return artistRepository.findById(id)?.toDomain() ?: throw BadRequestException()
+    }
 
     @Transactional
-    fun update(id: Long, artistUpdate: Artist): Artist? {
-        val artistSaved = artistRepository.findById(id)
-        if (artistSaved == null) return null
-
+    fun update(id: Long, artistUpdate: Artist): Artist {
+        val artistSaved = artistRepository.findById(id) ?: throw BadRequestException()
         return entityManager.merge(artistUpdate + artistSaved).toDomain()
     }
 
     @Transactional
-    fun delete(id: Long) = artistRepository.deleteById(id)
+    fun delete(id: Long) {
+        if (!artistRepository.deleteById(id)) throw BadRequestException()
+    }
 }
