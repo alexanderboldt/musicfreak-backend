@@ -4,6 +4,7 @@ import com.alex.musicfreak.domain.model.Artist
 import com.alex.musicfreak.domain.service.ArtistService
 import com.alex.musicfreak.util.Answer
 import com.alex.musicfreak.util.Resource
+import com.alex.musicfreak.util.convertToSort
 import io.quarkus.security.Authenticated
 import jakarta.ws.rs.Consumes
 import jakarta.ws.rs.DELETE
@@ -13,6 +14,7 @@ import jakarta.ws.rs.PUT
 import jakarta.ws.rs.Path
 import jakarta.ws.rs.PathParam
 import jakarta.ws.rs.Produces
+import jakarta.ws.rs.QueryParam
 import jakarta.ws.rs.core.MediaType
 
 @Path(Resource.Path.ARTIST)
@@ -29,7 +31,7 @@ class ArtistController(private val artistService: ArtistService) {
     // read
 
     @GET
-    fun getAll() = artistService.readAll()
+    fun getAll(@QueryParam(Resource.Param.SORT) sort: String?) = artistService.readAll(sort.convertToSort())
 
     @GET
     @Path(Resource.Path.ID)

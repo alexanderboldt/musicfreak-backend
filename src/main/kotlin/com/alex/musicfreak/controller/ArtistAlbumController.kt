@@ -3,6 +3,7 @@ package com.alex.musicfreak.controller
 import com.alex.musicfreak.domain.model.Album
 import com.alex.musicfreak.domain.service.ArtistAlbumService
 import com.alex.musicfreak.util.Resource
+import com.alex.musicfreak.util.convertToSort
 import io.quarkus.security.Authenticated
 import jakarta.ws.rs.Consumes
 import jakarta.ws.rs.GET
@@ -23,6 +24,6 @@ class ArtistAlbumController(private val artistAlbumService: ArtistAlbumService) 
         @PathParam(Resource.Param.ID) artistId: Long,
         @QueryParam(Resource.Param.SORT) sort: String?
     ): List<Album> {
-        return artistAlbumService.readAll(artistId, sort)
+        return artistAlbumService.readAll(artistId, sort.convertToSort())
     }
 }

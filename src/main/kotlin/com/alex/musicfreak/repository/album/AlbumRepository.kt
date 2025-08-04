@@ -1,6 +1,7 @@
 package com.alex.musicfreak.repository.album
 
 import io.quarkus.hibernate.orm.panache.PanacheRepository
+import io.quarkus.panache.common.Sort
 import jakarta.enterprise.context.ApplicationScoped
 
 @ApplicationScoped
@@ -10,4 +11,6 @@ class AlbumRepository : PanacheRepository<AlbumEntity> {
         persist(entity)
         return entity
     }
+
+    fun listByArtistId(artistId: Long, sort: Sort): List<AlbumEntity> = list("artistId", sort, artistId)
 }

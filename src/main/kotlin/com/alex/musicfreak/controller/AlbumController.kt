@@ -5,6 +5,7 @@ import com.alex.musicfreak.domain.service.AlbumService
 import com.alex.musicfreak.util.Answer
 import com.alex.musicfreak.util.Resource
 import com.alex.musicfreak.util.Role
+import com.alex.musicfreak.util.convertToSort
 import io.quarkus.security.Authenticated
 import jakarta.annotation.security.RolesAllowed
 import jakarta.ws.rs.Consumes
@@ -15,6 +16,7 @@ import jakarta.ws.rs.PUT
 import jakarta.ws.rs.Path
 import jakarta.ws.rs.PathParam
 import jakarta.ws.rs.Produces
+import jakarta.ws.rs.QueryParam
 import jakarta.ws.rs.core.MediaType
 
 @Path(Resource.Path.ALBUM)
@@ -31,7 +33,7 @@ class AlbumController(private val albumService: AlbumService) {
     // read
 
     @GET
-    fun getAll() = albumService.readAll()
+    fun getAll(@QueryParam(Resource.Param.SORT) sort: String?) = albumService.readAll(sort.convertToSort())
 
     @GET
     @Path(Resource.Path.ID)

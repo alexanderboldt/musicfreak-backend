@@ -6,6 +6,7 @@ import com.alex.musicfreak.mapper.plus
 import com.alex.musicfreak.mapper.toDomain
 import com.alex.musicfreak.mapper.toEntity
 import com.alex.musicfreak.repository.artist.ArtistRepository
+import io.quarkus.panache.common.Sort
 import jakarta.enterprise.context.ApplicationScoped
 import jakarta.persistence.EntityManager
 import jakarta.transaction.Transactional
@@ -20,7 +21,7 @@ class ArtistService(
     fun create(artist: Artist) = artistRepository.save(artist.toEntity()).toDomain()
 
     @Transactional
-    fun readAll() = artistRepository.listAll().map { it.toDomain() }
+    fun readAll(sort: Sort) = artistRepository.listAll(sort).map { it.toDomain() }
 
     @Transactional
     fun read(id: Long) = artistRepository.findById(id)?.toDomain() ?: throw BadRequestException()
