@@ -1,6 +1,7 @@
 package com.alex.musicfreak.domain.service
 
 import com.alex.musicfreak.domain.model.Album
+import com.alex.musicfreak.exception.BadRequestException
 import com.alex.musicfreak.mapper.plus
 import com.alex.musicfreak.mapper.toDomain
 import com.alex.musicfreak.mapper.toEntity
@@ -18,8 +19,8 @@ class AlbumService(
 ) {
 
     @Transactional
-    fun create(album: Album): Album? {
-        if (artistRepository.notExists(album.artistId!!)) return null
+    fun create(album: Album): Album {
+        if (artistRepository.notExists(album.artistId!!)) throw BadRequestException()
 
         return albumRepository.save(album.toEntity()).toDomain()
     }
@@ -28,22 +29,27 @@ class AlbumService(
     fun readAll() = albumRepository.listAll().map { it.toDomain() }
 
     @Transactional
-    fun read(id: Long): Album? = albumRepository.findById(id)?.toDomain()
+    fun read(id: Long) = albumRepository.findById(id)?.toDomain() ?: throw BadRequestException()
 
     @Transactional
-    fun update(id: Long, album: Album): Album? {
+    fun update(id: Long, albumUpdate: Album): Album {
         val albumSaved = albumRepository.findById(id)
 
         // check if album and artist are valid
-        if (albumSaved == null) return null
-        if (artistRepository.notExists(album.artistId!!)) return null
+        if (albumSaved == null || artistRepository.notExists(albumUpdate.artistId!!)) {
+            throw BadRequestException()
+        }
 
-        return entityManager.merge(album + albumSaved).toDomain()
+        return entityManager.merge(albumUpdate + albumSaved).toDomain()
     }
 
     @Transactional
-    fun deleteAll() = albumRepository.deleteAll()
+    fun deleteAll() {
+        albumRepository.deleteAll()
+    }
 
     @Transactional
-    fun delete(id: Long) = albumRepository.deleteById(id)
+    fun delete(id: Long) {
+        if (!albumRepository.deleteById(id)) throw BadRequestException()
+    }
 }

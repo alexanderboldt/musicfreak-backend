@@ -23,9 +23,7 @@ class ArtistService(
     fun readAll() = artistRepository.listAll().map { it.toDomain() }
 
     @Transactional
-    fun read(id: Long): Artist {
-        return artistRepository.findById(id)?.toDomain() ?: throw BadRequestException()
-    }
+    fun read(id: Long) = artistRepository.findById(id)?.toDomain() ?: throw BadRequestException()
 
     @Transactional
     fun update(id: Long, artistUpdate: Artist): Artist {

@@ -1,6 +1,7 @@
 package com.alex.musicfreak.domain.service
 
 import com.alex.musicfreak.domain.model.Album
+import com.alex.musicfreak.exception.BadRequestException
 import com.alex.musicfreak.mapper.toDomain
 import com.alex.musicfreak.repository.album.AlbumRepository
 import com.alex.musicfreak.repository.artist.ArtistRepository
@@ -15,9 +16,14 @@ class ArtistAlbumService(
 ) {
 
     @Transactional
-    fun readAll(artistId: Long, sort: String?): List<Album>? {
-        if (artistRepository.notExists(artistId)) return null
+    fun readAll(artistId: Long, sort: String?): List<Album> {
+        if (artistRepository.notExists(artistId)) throw BadRequestException()
 
-        return albumRepository.list("artistId", if (sort != null) Sort.by(sort) else Sort.by("year"), artistId).map { it.toDomain() }
+        return albumRepository
+            .list(
+                "artistId",
+                if (sort != null) Sort.by(sort) else Sort.by("year"),
+                artistId
+            ).map { it.toDomain() }
     }
 }

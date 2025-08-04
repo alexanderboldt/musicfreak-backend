@@ -16,7 +16,6 @@ import jakarta.ws.rs.Path
 import jakarta.ws.rs.PathParam
 import jakarta.ws.rs.Produces
 import jakarta.ws.rs.core.MediaType
-import jakarta.ws.rs.core.Response
 
 @Path(Resource.Path.ALBUM)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -27,59 +26,30 @@ class AlbumController(private val albumService: AlbumService) {
     // create
 
     @POST
-    fun post(album: Album): Response {
-        val albumCreated = albumService.create(album)
-
-        return when (albumCreated != null) {
-            true -> Answer.created(albumCreated)
-            false -> Answer.badRequest()
-        }
-    }
+    fun post(album: Album) = Answer.created(albumService.create(album))
 
     // read
 
     @GET
-    fun getAll() = Answer.ok(albumService.readAll())
+    fun getAll() = albumService.readAll()
 
     @GET
     @Path(Resource.Path.ID)
-    fun get(@PathParam(Resource.Param.ID) id: Long): Response {
-        val album = albumService.read(id)
-
-        return when (album != null) {
-            true -> Answer.ok(album)
-            false -> Answer.badRequest()
-        }
-    }
+    fun get(@PathParam(Resource.Param.ID) id: Long) = albumService.read(id)
 
     // update
 
     @PUT
     @Path(Resource.Path.ID)
-    fun update(@PathParam(Resource.Param.ID) id: Long, album: Album): Response {
-        val albumUpdated = albumService.update(id, album)
-
-        return when (albumUpdated != null) {
-            true -> Answer.ok(albumUpdated)
-            false -> Answer.badRequest()
-        }
-    }
+    fun update(@PathParam(Resource.Param.ID) id: Long, album: Album) = albumService.update(id, album)
 
     // delete
 
     @DELETE
     @RolesAllowed(Role.ADMIN)
-    fun deleteAll(): Response {
-        albumService.deleteAll()
-        return Answer.noContent()
-    }
+    fun deleteAll() = albumService.deleteAll()
 
     @DELETE
     @Path(Resource.Path.ID)
-    fun delete(@PathParam(Resource.Param.ID) id: Long): Response {
-        return when (albumService.delete(id)) {
-            true -> Answer.noContent()
-            false -> Answer.badRequest()
-        }
-    }
+    fun delete(@PathParam(Resource.Param.ID) id: Long) = albumService.delete(id)
 }
