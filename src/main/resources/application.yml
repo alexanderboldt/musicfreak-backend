@@ -3,17 +3,9 @@ quarkus:
     port: 9000
   log:
     level: INFO
-  devservices:
-    enabled: false
   hibernate-orm:
     database:
       generation: none
-  datasource:
-    db-kind: postgresql
-    jdbc:
-      url: jdbc:postgresql://localhost:5432/musicfreak
-    username: admin
-    password: admin
   flyway:
     enabled: true
     migrate-at-start: true

@@ -1,12 +1,12 @@
 package com.alex.musicfreak.controller
 
 import com.alex.musicfreak.Fixtures
-import com.alex.musicfreak.domain.model.Artist
 import com.alex.musicfreak.extension.asArtist
 import com.alex.musicfreak.extension.asArtists
 import com.alex.musicfreak.repository.artist.ArtistRepository
 import com.alex.musicfreak.util.Resource
-import io.kotest.matchers.comparables.shouldBeGreaterThan
+import com.alex.musicfreak.util.shouldBeArtist
+import com.alex.musicfreak.util.shouldBeArtists
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.quarkus.test.junit.QuarkusTest
@@ -21,7 +21,6 @@ import org.apache.http.HttpStatus
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
-import kotlin.collections.zip
 
 @QuarkusTest
 @TestSecurity(user = "test-user", roles = ["user"])
@@ -198,19 +197,4 @@ class ArtistControllerTest : BaseControllerTest() {
     }
 
     // endregion
-
-    private infix fun List<Artist>.shouldBeArtists(expected: List<Artist>) {
-        zip(expected).forEach { (artistActual, artistExpected) ->
-            artistActual shouldBeArtist artistExpected
-        }
-    }
-
-    private infix fun Artist.shouldBeArtist(expected: Artist) {
-        id.shouldNotBeNull()
-        id shouldBeGreaterThan 0
-        name.shouldNotBeNull()
-        name shouldBe expected.name
-        createdAt.shouldNotBeNull()
-        updatedAt.shouldNotBeNull()
-    }
 }

@@ -9,8 +9,9 @@ import com.alex.musicfreak.repository.album.AlbumRepository
 import com.alex.musicfreak.repository.artist.ArtistRepository
 import com.alex.musicfreak.util.Resource
 import com.alex.musicfreak.util.Role
+import com.alex.musicfreak.util.shouldBeAlbum
+import com.alex.musicfreak.util.shouldBeAlbums
 import io.kotest.matchers.collections.shouldHaveSize
-import io.kotest.matchers.comparables.shouldBeGreaterThan
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.quarkus.test.junit.QuarkusTest
@@ -280,25 +281,4 @@ class AlbumControllerTest : BaseControllerTest() {
     }
 
     // endregion
-
-    private infix fun List<Album>.shouldBeAlbums(expected: List<Album>) {
-        zip(expected).forEach { (albumActual, albumExpected) ->
-            albumActual shouldBeAlbum albumExpected
-        }
-    }
-
-    private infix fun Album.shouldBeAlbum(expected: Album) {
-        id.shouldNotBeNull()
-        id shouldBeGreaterThan 0
-        artistId.shouldNotBeNull()
-        artistId shouldBe expected.artistId
-        name.shouldNotBeNull()
-        name shouldBe expected.name
-        year.shouldNotBeNull()
-        year shouldBe expected.year
-        tracks.shouldNotBeNull()
-        tracks shouldBe expected.tracks
-        createdAt.shouldNotBeNull()
-        updatedAt.shouldNotBeNull()
-    }
 }
