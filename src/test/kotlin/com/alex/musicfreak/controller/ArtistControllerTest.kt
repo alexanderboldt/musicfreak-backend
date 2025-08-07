@@ -3,7 +3,6 @@ package com.alex.musicfreak.controller
 import com.alex.musicfreak.Fixtures
 import com.alex.musicfreak.extension.asArtist
 import com.alex.musicfreak.extension.asArtists
-import com.alex.musicfreak.repository.artist.ArtistRepository
 import com.alex.musicfreak.util.Resource
 import com.alex.musicfreak.util.shouldBeArtist
 import com.alex.musicfreak.util.shouldBeArtists
@@ -15,25 +14,13 @@ import io.restassured.module.kotlin.extensions.Extract
 import io.restassured.module.kotlin.extensions.Given
 import io.restassured.module.kotlin.extensions.Then
 import io.restassured.module.kotlin.extensions.When
-import jakarta.inject.Inject
-import jakarta.transaction.Transactional
 import org.apache.http.HttpStatus
 import org.hamcrest.CoreMatchers.equalTo
-import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 
 @QuarkusTest
 @TestSecurity(user = "test-user", roles = ["user"])
 class ArtistControllerTest : BaseControllerTest() {
-
-    @Inject
-    private lateinit var artistRepository: ArtistRepository
-
-    @AfterEach
-    @Transactional
-    fun afterEach() {
-        artistRepository.deleteAll()
-    }
 
     // region create
 

@@ -4,8 +4,6 @@ import com.alex.musicfreak.Fixtures
 import com.alex.musicfreak.domain.model.Album
 import com.alex.musicfreak.domain.model.Artist
 import com.alex.musicfreak.extension.asAlbums
-import com.alex.musicfreak.repository.album.AlbumRepository
-import com.alex.musicfreak.repository.artist.ArtistRepository
 import com.alex.musicfreak.util.Resource
 import com.alex.musicfreak.util.shouldBeAlbums
 import io.kotest.matchers.collections.shouldHaveSize
@@ -16,10 +14,8 @@ import io.quarkus.test.security.TestSecurity
 import io.restassured.module.kotlin.extensions.Extract
 import io.restassured.module.kotlin.extensions.Then
 import io.restassured.module.kotlin.extensions.When
-import jakarta.inject.Inject
 import jakarta.transaction.Transactional
 import org.apache.http.HttpStatus
-import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -30,24 +26,11 @@ class ArtistAlbumControllerTest : BaseControllerTest() {
     private lateinit var artistPosted: Artist
     private lateinit var albumWithArtistId: Album
 
-    @Inject
-    private lateinit var artistRepository: ArtistRepository
-
-    @Inject
-    private lateinit var albumRepository: AlbumRepository
-
     @BeforeEach
     @Transactional
     fun beforeEach() {
         artistPosted = postArtist(Fixtures.Artist.Domain.korn)
         albumWithArtistId = Fixtures.Album.Domain.issues.copy(artistId = artistPosted.id)
-    }
-
-    @AfterEach
-    @Transactional
-    fun afterEach() {
-        artistRepository.deleteAll()
-        albumRepository.deleteAll()
     }
 
     // region read all
