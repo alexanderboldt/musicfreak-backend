@@ -1,0 +1,13 @@
+quarkus:
+  devservices:
+    enabled: true
+  oidc:
+    enabled: false
+  datasource:
+    db-kind: postgresql
+    username: test
+    password: test
+  flyway:
+    enabled: true
+    migrate-at-start: true
+    locations: classpath:db/migration
