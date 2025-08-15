@@ -10,15 +10,23 @@ import io.quarkus.panache.common.Sort
 import jakarta.enterprise.context.ApplicationScoped
 import jakarta.persistence.EntityManager
 import jakarta.transaction.Transactional
+import org.jboss.resteasy.reactive.multipart.FileUpload
 
 @ApplicationScoped
 class ArtistService(
+    private val minioService: MinioService,
     private val artistRepository: ArtistRepository,
     private val entityManager: EntityManager
 ) {
 
     @Transactional
     fun create(artist: Artist) = artistRepository.save(artist.toEntity()).toDomain()
+
+    fun uploadImage(image: FileUpload?) {
+        if (image == null || image.uploadedFile() == null) throw BadRequestException()
+
+        minioService.uploadFile(image)
+    }
 
     @Transactional
     fun readAll(sort: Sort) = artistRepository.listAll(sort).map { it.toDomain() }

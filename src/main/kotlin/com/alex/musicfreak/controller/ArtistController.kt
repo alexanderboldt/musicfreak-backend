@@ -16,6 +16,8 @@ import jakarta.ws.rs.PathParam
 import jakarta.ws.rs.Produces
 import jakarta.ws.rs.QueryParam
 import jakarta.ws.rs.core.MediaType
+import org.jboss.resteasy.reactive.RestForm
+import org.jboss.resteasy.reactive.multipart.FileUpload
 
 @Path(Resource.Path.ARTIST)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -27,6 +29,13 @@ class ArtistController(private val artistService: ArtistService) {
 
     @POST
     fun post(artist: Artist) = Answer.created(artistService.create(artist))
+
+    @POST
+    @Path("upload")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    fun uploadImage(@RestForm image: FileUpload?) {
+        artistService.uploadImage(image)
+    }
 
     // read
 
