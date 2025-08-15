@@ -10,12 +10,12 @@ import java.time.Instant
 object Fixtures {
     object Artist {
         object Domain {
-            val korn = Artist(0, "Korn", Timestamp.from(Instant.now()), Timestamp.from(Instant.now()))
-            val slipknot = Artist(0, "Slipknot", Timestamp.from(Instant.now()), Timestamp.from(Instant.now()))
+            val korn = Artist(0, "Korn", null,Timestamp.from(Instant.now()), Timestamp.from(Instant.now()))
+            val slipknot = Artist(0, "Slipknot", null, Timestamp.from(Instant.now()), Timestamp.from(Instant.now()))
             val all = listOf(korn, slipknot)
         }
         object Entity {
-            val korn = ArtistEntity(0, "Korn", Timestamp.from(Instant.now()), Timestamp.from(Instant.now()))
+            val korn = ArtistEntity(0, "Korn", null,Timestamp.from(Instant.now()), Timestamp.from(Instant.now()))
         }
     }
 

@@ -1,0 +1,1 @@
+alter table artistentity add imagePath varchar(255);

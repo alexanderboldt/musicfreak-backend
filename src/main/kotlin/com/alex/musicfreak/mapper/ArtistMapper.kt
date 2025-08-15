@@ -10,6 +10,7 @@ import java.time.Instant
 fun Artist.toEntity() = ArtistEntity(
     0,
     name,
+    null,
     Timestamp.from(Instant.now()),
     Timestamp.from(Instant.now())
 )
@@ -17,6 +18,7 @@ fun Artist.toEntity() = ArtistEntity(
 operator fun Artist.plus(existing: ArtistEntity) = ArtistEntity(
     existing.id,
     name,
+    existing.imagePath,
     existing.createdAt,
     Timestamp.from(Instant.now())
 )
@@ -26,6 +28,7 @@ operator fun Artist.plus(existing: ArtistEntity) = ArtistEntity(
 fun ArtistEntity.toDomain() = Artist(
     id,
     name,
+    imagePath,
     createdAt,
     updatedAt
 )

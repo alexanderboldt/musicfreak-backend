@@ -31,11 +31,9 @@ class ArtistController(private val artistService: ArtistService) {
     fun post(artist: Artist) = Answer.created(artistService.create(artist))
 
     @POST
-    @Path("upload")
+    @Path(Resource.Path.ID_UPLOAD)
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    fun uploadImage(@RestForm image: FileUpload?) {
-        artistService.uploadImage(image)
-    }
+    fun uploadImage(@PathParam(Resource.Param.ID) id: Long, @RestForm image: FileUpload?) = artistService.uploadImage(id, image)
 
     // read
 

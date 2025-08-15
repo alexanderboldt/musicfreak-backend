@@ -22,10 +22,17 @@ class ArtistService(
     @Transactional
     fun create(artist: Artist) = artistRepository.save(artist.toEntity()).toDomain()
 
-    fun uploadImage(image: FileUpload?) {
+    @Transactional
+    fun uploadImage(id: Long, image: FileUpload?): Artist {
+        // check if artist and image are existing
+        val artistSaved = artistRepository.findById(id) ?: throw BadRequestException()
         if (image == null || image.uploadedFile() == null) throw BadRequestException()
 
-        minioService.uploadFile(image)
+        // upload the file and get the path of the image
+        val imagePath = minioService.uploadFile(image)
+
+        // update the artist with the image-path
+        return entityManager.merge(artistSaved.copy(imagePath = imagePath)).toDomain()
     }
 
     @Transactional
