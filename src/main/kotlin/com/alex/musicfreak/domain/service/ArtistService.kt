@@ -49,6 +49,10 @@ class ArtistService(
 
     @Transactional
     fun delete(id: Long) {
-        if (!artistRepository.deleteById(id)) throw BadRequestException()
+        val artistSaved = artistRepository.findById(id) ?: throw BadRequestException()
+
+        // delete the image from the storage and the database-entry
+        artistSaved.imagePath?.also { minioService.deleteFile(it) }
+        artistRepository.deleteById(id)
     }
 }
