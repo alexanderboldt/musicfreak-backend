@@ -4,6 +4,7 @@ quarkus-version = "3.25.3"
 rest-assured-version = "5.5.5"
 kotest-version = "5.9.1"
 testcontainer-version = "1.21.3"
+minio-version = "8.5.17"
 
 [libraries]
 # development libraries
@@ -21,6 +22,8 @@ quarkus-oidc = { group = "io.quarkus", name = "quarkus-oidc", version.ref = "qua
 quarkus-security = { group = "io.quarkus", name = "quarkus-security", version.ref = "quarkus-version" }
 quarkus-arc = { group = "io.quarkus", name = "quarkus-arc", version.ref = "quarkus-version" }
 quarkus-config-yaml = { group = "io.quarkus", name = "quarkus-config-yaml", version.ref = "quarkus-version" }
+
+minio = { group = "io.minio", name = "minio", version.ref = "minio-version" }
 
 # test libraries
 quarkus-junit5 = { group = "io.quarkus", name = "quarkus-junit5", version.ref = "quarkus-version" }

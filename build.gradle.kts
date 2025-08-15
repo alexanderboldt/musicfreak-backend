@@ -38,6 +38,8 @@ dependencies {
 
     implementation(libs.quarkus.config.yaml)
 
+    implementation(libs.minio)
+
     // test libraries
     testImplementation(libs.quarkus.junit5)
     testImplementation(libs.quarkus.test.security)
