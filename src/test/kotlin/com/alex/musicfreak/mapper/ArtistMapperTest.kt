@@ -2,6 +2,7 @@ package com.alex.musicfreak.mapper
 
 import com.alex.musicfreak.Fixtures
 import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
@@ -14,6 +15,7 @@ class ArtistMapperTest : StringSpec({
 
         entity.id shouldBe 0
         entity.name shouldBe domain.name
+        entity.imagePath.shouldBeNull()
         entity.createdAt.shouldNotBeNull()
         entity.updatedAt.shouldNotBeNull()
     }
@@ -26,6 +28,7 @@ class ArtistMapperTest : StringSpec({
 
         combined.id shouldBe entity.id
         combined.name shouldBe domain.name
+        combined.imagePath shouldBe entity.imagePath
         combined.createdAt shouldBe entity.createdAt
         combined.updatedAt shouldNotBe entity.updatedAt
     }
@@ -36,6 +39,7 @@ class ArtistMapperTest : StringSpec({
 
         domain.id shouldBe entity.id
         domain.name shouldBe entity.name
+        domain.imagePath shouldBe entity.imagePath
         domain.createdAt shouldBe entity.createdAt
         domain.updatedAt shouldBe entity.updatedAt
     }
