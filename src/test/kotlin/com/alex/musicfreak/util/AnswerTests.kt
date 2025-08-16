@@ -8,8 +8,9 @@ import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
 import org.apache.http.HttpStatus
+import java.io.InputStream
 
-class ResponseUtilsTest : StringSpec({
+class AnswerTests : StringSpec({
 
     "should set response to ok" {
         val answer = Answer.ok(Fixtures.Artist.Domain.korn)
@@ -24,6 +25,14 @@ class ResponseUtilsTest : StringSpec({
         answer.status shouldBe HttpStatus.SC_OK
         answer.entity as List<Artist> shouldHaveSize Fixtures.Artist.Domain.all.size
         answer.entity shouldBe Fixtures.Artist.Domain.all
+    }
+
+    "should set response to ok with a stream" {
+        val stream = InputStream.nullInputStream()
+        val answer = Answer.file(stream, "image.png")
+
+        answer.status shouldBe HttpStatus.SC_OK
+        answer.entity shouldBe stream
     }
 
     "should set response to created" {
