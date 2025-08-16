@@ -33,7 +33,10 @@ class ArtistController(private val artistService: ArtistService) {
     @POST
     @Path(Resource.Path.ID_UPLOAD)
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    fun uploadImage(@PathParam(Resource.Param.ID) id: Long, @RestForm image: FileUpload?) = artistService.uploadImage(id, image)
+    fun uploadImage(
+        @PathParam(Resource.Param.ID) id: Long,
+        @RestForm image: FileUpload?
+    ) = artistService.uploadImage(id, image)
 
     // read
 
@@ -43,6 +46,14 @@ class ArtistController(private val artistService: ArtistService) {
     @GET
     @Path(Resource.Path.ID)
     fun get(@PathParam(Resource.Param.ID) id: Long) = artistService.read(id)
+
+    @GET
+    @Path(Resource.Path.ID_DOWNLOAD)
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    fun downloadImage(
+        @PathParam(Resource.Param.ID) id: Long,
+        @PathParam(Resource.Param.FILENAME) filename: String
+    ) = Answer.file(artistService.downloadImage(id, filename), filename)
 
     // update
 

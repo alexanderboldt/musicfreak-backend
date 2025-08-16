@@ -8,6 +8,7 @@ object Resource {
 
         const val ID = "{id}"
         const val ID_UPLOAD = "{id}/upload"
+        const val ID_DOWNLOAD = "{id}/download/{filename}"
 
         const val ALBUM_ID = "$ALBUM/$ID"
         const val ARTIST_ID = "$ARTIST/$ID"
@@ -16,5 +17,6 @@ object Resource {
     object Param {
         const val ID = "id"
         const val SORT = "sort"
+        const val FILENAME = "filename"
     }
 }

@@ -11,6 +11,7 @@ import jakarta.enterprise.context.ApplicationScoped
 import jakarta.persistence.EntityManager
 import jakarta.transaction.Transactional
 import org.jboss.resteasy.reactive.multipart.FileUpload
+import java.io.InputStream
 
 @ApplicationScoped
 class ArtistService(
@@ -40,6 +41,14 @@ class ArtistService(
 
     @Transactional
     fun read(id: Long) = artistRepository.findByIdOrThrowBadRequest(id).toDomain()
+
+    fun downloadImage(id: Long, filename: String): InputStream {
+        val artistSaved = artistRepository.findByIdOrThrowBadRequest(id)
+
+        if (artistSaved.imagePath != filename) throw BadRequestException()
+
+        return minioService.downloadFile(filename)
+    }
 
     @Transactional
     fun update(id: Long, artistUpdate: Artist): Artist {

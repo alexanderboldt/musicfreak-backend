@@ -1,5 +1,6 @@
 package com.alex.musicfreak.domain.service
 
+import io.minio.GetObjectArgs
 import io.minio.MinioClient
 import io.minio.PutObjectArgs
 import io.minio.RemoveObjectArgs
@@ -7,6 +8,7 @@ import jakarta.enterprise.context.ApplicationScoped
 import org.eclipse.microprofile.config.inject.ConfigProperty
 import org.jboss.resteasy.reactive.multipart.FileUpload
 import java.io.FileInputStream
+import java.io.InputStream
 import java.util.UUID
 
 @ApplicationScoped
@@ -45,6 +47,16 @@ class MinioService(
     fun deleteFile(path: String) {
         minioClient.removeObject(
             RemoveObjectArgs
+                .builder()
+                .bucket(bucket)
+                .`object`(path)
+                .build()
+        )
+    }
+
+    fun downloadFile(path: String): InputStream {
+        return minioClient.getObject(
+            GetObjectArgs
                 .builder()
                 .bucket(bucket)
                 .`object`(path)
