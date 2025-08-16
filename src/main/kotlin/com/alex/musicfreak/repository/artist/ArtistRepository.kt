@@ -1,12 +1,17 @@
 package com.alex.musicfreak.repository.artist
 
+import com.alex.musicfreak.exception.BadRequestException
 import io.quarkus.hibernate.orm.panache.PanacheRepository
 import jakarta.enterprise.context.ApplicationScoped
 
 @ApplicationScoped
 class ArtistRepository : PanacheRepository<ArtistEntity> {
 
-    fun notExists(id: Long) = findById(id) == null
+    fun existsOrThrowBadRequest(id: Long) {
+        if (findById(id) == null) throw BadRequestException()
+    }
+
+    fun findByIdOrThrowBadRequest(id: Long) = findById(id) ?: throw BadRequestException()
 
     fun save(entity: ArtistEntity): ArtistEntity {
         persist(entity)

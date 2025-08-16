@@ -21,7 +21,7 @@ class AlbumService(
 
     @Transactional
     fun create(album: Album): Album {
-        if (artistRepository.notExists(album.artistId!!)) throw BadRequestException()
+        artistRepository.existsOrThrowBadRequest(album.artistId!!)
 
         return albumRepository.save(album.toEntity()).toDomain()
     }
@@ -30,16 +30,13 @@ class AlbumService(
     fun readAll(sort: Sort) = albumRepository.listAll(sort).map { it.toDomain() }
 
     @Transactional
-    fun read(id: Long) = albumRepository.findById(id)?.toDomain() ?: throw BadRequestException()
+    fun read(id: Long) = albumRepository.findByIdOrThrowBadRequest(id).toDomain()
 
     @Transactional
     fun update(id: Long, albumUpdate: Album): Album {
-        val albumSaved = albumRepository.findById(id)
+        val albumSaved = albumRepository.findByIdOrThrowBadRequest(id)
 
-        // check if album and artist are valid
-        if (albumSaved == null || artistRepository.notExists(albumUpdate.artistId!!)) {
-            throw BadRequestException()
-        }
+        artistRepository.existsOrThrowBadRequest(albumUpdate.artistId!!)
 
         return entityManager.merge(albumUpdate + albumSaved).toDomain()
     }

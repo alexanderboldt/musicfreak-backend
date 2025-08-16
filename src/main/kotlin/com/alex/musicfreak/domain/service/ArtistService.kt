@@ -25,7 +25,7 @@ class ArtistService(
     @Transactional
     fun uploadImage(id: Long, image: FileUpload?): Artist {
         // check if artist and image are existing
-        val artistSaved = artistRepository.findById(id) ?: throw BadRequestException()
+        val artistSaved = artistRepository.findByIdOrThrowBadRequest(id)
         if (image == null || image.uploadedFile() == null) throw BadRequestException()
 
         // upload the file and get the path of the image
@@ -39,17 +39,17 @@ class ArtistService(
     fun readAll(sort: Sort) = artistRepository.listAll(sort).map { it.toDomain() }
 
     @Transactional
-    fun read(id: Long) = artistRepository.findById(id)?.toDomain() ?: throw BadRequestException()
+    fun read(id: Long) = artistRepository.findByIdOrThrowBadRequest(id).toDomain()
 
     @Transactional
     fun update(id: Long, artistUpdate: Artist): Artist {
-        val artistSaved = artistRepository.findById(id) ?: throw BadRequestException()
+        val artistSaved = artistRepository.findByIdOrThrowBadRequest(id)
         return entityManager.merge(artistUpdate + artistSaved).toDomain()
     }
 
     @Transactional
     fun delete(id: Long) {
-        val artistSaved = artistRepository.findById(id) ?: throw BadRequestException()
+        val artistSaved = artistRepository.findByIdOrThrowBadRequest(id)
 
         // delete the image from the storage and the database-entry
         artistSaved.imagePath?.also { minioService.deleteFile(it) }
