@@ -29,10 +29,13 @@ class ArtistService(
         val artistSaved = artistRepository.findByIdOrThrowBadRequest(id)
         if (image == null || image.uploadedFile() == null) throw BadRequestException()
 
-        // upload the file and get the path of the image
+        // 1. if there is already an image saved, delete it first
+        artistSaved.imagePath?.let { minioService.deleteFile(it) }
+
+        // 2. upload the new image and get the path
         val imagePath = minioService.uploadFile(image)
 
-        // update the artist with the image-path
+        // 3. update the artist with the image-path
         return entityManager.merge(artistSaved.copy(imagePath = imagePath)).toDomain()
     }
 
