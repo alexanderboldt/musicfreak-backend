@@ -1,6 +1,5 @@
 services:
   postgres:
-    container_name: musicfreak_postgres
     image: postgres:17.4
     environment:
       POSTGRES_DB: musicfreak
@@ -9,12 +8,11 @@ services:
     ports:
       - 127.0.0.1:5432:5432
     volumes:
-      - musicfreak_postgres:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     networks:
-      - musicfreak
+      - backend
 
   keycloak:
-    container_name: musicfreak_keycloak
     image: quay.io/keycloak/keycloak:26.3.2
     environment:
       KC_BOOTSTRAP_ADMIN_USERNAME: admin
@@ -24,30 +22,29 @@ services:
     command:
       - start-dev
     volumes:
-      - musicfreak_keycloak:/opt/keycloak/data
+      - keycloak_data:/opt/keycloak/data
     networks:
-      - musicfreak
+      - backend
 
   minio:
     image: minio/minio
-    container_name: musicfreak_minio
     ports:
-      - 9000:9000   # S3 API port
-      - 9001:9001    # Web UI port
+      - 9000:9000 # S3 API port
+      - 9001:9001 # Web UI port
     environment:
       MINIO_ROOT_USER: minioadmin
       MINIO_ROOT_PASSWORD: minioadmin
     volumes:
-      - musicfreak_minio:/data
+      - minio_data:/data
     command: server --console-address ":9001" /data
     networks:
-      - musicfreak
+      - backend
 
 volumes:
-  musicfreak_postgres:
-  musicfreak_keycloak:
-  musicfreak_minio:
+  postgres_data:
+  keycloak_data:
+  minio_data:
 
 networks:
-  musicfreak:
+  backend:
     driver: bridge

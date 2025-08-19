@@ -19,7 +19,3 @@ quarkus:
     authentication:
       jwt:
         required: true
-
-values:
-  path:
-    albums: /home/alex/development/uploads/musicfreak/albums
