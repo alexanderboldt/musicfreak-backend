@@ -2,7 +2,7 @@
 kotlin-version = "2.2.10"
 quarkus-version = "3.25.3"
 rest-assured-version = "5.5.5"
-kotest-version = "5.9.1"
+kotest-version = "6.0.0"
 testcontainer-version = "1.21.3"
 minio-version = "8.5.17"
 
