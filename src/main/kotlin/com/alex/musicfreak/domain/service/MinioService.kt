@@ -1,9 +1,12 @@
 package com.alex.musicfreak.domain.service
 
+import io.minio.BucketExistsArgs
 import io.minio.GetObjectArgs
+import io.minio.MakeBucketArgs
 import io.minio.MinioClient
 import io.minio.PutObjectArgs
 import io.minio.RemoveObjectArgs
+import jakarta.annotation.PostConstruct
 import jakarta.enterprise.context.ApplicationScoped
 import org.eclipse.microprofile.config.inject.ConfigProperty
 import org.jboss.resteasy.reactive.multipart.FileUpload
@@ -23,6 +26,24 @@ class MinioService(
         .endpoint(endpoint)
         .credentials(accessKey, secretKey)
         .build()
+
+    @PostConstruct
+    fun init() {
+        val bucketExists = minioClient.bucketExists(
+            BucketExistsArgs
+                .builder()
+                .bucket(bucket)
+                .build()
+        )
+        if (!bucketExists) {
+            minioClient.makeBucket(
+                MakeBucketArgs
+                    .builder()
+                    .bucket(bucket)
+                    .build()
+            )
+        }
+    }
 
     fun uploadFile(file: FileUpload): String {
         val extension = file.fileName().substringAfter(".")

@@ -11,4 +11,4 @@ minio:
   endpoint: http://localhost:9000
   access-key: minioadmin
   secret-key: minioadmin
-  bucket-name: musicfreak
+  bucket-name: artist
