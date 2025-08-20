@@ -32,10 +32,10 @@ class ArtistService(
         // 1. if there is already an image saved, delete it first
         artistSaved.filename?.let { minioService.deleteFile(MinioBucket.ARTIST, it) }
 
-        // 2. upload the new image and get the path
+        // 2. upload the new image and get the filename
         val filename = minioService.uploadFile(MinioBucket.ARTIST, image)
 
-        // 3. update the artist with the image-path
+        // 3. update the artist with the filename
         return entityManager.merge(artistSaved.copy(filename = filename)).toDomain()
     }
 
@@ -45,12 +45,12 @@ class ArtistService(
     @Transactional
     fun read(id: Long) = artistRepository.findByIdOrThrowBadRequest(id).toDomain()
 
-    fun downloadImage(id: Long, filename: String): InputStream {
-        val artistSaved = artistRepository.findByIdOrThrowBadRequest(id)
+    fun downloadImage(id: Long): Pair<InputStream, String> {
+        // check if artist and image are existing
+        val filename = artistRepository.findByIdOrThrowBadRequest(id).filename ?: throw BadRequestException()
 
-        if (artistSaved.filename != filename) throw BadRequestException()
-
-        return minioService.downloadFile(MinioBucket.ARTIST, filename)
+        // download the file and return it with the filename
+        return minioService.downloadFile(MinioBucket.ARTIST, filename) to filename
     }
 
     @Transactional
@@ -66,5 +66,18 @@ class ArtistService(
         // delete the image from the storage and the database-entry
         artistSaved.filename?.also { minioService.deleteFile(MinioBucket.ARTIST, it) }
         artistRepository.deleteById(id)
+    }
+
+    @Transactional
+    fun deleteImage(id: Long) {
+        // check if artist and image are existing
+        val artistSaved = artistRepository.findByIdOrThrowBadRequest(id)
+        val filename = artistSaved.filename ?: throw BadRequestException()
+
+        // delete the file
+        minioService.deleteFile(MinioBucket.ARTIST, filename)
+
+        // update the artist by deleting the filename
+        entityManager.merge(artistSaved.copy(filename = null)).toDomain()
     }
 }

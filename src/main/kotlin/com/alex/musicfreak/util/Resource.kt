@@ -7,8 +7,7 @@ object Resource {
         const val ARTIST = "api/v1/artists"
 
         const val ID = "{id}"
-        const val ID_UPLOAD = "{id}/upload"
-        const val ID_DOWNLOAD = "{id}/download/{filename}"
+        const val ID_IMAGE = "{id}/image"
 
         const val ALBUM_ID = "$ALBUM/$ID"
         const val ARTIST_ID = "$ARTIST/$ID"
