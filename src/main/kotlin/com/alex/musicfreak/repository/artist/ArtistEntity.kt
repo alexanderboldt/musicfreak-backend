@@ -14,7 +14,7 @@ data class ArtistEntity(
 
     val name: String,
 
-    val imagePath: String?,
+    val filename: String?,
 
     val createdAt: Timestamp,
 

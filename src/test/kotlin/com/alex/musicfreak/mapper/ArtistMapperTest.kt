@@ -15,7 +15,7 @@ class ArtistMapperTest : StringSpec({
 
         entity.id shouldBe 0
         entity.name shouldBe domain.name
-        entity.imagePath.shouldBeNull()
+        entity.filename.shouldBeNull()
         entity.createdAt.shouldNotBeNull()
         entity.updatedAt.shouldNotBeNull()
     }
@@ -28,7 +28,7 @@ class ArtistMapperTest : StringSpec({
 
         combined.id shouldBe entity.id
         combined.name shouldBe domain.name
-        combined.imagePath shouldBe entity.imagePath
+        combined.filename shouldBe entity.filename
         combined.createdAt shouldBe entity.createdAt
         combined.updatedAt shouldNotBe entity.updatedAt
     }
@@ -39,7 +39,7 @@ class ArtistMapperTest : StringSpec({
 
         domain.id shouldBe entity.id
         domain.name shouldBe entity.name
-        domain.imagePath shouldBe entity.imagePath
+        domain.filename shouldBe entity.filename
         domain.createdAt shouldBe entity.createdAt
         domain.updatedAt shouldBe entity.updatedAt
     }
