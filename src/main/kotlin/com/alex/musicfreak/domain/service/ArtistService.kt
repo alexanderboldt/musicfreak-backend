@@ -30,10 +30,10 @@ class ArtistService(
         if (image == null || image.uploadedFile() == null) throw BadRequestException()
 
         // 1. if there is already an image saved, delete it first
-        artistSaved.imagePath?.let { minioService.deleteFile(it) }
+        artistSaved.imagePath?.let { minioService.deleteFile(MinioBucket.ARTIST, it) }
 
         // 2. upload the new image and get the path
-        val imagePath = minioService.uploadFile(image)
+        val imagePath = minioService.uploadFile(MinioBucket.ARTIST, image)
 
         // 3. update the artist with the image-path
         return entityManager.merge(artistSaved.copy(imagePath = imagePath)).toDomain()
@@ -50,7 +50,7 @@ class ArtistService(
 
         if (artistSaved.imagePath != filename) throw BadRequestException()
 
-        return minioService.downloadFile(filename)
+        return minioService.downloadFile(MinioBucket.ARTIST, filename)
     }
 
     @Transactional
@@ -64,7 +64,7 @@ class ArtistService(
         val artistSaved = artistRepository.findByIdOrThrowBadRequest(id)
 
         // delete the image from the storage and the database-entry
-        artistSaved.imagePath?.also { minioService.deleteFile(it) }
+        artistSaved.imagePath?.also { minioService.deleteFile(MinioBucket.ARTIST, it) }
         artistRepository.deleteById(id)
     }
 }
