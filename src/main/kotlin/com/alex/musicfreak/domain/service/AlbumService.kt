@@ -9,20 +9,40 @@ import com.alex.musicfreak.repository.artist.ArtistRepository
 import io.quarkus.panache.common.Sort
 import jakarta.enterprise.context.ApplicationScoped
 import jakarta.transaction.Transactional
+import org.jboss.resteasy.reactive.multipart.FileUpload
 import java.sql.Timestamp
 import java.time.Instant
 
 @ApplicationScoped
 class AlbumService(
+    private val minioService: MinioService,
     private val albumRepository: AlbumRepository,
     private val artistRepository: ArtistRepository
 ) {
 
     @Transactional
     fun create(album: Album): Album {
-        artistRepository.existsOrThrowBadRequest(album.artistId!!)
+        artistRepository.existsOrThrowBadRequest(album.artistId)
 
         return albumRepository.save(album.toEntity()).toDomain()
+    }
+
+    @Transactional
+    fun uploadImage(id: Long, image: FileUpload?): Album {
+        // check if album and image are existing
+        val albumSaved = albumRepository.findByIdOrThrowBadRequest(id)
+        if (image == null || image.uploadedFile() == null) throw BadRequestException()
+
+        // 1. if there is already an image saved, delete it first
+        albumSaved.filename?.let { minioService.deleteFile(MinioBucket.ALBUM, it) }
+
+        // 2. upload the new image and get the filename
+        val filename = minioService.uploadFile(MinioBucket.ALBUM, image)
+
+        // 3. update the album with the filename
+        albumSaved.filename = filename
+
+        return albumSaved.toDomain()
     }
 
     @Transactional

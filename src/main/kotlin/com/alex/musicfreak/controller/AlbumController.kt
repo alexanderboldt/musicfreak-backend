@@ -18,6 +18,8 @@ import jakarta.ws.rs.PathParam
 import jakarta.ws.rs.Produces
 import jakarta.ws.rs.QueryParam
 import jakarta.ws.rs.core.MediaType
+import org.jboss.resteasy.reactive.RestForm
+import org.jboss.resteasy.reactive.multipart.FileUpload
 
 @Path(Resource.Path.ALBUM)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -29,6 +31,14 @@ class AlbumController(private val albumService: AlbumService) {
 
     @POST
     fun post(album: Album) = Answer.created(albumService.create(album))
+
+    @POST
+    @Path(Resource.Path.ID_IMAGE)
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    fun uploadImage(
+        @PathParam(Resource.Param.ID) id: Long,
+        @RestForm image: FileUpload?
+    ) = albumService.uploadImage(id, image)
 
     // read
 
