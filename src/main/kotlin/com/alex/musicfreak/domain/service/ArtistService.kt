@@ -2,22 +2,21 @@ package com.alex.musicfreak.domain.service
 
 import com.alex.musicfreak.domain.model.Artist
 import com.alex.musicfreak.exception.BadRequestException
-import com.alex.musicfreak.mapper.plus
 import com.alex.musicfreak.mapper.toDomain
 import com.alex.musicfreak.mapper.toEntity
 import com.alex.musicfreak.repository.artist.ArtistRepository
 import io.quarkus.panache.common.Sort
 import jakarta.enterprise.context.ApplicationScoped
-import jakarta.persistence.EntityManager
 import jakarta.transaction.Transactional
 import org.jboss.resteasy.reactive.multipart.FileUpload
 import java.io.InputStream
+import java.sql.Timestamp
+import java.time.Instant
 
 @ApplicationScoped
 class ArtistService(
     private val minioService: MinioService,
-    private val artistRepository: ArtistRepository,
-    private val entityManager: EntityManager
+    private val artistRepository: ArtistRepository
 ) {
 
     @Transactional
@@ -36,7 +35,9 @@ class ArtistService(
         val filename = minioService.uploadFile(MinioBucket.ARTIST, image)
 
         // 3. update the artist with the filename
-        return entityManager.merge(artistSaved.copy(filename = filename)).toDomain()
+        artistSaved.filename = filename
+
+        return artistSaved.toDomain()
     }
 
     @Transactional
@@ -55,8 +56,12 @@ class ArtistService(
 
     @Transactional
     fun update(id: Long, artistUpdate: Artist): Artist {
-        val artistSaved = artistRepository.findByIdOrThrowBadRequest(id)
-        return entityManager.merge(artistUpdate + artistSaved).toDomain()
+        return artistRepository
+            .findByIdOrThrowBadRequest(id)
+            .apply {
+                name = artistUpdate.name
+                updatedAt = Timestamp.from(Instant.now())
+            }.toDomain()
     }
 
     @Transactional
@@ -78,6 +83,6 @@ class ArtistService(
         minioService.deleteFile(MinioBucket.ARTIST, filename)
 
         // update the artist by deleting the filename
-        entityManager.merge(artistSaved.copy(filename = null)).toDomain()
+        artistSaved.filename = null
     }
 }

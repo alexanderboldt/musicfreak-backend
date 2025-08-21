@@ -12,11 +12,11 @@ data class ArtistEntity(
     @GeneratedValue
     val id: Long,
 
-    val name: String,
+    var name: String,
 
-    val filename: String?,
+    var filename: String?,
 
     val createdAt: Timestamp,
 
-    val updatedAt: Timestamp
+    var updatedAt: Timestamp
 )

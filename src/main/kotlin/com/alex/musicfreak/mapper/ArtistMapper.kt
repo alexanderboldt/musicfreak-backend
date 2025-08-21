@@ -15,14 +15,6 @@ fun Artist.toEntity() = ArtistEntity(
     Timestamp.from(Instant.now())
 )
 
-operator fun Artist.plus(existing: ArtistEntity) = ArtistEntity(
-    existing.id,
-    name,
-    existing.filename,
-    existing.createdAt,
-    Timestamp.from(Instant.now())
-)
-
 // from entity to domain
 
 fun ArtistEntity.toDomain() = Artist(

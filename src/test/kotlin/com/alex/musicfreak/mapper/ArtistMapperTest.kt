@@ -5,7 +5,6 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
-import io.kotest.matchers.shouldNotBe
 
 class ArtistMapperTest : StringSpec({
 
@@ -18,19 +17,6 @@ class ArtistMapperTest : StringSpec({
         entity.filename.shouldBeNull()
         entity.createdAt.shouldNotBeNull()
         entity.updatedAt.shouldNotBeNull()
-    }
-
-    "should combine a new domain with an existing entity" {
-        val domain = Fixtures.Artist.Domain.slipknot
-        val entity = Fixtures.Artist.Entity.korn
-
-        val combined = domain + entity
-
-        combined.id shouldBe entity.id
-        combined.name shouldBe domain.name
-        combined.filename shouldBe entity.filename
-        combined.createdAt shouldBe entity.createdAt
-        combined.updatedAt shouldNotBe entity.updatedAt
     }
 
     "should map entity to domain" {
