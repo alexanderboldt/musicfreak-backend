@@ -13,6 +13,7 @@ fun Album.toEntity() = AlbumEntity(
     name,
     year,
     tracks,
+    null,
     Timestamp.from(Instant.now()),
     Timestamp.from(Instant.now())
 )
@@ -25,6 +26,7 @@ fun AlbumEntity.toDomain() = Album(
     name,
     year,
     tracks,
+    filename,
     createdAt,
     updatedAt
 )

@@ -21,11 +21,11 @@ object Fixtures {
 
     object Album {
         object Domain {
-            val issues = Album(null, 10, "Issues", 1999, 16, null, null)
-            val untouchables = Album(null, 10, "Untouchables", 2002, 14, null, null)
+            val issues = Album(null, 10, "Issues", 1999, 16, "image.jpg",null, null)
+            val untouchables = Album(null, 10, "Untouchables", 2002, 14, "image.jpg",null, null)
         }
         object Entity {
-            val issues = AlbumEntity(0, 10, "Issues", 1999, 16, Timestamp.from(Instant.now()), Timestamp.from(Instant.now()))
+            val issues = AlbumEntity(0, 10, "Issues", 1999, 16, "image.jpg",Timestamp.from(Instant.now()), Timestamp.from(Instant.now()))
         }
     }
 }

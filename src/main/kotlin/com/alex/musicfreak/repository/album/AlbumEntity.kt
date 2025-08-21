@@ -20,6 +20,8 @@ data class AlbumEntity(
 
     var tracks: Int,
 
+    var filename: String?,
+
     val createdAt: Timestamp,
 
     var updatedAt: Timestamp

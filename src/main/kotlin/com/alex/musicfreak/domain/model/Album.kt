@@ -8,6 +8,7 @@ data class Album(
     val name: String,
     val year: Int,
     val tracks: Int,
+    val filename: String?,
     val createdAt: Timestamp?,
     val updatedAt: Timestamp?
 )

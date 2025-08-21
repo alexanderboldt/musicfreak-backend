@@ -16,6 +16,5 @@ object Resource {
     object Param {
         const val ID = "id"
         const val SORT = "sort"
-        const val FILENAME = "filename"
     }
 }
