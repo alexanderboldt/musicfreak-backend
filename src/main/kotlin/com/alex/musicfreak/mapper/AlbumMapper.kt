@@ -9,21 +9,11 @@ import java.time.Instant
 
 fun Album.toEntity() = AlbumEntity(
     0,
-    artistId!!,
+    artistId,
     name,
     year,
     tracks,
     Timestamp.from(Instant.now()),
-    Timestamp.from(Instant.now())
-)
-
-operator fun Album.plus(existing: AlbumEntity) = AlbumEntity(
-    existing.id,
-    artistId!!,
-    name,
-    year,
-    tracks,
-    existing.createdAt,
     Timestamp.from(Instant.now())
 )
 

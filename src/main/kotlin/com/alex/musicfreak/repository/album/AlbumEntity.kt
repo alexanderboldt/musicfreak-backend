@@ -12,15 +12,15 @@ data class AlbumEntity(
     @GeneratedValue
     val id: Long,
 
-    val artistId: Long,
+    var artistId: Long,
 
-    val name: String,
+    var name: String,
 
-    val year: Int,
+    var year: Int,
 
-    val tracks: Int,
+    var tracks: Int,
 
     val createdAt: Timestamp,
 
-    val updatedAt: Timestamp
+    var updatedAt: Timestamp
 )
