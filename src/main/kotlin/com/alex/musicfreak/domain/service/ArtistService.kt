@@ -18,13 +18,14 @@ class ArtistService(
     private val minioService: MinioService,
     private val artistRepository: ArtistRepository
 ) {
+    // create
 
     @Transactional
     fun create(artist: Artist) = artistRepository.save(artist.toEntity()).toDomain()
 
     @Transactional
     fun uploadImage(id: Long, image: FileUpload?): Artist {
-        // check if artist and image are existing
+        // check if the artist and the image are existing
         val artistSaved = artistRepository.findByIdOrThrowBadRequest(id)
         if (image == null || image.uploadedFile() == null) throw BadRequestException()
 
@@ -40,6 +41,8 @@ class ArtistService(
         return artistSaved.toDomain()
     }
 
+    // read
+
     @Transactional
     fun readAll(sort: Sort) = artistRepository.listAll(sort).map { it.toDomain() }
 
@@ -47,12 +50,14 @@ class ArtistService(
     fun read(id: Long) = artistRepository.findByIdOrThrowBadRequest(id).toDomain()
 
     fun downloadImage(id: Long): Pair<InputStream, String> {
-        // check if artist and image are existing
+        // check if the artist and image are existing
         val filename = artistRepository.findByIdOrThrowBadRequest(id).filename ?: throw BadRequestException()
 
         // download the file and return it with the filename
         return minioService.downloadFile(MinioBucket.ARTIST, filename) to filename
     }
+
+    // update
 
     @Transactional
     fun update(id: Long, artistUpdate: Artist): Artist {
@@ -63,6 +68,8 @@ class ArtistService(
                 updatedAt = Timestamp.from(Instant.now())
             }.toDomain()
     }
+
+    // delete
 
     @Transactional
     fun delete(id: Long) {
@@ -75,7 +82,7 @@ class ArtistService(
 
     @Transactional
     fun deleteImage(id: Long) {
-        // check if artist and image are existing
+        // check if the artist and image are existing
         val artistSaved = artistRepository.findByIdOrThrowBadRequest(id)
         val filename = artistSaved.filename ?: throw BadRequestException()
 
