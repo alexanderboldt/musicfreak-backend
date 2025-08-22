@@ -2,11 +2,11 @@ services:
   postgres:
     image: postgres:17.4
     environment:
-      POSTGRES_DB: musicfreak
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: ${DB_MAIN_DB}
+      POSTGRES_USER: ${DB_MAIN_USERNAME}
+      POSTGRES_PASSWORD: ${DB_MAIN_PASSWORD}
     ports:
-      - 5432:5432
+      - ${DB_MAIN_PORT}:5432
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
@@ -15,11 +15,11 @@ services:
   postgres-keycloak:
     image: postgres:17.4
     environment:
-      POSTGRES_DB: keycloak
-      POSTGRES_USER: keycloak
-      POSTGRES_PASSWORD: keycloak
+      POSTGRES_DB: ${DB_KEYCLOAK_DB}
+      POSTGRES_USER: ${DB_KEYCLOAK_USERNAME}
+      POSTGRES_PASSWORD: ${DB_KEYCLOAK_PASSWORD}
     ports:
-      - 5433:5432
+      - ${DB_KEYCLOAK_PORT}:5432
     volumes:
       - postgres_keycloak_data:/var/lib/postgresql/data
     networks:
@@ -29,14 +29,14 @@ services:
     image: quay.io/keycloak/keycloak:26.3.2
     environment:
       KC_DB: postgres
-      KC_DB_URL: jdbc:postgresql://postgres-keycloak:5432/keycloak
-      KC_DB_USERNAME: keycloak
-      KC_DB_PASSWORD: keycloak
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB_URL: jdbc:postgresql://postgres-keycloak:5432/${DB_KEYCLOAK_DB}
+      KC_DB_USERNAME: ${DB_KEYCLOAK_USERNAME}
+      KC_DB_PASSWORD: ${DB_KEYCLOAK_PASSWORD}
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
       KC_HOSTNAME_STRICT: false
     ports:
-      - 8080:8080
+      - ${KEYCLOAK_PORT}:8080
     command:
       - start-dev
     networks:
@@ -47,14 +47,14 @@ services:
   minio:
     image: minio/minio
     ports:
-      - 9000:9000 # S3 API port
-      - 9001:9001 # Web UI port
+      - ${MINIO_S3_PORT}:9000
+      - ${MINIO_WEB_PORT}:9001
     environment:
-      MINIO_ROOT_USER: minioadmin
-      MINIO_ROOT_PASSWORD: minioadmin
+      MINIO_ROOT_USER: ${MINIO_USERNAME}
+      MINIO_ROOT_PASSWORD: ${MINIO_PASSWORD}
     volumes:
       - minio_data:/data
-    command: server --console-address ":9001" /data
+    command: server --console-address ":${MINIO_WEB_PORT}" /data
     networks:
       - backend
 

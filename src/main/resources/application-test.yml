@@ -10,4 +10,3 @@ quarkus:
   flyway:
     enabled: true
     migrate-at-start: true
-    locations: classpath:db/migration

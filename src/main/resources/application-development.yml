@@ -4,18 +4,22 @@ quarkus:
   datasource:
     db-kind: postgresql
     jdbc:
-      url: jdbc:postgresql://localhost:5432/musicfreak
-    username: admin
-    password: admin
+      url: jdbc:postgresql://localhost:${DB_MAIN_PORT}/${DB_MAIN_DB}
+    username: ${DB_MAIN_USERNAME}
+    password: ${DB_MAIN_PASSWORD}
   flyway:
     enabled: true
     migrate-at-start: true
-    locations: classpath:db/migration
   oidc:
-    auth-server-url: http://localhost:8080/realms/musicfreak
+    auth-server-url: http://localhost:${KEYCLOAK_PORT}/realms/${KEYCLOAK_REALM}
     application-type: service
     token:
-      issuer: http://localhost:8080/realms/musicfreak
+      issuer: http://localhost:${KEYCLOAK_PORT}/realms/${KEYCLOAK_REALM}
     authentication:
       jwt:
         required: true
+
+minio:
+  endpoint: http://localhost:${MINIO_S3_PORT}
+  access-key: ${MINIO_USERNAME}
+  secret-key: ${MINIO_PASSWORD}
