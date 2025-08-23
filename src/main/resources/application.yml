@@ -1,6 +1,6 @@
 quarkus:
   http:
-    port: 4000
+    port: ${APP_PORT}
   log:
     level: INFO
   hibernate-orm:

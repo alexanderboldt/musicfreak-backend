@@ -58,6 +58,19 @@ services:
     networks:
       - backend
 
+  app:
+    build: .
+    ports:
+      - ${APP_PORT}:${APP_PORT}
+    depends_on:
+      - postgres
+      - keycloak
+      - minio
+    env_file:
+      - .env
+    networks:
+      - backend
+
 volumes:
   postgres_data:
   postgres_keycloak_data:
