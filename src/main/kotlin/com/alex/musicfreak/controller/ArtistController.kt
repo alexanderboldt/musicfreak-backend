@@ -16,9 +16,6 @@ import jakarta.ws.rs.PathParam
 import jakarta.ws.rs.Produces
 import jakarta.ws.rs.QueryParam
 import jakarta.ws.rs.core.MediaType
-import jakarta.ws.rs.core.Response
-import org.jboss.resteasy.reactive.RestForm
-import org.jboss.resteasy.reactive.multipart.FileUpload
 
 @Path(Resource.Path.ARTIST)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -31,14 +28,6 @@ class ArtistController(private val artistService: ArtistService) {
     @POST
     fun post(artist: Artist) = Answer.created(artistService.create(artist))
 
-    @POST
-    @Path(Resource.Path.ID_IMAGE)
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    fun uploadImage(
-        @PathParam(Resource.Param.ID) id: Long,
-        @RestForm image: FileUpload?
-    ) = artistService.uploadImage(id, image)
-
     // read
 
     @GET
@@ -47,14 +36,6 @@ class ArtistController(private val artistService: ArtistService) {
     @GET
     @Path(Resource.Path.ID)
     fun get(@PathParam(Resource.Param.ID) id: Long) = artistService.read(id)
-
-    @GET
-    @Path(Resource.Path.ID_IMAGE)
-    @Produces(MediaType.APPLICATION_OCTET_STREAM)
-    fun downloadImage(@PathParam(Resource.Param.ID) id: Long): Response {
-        val (file, filename) = artistService.downloadImage(id)
-        return Answer.file(file, filename)
-    }
 
     // update
 
@@ -67,8 +48,4 @@ class ArtistController(private val artistService: ArtistService) {
     @DELETE
     @Path(Resource.Path.ID)
     fun delete(@PathParam(Resource.Param.ID) id: Long) = artistService.delete(id)
-
-    @DELETE
-    @Path(Resource.Path.ID_IMAGE)
-    fun deleteImage(@PathParam(Resource.Param.ID) id: Long) = artistService.deleteImage(id)
 }
