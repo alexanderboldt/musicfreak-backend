@@ -30,6 +30,9 @@ class AlbumControllerTest : BaseControllerTest() {
     private lateinit var artistPosted: Artist
     private lateinit var albumWithArtistId: Album
 
+    private val Resource.Path.ALBUM_ID: String
+        get() = "${Resource.Path.ARTIST}/${Resource.Path.ID}"
+
     @BeforeEach
     @Transactional
     fun beforeEach() {

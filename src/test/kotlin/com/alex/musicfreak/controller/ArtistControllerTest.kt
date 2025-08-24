@@ -22,6 +22,9 @@ import org.junit.jupiter.api.Test
 @TestSecurity(user = "test-user", roles = ["user"])
 class ArtistControllerTest : BaseControllerTest() {
 
+    private val Resource.Path.ARTIST_ID: String
+        get() = "${Resource.Path.ARTIST}/${Resource.Path.ID}"
+
     // region create
 
     @Test

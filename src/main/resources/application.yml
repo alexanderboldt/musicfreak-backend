@@ -1,6 +1,7 @@
 quarkus:
   http:
     port: ${APP_PORT}
+    root-path: /api
   log:
     level: INFO
   hibernate-orm:
