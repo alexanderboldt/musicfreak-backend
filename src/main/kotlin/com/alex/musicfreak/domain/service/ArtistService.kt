@@ -46,7 +46,7 @@ class ArtistService(
     fun delete(id: Long) {
         val artistSaved = artistRepository.findByIdOrThrowBadRequest(id)
 
-        // delete the image from the storage and the database-entry
+        // delete an existing image from the storage and the artist
         artistSaved.filename?.also { minioService.deleteFile(MinioBucket.ARTIST, it) }
         artistRepository.deleteById(id)
     }

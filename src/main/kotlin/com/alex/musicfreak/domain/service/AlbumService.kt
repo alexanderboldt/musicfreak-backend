@@ -61,6 +61,10 @@ class AlbumService(
 
     @Transactional
     fun delete(id: Long) {
-        if (!albumRepository.deleteById(id)) throw BadRequestException()
+        val albumSaved = albumRepository.findByIdOrThrowBadRequest(id)
+
+        // delete an existing image from the storage and the album
+        albumSaved.filename?.also { minioService.deleteFile(MinioBucket.ALBUM, it) }
+        albumRepository.deleteById(id)
     }
 }
