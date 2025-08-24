@@ -1,0 +1,41 @@
+package com.alex.musicfreak.controller
+
+import com.alex.musicfreak.domain.service.AlbumImageService
+import com.alex.musicfreak.util.Answer
+import com.alex.musicfreak.util.Resource
+import io.quarkus.security.Authenticated
+import jakarta.ws.rs.Consumes
+import jakarta.ws.rs.DELETE
+import jakarta.ws.rs.GET
+import jakarta.ws.rs.POST
+import jakarta.ws.rs.Path
+import jakarta.ws.rs.PathParam
+import jakarta.ws.rs.Produces
+import jakarta.ws.rs.core.MediaType
+import jakarta.ws.rs.core.Response
+import org.jboss.resteasy.reactive.RestForm
+import org.jboss.resteasy.reactive.multipart.FileUpload
+
+@Path(Resource.Path.ALBUM_IMAGE)
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
+@Authenticated
+class AlbumImageController(private val albumImageService: AlbumImageService) {
+
+    @POST
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    fun uploadImage(
+        @PathParam(Resource.Param.ID) id: Long,
+        @RestForm image: FileUpload?
+    ) = albumImageService.uploadImage(id, image)
+
+    @GET
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    fun downloadImage(@PathParam(Resource.Param.ID) id: Long): Response {
+        val (file, filename) = albumImageService.downloadImage(id)
+        return Answer.file(file, filename)
+    }
+
+    @DELETE
+    fun deleteImage(@PathParam(Resource.Param.ID) id: Long) = albumImageService.deleteImage(id)
+}

@@ -9,8 +9,6 @@ import com.alex.musicfreak.repository.artist.ArtistRepository
 import io.quarkus.panache.common.Sort
 import jakarta.enterprise.context.ApplicationScoped
 import jakarta.transaction.Transactional
-import org.jboss.resteasy.reactive.multipart.FileUpload
-import java.io.InputStream
 import java.sql.Timestamp
 import java.time.Instant
 
@@ -29,24 +27,6 @@ class AlbumService(
         return albumRepository.save(album.toEntity()).toDomain()
     }
 
-    @Transactional
-    fun uploadImage(id: Long, image: FileUpload?): Album {
-        // check if the album and the image are existing
-        val albumSaved = albumRepository.findByIdOrThrowBadRequest(id)
-        if (image == null || image.uploadedFile() == null) throw BadRequestException()
-
-        // 1. if there is already an image saved, delete it first
-        albumSaved.filename?.let { minioService.deleteFile(MinioBucket.ALBUM, it) }
-
-        // 2. upload the new image and get the filename
-        val filename = minioService.uploadFile(MinioBucket.ALBUM, image)
-
-        // 3. update the album with the filename
-        albumSaved.filename = filename
-
-        return albumSaved.toDomain()
-    }
-
     // read
 
     @Transactional
@@ -54,14 +34,6 @@ class AlbumService(
 
     @Transactional
     fun read(id: Long) = albumRepository.findByIdOrThrowBadRequest(id).toDomain()
-
-    fun downloadImage(id: Long): Pair<InputStream, String> {
-        // check if the album and image are existing
-        val filename = albumRepository.findByIdOrThrowBadRequest(id).filename ?: throw BadRequestException()
-
-        // download the file and return it with the filename
-        return minioService.downloadFile(MinioBucket.ALBUM, filename) to filename
-    }
 
     // update
 
@@ -90,18 +62,5 @@ class AlbumService(
     @Transactional
     fun delete(id: Long) {
         if (!albumRepository.deleteById(id)) throw BadRequestException()
-    }
-
-    @Transactional
-    fun deleteImage(id: Long) {
-        // check if the album and image are existing
-        val albumSaved = albumRepository.findByIdOrThrowBadRequest(id)
-        val filename = albumSaved.filename ?: throw BadRequestException()
-
-        // delete the file
-        minioService.deleteFile(MinioBucket.ALBUM, filename)
-
-        // update the album by deleting the filename
-        albumSaved.filename = null
     }
 }
