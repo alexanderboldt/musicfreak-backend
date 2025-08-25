@@ -10,8 +10,3 @@ quarkus:
   flyway:
     enabled: true
     migrate-at-start: true
-
-minio:
-  endpoint: http://localhost:${MINIO_S3_PORT}
-  access-key: test
-  secret-key: test

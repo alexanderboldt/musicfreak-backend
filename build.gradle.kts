@@ -38,7 +38,7 @@ dependencies {
 
     implementation(libs.quarkus.config.yaml)
 
-    implementation(libs.minio)
+    implementation(libs.aws.s3)
 
     // test libraries
     testImplementation(libs.quarkus.junit5)
@@ -54,7 +54,7 @@ dependencies {
 }
 
 group = "com.alex"
-version = "1.0.0-SNAPSHOT"
+version = "2.0.0"
 
 tasks.withType<Test> {
     systemProperty("java.util.logging.manager", "org.jboss.logmanager.LogManager")

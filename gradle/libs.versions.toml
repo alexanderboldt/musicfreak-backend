@@ -1,10 +1,13 @@
 [versions]
+# development versions
 kotlin-version = "2.2.10"
 quarkus-version = "3.25.3"
-rest-assured-version = "5.5.5"
+aws-s3-version = "2.32.29"
+
+# test versions
 kotest-version = "6.0.0"
+rest-assured-version = "5.5.5"
 testcontainer-version = "1.21.3"
-minio-version = "8.5.17"
 
 [libraries]
 # development libraries
@@ -23,7 +26,7 @@ quarkus-security = { group = "io.quarkus", name = "quarkus-security", version.re
 quarkus-arc = { group = "io.quarkus", name = "quarkus-arc", version.ref = "quarkus-version" }
 quarkus-config-yaml = { group = "io.quarkus", name = "quarkus-config-yaml", version.ref = "quarkus-version" }
 
-minio = { group = "io.minio", name = "minio", version.ref = "minio-version" }
+aws-s3 = { group = "software.amazon.awssdk", name = "s3", version.ref = "aws-s3-version" }
 
 # test libraries
 quarkus-junit5 = { group = "io.quarkus", name = "quarkus-junit5", version.ref = "quarkus-version" }

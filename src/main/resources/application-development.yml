@@ -18,8 +18,12 @@ quarkus:
     authentication:
       jwt:
         required: true
-
-minio:
-  endpoint: http://localhost:${MINIO_S3_PORT}
-  access-key: ${MINIO_USERNAME}
-  secret-key: ${MINIO_PASSWORD}
+  s3:
+    endpoint-override: http://localhost:${S3_PORT}
+    path-style-access: true
+    aws:
+      credentials:
+        type: static
+        static-provider:
+          access-key-id: ${S3_USERNAME}
+          secret-access-key: ${S3_PASSWORD}
