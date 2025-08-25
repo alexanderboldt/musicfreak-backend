@@ -12,7 +12,7 @@ import java.time.Instant
 
 @ApplicationScoped
 class ArtistService(
-    private val minioService: MinioService,
+    private val s3Service: S3Service,
     private val artistRepository: ArtistRepository
 ) {
     // create
@@ -47,7 +47,7 @@ class ArtistService(
         val artistSaved = artistRepository.findByIdOrThrowBadRequest(id)
 
         // delete an existing image from the storage and the artist
-        artistSaved.filename?.also { minioService.deleteFile(MinioBucket.ARTIST, it) }
+        artistSaved.filename?.also { s3Service.deleteFile(S3Bucket.ARTIST, it) }
         artistRepository.deleteById(id)
     }
 }

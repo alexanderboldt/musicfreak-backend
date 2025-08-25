@@ -11,7 +11,7 @@ import java.io.InputStream
 
 @ApplicationScoped
 class ArtistImageService(
-    private val minioService: MinioService,
+    private val s3Service: S3Service,
     private val artistRepository: ArtistRepository
 ) {
 
@@ -22,10 +22,10 @@ class ArtistImageService(
         if (image == null || image.uploadedFile() == null) throw BadRequestException()
 
         // 1. if there is already an image saved, delete it first
-        artistSaved.filename?.let { minioService.deleteFile(MinioBucket.ARTIST, it) }
+        artistSaved.filename?.let { s3Service.deleteFile(S3Bucket.ARTIST, it) }
 
         // 2. upload the new image and get the filename
-        val filename = minioService.uploadFile(MinioBucket.ARTIST, image)
+        val filename = s3Service.uploadFile(S3Bucket.ARTIST, image.uploadedFile(), image.fileName())
 
         // 3. update the artist with the filename
         artistSaved.filename = filename
@@ -38,7 +38,7 @@ class ArtistImageService(
         val filename = artistRepository.findByIdOrThrowBadRequest(id).filename ?: throw BadRequestException()
 
         // download the file and return it with the filename
-        return minioService.downloadFile(MinioBucket.ARTIST, filename) to filename
+        return s3Service.downloadFile(S3Bucket.ARTIST, filename) to filename
     }
 
     @Transactional
@@ -48,7 +48,7 @@ class ArtistImageService(
         val filename = artistSaved.filename ?: throw BadRequestException()
 
         // delete the file
-        minioService.deleteFile(MinioBucket.ARTIST, filename)
+        s3Service.deleteFile(S3Bucket.ARTIST, filename)
 
         // update the artist by deleting the filename
         artistSaved.filename = null
