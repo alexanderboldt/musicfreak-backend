@@ -1,7 +1,6 @@
 package com.alex.musicfreak.domain.service
 
 import com.alex.musicfreak.domain.model.Album
-import com.alex.musicfreak.exception.BadRequestException
 import com.alex.musicfreak.mapper.toDomain
 import com.alex.musicfreak.mapper.toEntity
 import com.alex.musicfreak.repository.album.AlbumRepository
@@ -14,7 +13,7 @@ import java.time.Instant
 
 @ApplicationScoped
 class AlbumService(
-    private val minioService: MinioService,
+    private val s3Service: S3Service,
     private val albumRepository: AlbumRepository,
     private val artistRepository: ArtistRepository
 ) {
@@ -64,7 +63,7 @@ class AlbumService(
         val albumSaved = albumRepository.findByIdOrThrowBadRequest(id)
 
         // delete an existing image from the storage and the album
-        albumSaved.filename?.also { minioService.deleteFile(MinioBucket.ALBUM, it) }
+        albumSaved.filename?.also { s3Service.deleteFile(S3Bucket.ALBUM, it) }
         albumRepository.deleteById(id)
     }
 }

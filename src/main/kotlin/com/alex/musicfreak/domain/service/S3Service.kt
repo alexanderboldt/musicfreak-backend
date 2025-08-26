@@ -53,7 +53,7 @@ class S3Service(
 
     fun uploadFile(bucket: S3Bucket, path: Path, filename: String): String {
         val extension = filename
-            .substringAfter(".", "")
+            .substringAfterLast(".", "")
             .let { if(it.isNotBlank()) ".$it" else "" }
 
         val filename = "${UUID.randomUUID()}$extension"
