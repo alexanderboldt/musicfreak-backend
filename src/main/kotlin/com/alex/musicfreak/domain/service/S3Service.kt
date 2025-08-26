@@ -16,13 +16,14 @@ import java.util.UUID
 @ApplicationScoped
 class S3Service(
     @param:ConfigProperty(name = "quarkus.s3.endpoint-override") private val endpoint: String,
+    @param:ConfigProperty(name = "quarkus.s3.aws.region") private val region: String,
     @param:ConfigProperty(name = "quarkus.s3.aws.credentials.static-provider.access-key-id") private val accessKey: String,
     @param:ConfigProperty(name = "quarkus.s3.aws.credentials.static-provider.secret-access-key") private val secretKey: String
 ) {
 
     private val s3Client = S3Client.builder()
         .endpointOverride(URI.create(endpoint))
-        .region(Region.of("us-east-1"))
+        .region(Region.of(region))
         .forcePathStyle(true)
         .credentialsProvider(
             StaticCredentialsProvider.create(

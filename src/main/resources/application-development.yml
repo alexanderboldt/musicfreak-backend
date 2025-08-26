@@ -22,6 +22,7 @@ quarkus:
     endpoint-override: http://localhost:${S3_PORT}
     path-style-access: true
     aws:
+      region: us-east-1
       credentials:
         type: static
         static-provider:
