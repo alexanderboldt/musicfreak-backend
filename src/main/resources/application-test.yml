@@ -10,3 +10,9 @@ quarkus:
   flyway:
     enabled: true
     migrate-at-start: true
+  s3:
+    path-style-access: true
+    aws:
+      region: us-east-1
+      credentials:
+        type: static
