@@ -19,6 +19,7 @@ infix fun Artist.shouldBeArtist(expected: Artist) {
     id shouldBeGreaterThan 0
     name.shouldNotBeNull()
     name shouldBe expected.name
+    filename shouldBe expected.filename
     createdAt.shouldNotBeNull()
     updatedAt.shouldNotBeNull()
 }
@@ -44,6 +45,7 @@ infix fun Album.shouldBeAlbum(expected: Album) {
     year shouldBe expected.year
     tracks.shouldNotBeNull()
     tracks shouldBe expected.tracks
+    filename shouldBe expected.filename
     createdAt.shouldNotBeNull()
     updatedAt.shouldNotBeNull()
 }

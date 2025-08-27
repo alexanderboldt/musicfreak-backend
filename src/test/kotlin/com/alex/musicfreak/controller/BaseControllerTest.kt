@@ -18,6 +18,7 @@ import jakarta.transaction.Transactional
 import org.apache.http.HttpStatus
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
+import java.io.File
 
 open class BaseControllerTest {
 
@@ -40,6 +41,11 @@ open class BaseControllerTest {
     @Inject
     protected lateinit var albumRepository: AlbumRepository
 
+    protected val image: File = File.createTempFile("image", ".jpg").apply {
+        writeText("Image Content")
+        deleteOnExit()
+    }
+
     protected fun postAlbum(album: Album): Album {
         return Given {
             body(album)
@@ -59,6 +65,19 @@ open class BaseControllerTest {
             post(Resource.Path.ARTIST)
         } Then {
             statusCode(HttpStatus.SC_CREATED)
+        } Extract {
+            asArtist()
+        }
+    }
+
+    protected fun uploadArtistImage(artistId: Long): Artist {
+        return Given {
+            multiPart("image", image)
+            contentType(ContentType.MULTIPART)
+        } When {
+            post(Resource.Path.ARTIST_IMAGE, artistId)
+        } Then {
+            statusCode(HttpStatus.SC_OK)
         } Extract {
             asArtist()
         }

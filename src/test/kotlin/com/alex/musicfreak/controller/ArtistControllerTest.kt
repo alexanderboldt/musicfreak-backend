@@ -1,29 +1,40 @@
 package com.alex.musicfreak.controller
 
 import com.alex.musicfreak.Fixtures
+import com.alex.musicfreak.domain.service.S3Bucket
+import com.alex.musicfreak.domain.service.S3Service
 import com.alex.musicfreak.extension.asArtist
 import com.alex.musicfreak.extension.asArtists
+import com.alex.musicfreak.testresource.MinioTestResource
 import com.alex.musicfreak.util.Resource
 import com.alex.musicfreak.util.shouldBeArtist
 import com.alex.musicfreak.util.shouldBeArtists
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
+import io.quarkus.test.common.QuarkusTestResource
 import io.quarkus.test.junit.QuarkusTest
 import io.quarkus.test.security.TestSecurity
 import io.restassured.module.kotlin.extensions.Extract
 import io.restassured.module.kotlin.extensions.Given
 import io.restassured.module.kotlin.extensions.Then
 import io.restassured.module.kotlin.extensions.When
+import jakarta.inject.Inject
 import org.apache.http.HttpStatus
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.jupiter.api.Test
+import software.amazon.awssdk.services.s3.model.NoSuchKeyException
 
 @QuarkusTest
+@QuarkusTestResource(MinioTestResource::class)
 @TestSecurity(user = "test-user", roles = ["user"])
 class ArtistControllerTest : BaseControllerTest() {
 
     private val Resource.Path.ARTIST_ID: String
         get() = "${Resource.Path.ARTIST}/${Resource.Path.ID}"
+
+    @Inject
+    private lateinit var s3Service: S3Service
 
     // region create
 
@@ -183,6 +194,24 @@ class ArtistControllerTest : BaseControllerTest() {
             delete(Resource.Path.ARTIST_ID, artistPosted.id)
         } Then {
             statusCode(HttpStatus.SC_NO_CONTENT)
+        }
+    }
+
+    @Test
+    fun `should delete an artist and an image with valid id`() {
+        // precondition: post an artist and upload an image
+        val artistPosted = uploadArtistImage(postArtist(Fixtures.Artist.Domain.korn).id!!)
+
+        // execute the delete and verify
+        When {
+            delete(Resource.Path.ARTIST_ID, artistPosted.id)
+        } Then {
+            statusCode(HttpStatus.SC_NO_CONTENT)
+        }
+
+        // try to download the image and verify, that it is deleted
+        shouldThrow<NoSuchKeyException> {
+            s3Service.downloadFile(S3Bucket.ARTIST, artistPosted.filename!!)
         }
     }
 
