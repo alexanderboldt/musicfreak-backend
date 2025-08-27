@@ -2,6 +2,7 @@ package com.alex.musicfreak.controller
 
 import com.alex.musicfreak.domain.model.Album
 import com.alex.musicfreak.domain.model.Artist
+import com.alex.musicfreak.domain.service.S3Service
 import com.alex.musicfreak.extension.asAlbum
 import com.alex.musicfreak.extension.asArtist
 import com.alex.musicfreak.repository.album.AlbumRepository
@@ -20,7 +21,7 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import java.io.File
 
-open class BaseControllerTest {
+abstract class BaseControllerTest {
 
     @BeforeEach
     @Transactional
@@ -40,6 +41,9 @@ open class BaseControllerTest {
 
     @Inject
     protected lateinit var albumRepository: AlbumRepository
+
+    @Inject
+    protected lateinit var s3Service: S3Service
 
     protected val image: File = File.createTempFile("image", ".jpg").apply {
         writeText("Image Content")
@@ -67,6 +71,19 @@ open class BaseControllerTest {
             statusCode(HttpStatus.SC_CREATED)
         } Extract {
             asArtist()
+        }
+    }
+
+    protected fun uploadAlbumImage(albumId: Long): Album {
+        return Given {
+            multiPart("image", image)
+            contentType(ContentType.MULTIPART)
+        } When {
+            post(Resource.Path.ALBUM_IMAGE, albumId)
+        } Then {
+            statusCode(HttpStatus.SC_OK)
+        } Extract {
+            asAlbum()
         }
     }
 

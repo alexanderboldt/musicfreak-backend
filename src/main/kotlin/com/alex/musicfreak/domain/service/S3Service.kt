@@ -45,8 +45,6 @@ class S3Service(
             .buckets()
             .any { it.name() == bucket.bucketName }
 
-        println(bucketExists)
-
         if (!bucketExists) {
             s3Client.createBucket { it.bucket(bucket.bucketName).build() }
         }

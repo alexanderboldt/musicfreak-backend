@@ -2,7 +2,6 @@ package com.alex.musicfreak.controller
 
 import com.alex.musicfreak.Fixtures
 import com.alex.musicfreak.domain.service.S3Bucket
-import com.alex.musicfreak.domain.service.S3Service
 import com.alex.musicfreak.extension.asArtist
 import com.alex.musicfreak.extension.asArtists
 import com.alex.musicfreak.testresource.MinioTestResource
@@ -19,7 +18,6 @@ import io.restassured.module.kotlin.extensions.Extract
 import io.restassured.module.kotlin.extensions.Given
 import io.restassured.module.kotlin.extensions.Then
 import io.restassured.module.kotlin.extensions.When
-import jakarta.inject.Inject
 import org.apache.http.HttpStatus
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.jupiter.api.Test
@@ -32,9 +30,6 @@ class ArtistControllerTest : BaseControllerTest() {
 
     private val Resource.Path.ARTIST_ID: String
         get() = "${Resource.Path.ARTIST}/${Resource.Path.ID}"
-
-    @Inject
-    private lateinit var s3Service: S3Service
 
     // region create
 
