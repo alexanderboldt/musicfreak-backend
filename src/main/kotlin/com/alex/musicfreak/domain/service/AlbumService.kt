@@ -2,7 +2,7 @@ package com.alex.musicfreak.domain.service
 
 import com.alex.musicfreak.domain.model.Album
 import com.alex.musicfreak.mapper.toDomain
-import com.alex.musicfreak.mapper.toEntity
+import com.alex.musicfreak.repository.album.AlbumEntity
 import com.alex.musicfreak.repository.album.AlbumRepository
 import com.alex.musicfreak.repository.artist.ArtistRepository
 import io.quarkus.panache.common.Sort
@@ -23,7 +23,18 @@ class AlbumService(
     fun create(album: Album): Album {
         artistRepository.existsOrThrowBadRequest(album.artistId)
 
-        return albumRepository.save(album.toEntity()).toDomain()
+        val entity = AlbumEntity(
+            0,
+            album.artistId,
+            album.name,
+            album.year,
+            album.tracks,
+            null,
+            Timestamp.from(Instant.now()),
+            Timestamp.from(Instant.now())
+        )
+
+        return albumRepository.save(entity).toDomain()
     }
 
     // read

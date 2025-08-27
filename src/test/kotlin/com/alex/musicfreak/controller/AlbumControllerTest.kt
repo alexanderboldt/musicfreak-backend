@@ -6,6 +6,7 @@ import com.alex.musicfreak.domain.model.Artist
 import com.alex.musicfreak.domain.service.S3Bucket
 import com.alex.musicfreak.extension.asAlbum
 import com.alex.musicfreak.extension.asAlbums
+import com.alex.musicfreak.util.ALBUM_ID
 import com.alex.musicfreak.util.Resource
 import com.alex.musicfreak.util.Role
 import com.alex.musicfreak.util.shouldBeAlbum
@@ -32,9 +33,6 @@ class AlbumControllerTest : BaseControllerTest() {
 
     private lateinit var artistPosted: Artist
     private lateinit var albumWithArtistId: Album
-
-    private val Resource.Path.ALBUM_ID: String
-        get() = "${Resource.Path.ALBUM}/${Resource.Path.ID}"
 
     @BeforeEach
     @Transactional

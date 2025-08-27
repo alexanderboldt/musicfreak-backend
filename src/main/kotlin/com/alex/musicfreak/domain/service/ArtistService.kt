@@ -2,7 +2,7 @@ package com.alex.musicfreak.domain.service
 
 import com.alex.musicfreak.domain.model.Artist
 import com.alex.musicfreak.mapper.toDomain
-import com.alex.musicfreak.mapper.toEntity
+import com.alex.musicfreak.repository.artist.ArtistEntity
 import com.alex.musicfreak.repository.artist.ArtistRepository
 import io.quarkus.panache.common.Sort
 import jakarta.enterprise.context.ApplicationScoped
@@ -18,7 +18,17 @@ class ArtistService(
     // create
 
     @Transactional
-    fun create(artist: Artist) = artistRepository.save(artist.toEntity()).toDomain()
+    fun create(artist: Artist): Artist {
+        val entity = ArtistEntity(
+            0,
+            artist.name,
+            null,
+            Timestamp.from(Instant.now()),
+            Timestamp.from(Instant.now())
+        )
+
+        return artistRepository.save(entity).toDomain()
+    }
 
     // read
 

@@ -5,6 +5,7 @@ import com.alex.musicfreak.domain.service.S3Bucket
 import com.alex.musicfreak.extension.asArtist
 import com.alex.musicfreak.extension.asArtists
 import com.alex.musicfreak.testresource.MinioTestResource
+import com.alex.musicfreak.util.ARTIST_ID
 import com.alex.musicfreak.util.Resource
 import com.alex.musicfreak.util.shouldBeArtist
 import com.alex.musicfreak.util.shouldBeArtists
@@ -27,9 +28,6 @@ import software.amazon.awssdk.services.s3.model.NoSuchKeyException
 @QuarkusTestResource(MinioTestResource::class)
 @TestSecurity(user = "test-user", roles = ["user"])
 class ArtistControllerTest : BaseControllerTest() {
-
-    private val Resource.Path.ARTIST_ID: String
-        get() = "${Resource.Path.ARTIST}/${Resource.Path.ID}"
 
     // region create
 
