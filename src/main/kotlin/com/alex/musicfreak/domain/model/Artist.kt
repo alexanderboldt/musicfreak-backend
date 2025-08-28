@@ -1,11 +1,11 @@
 package com.alex.musicfreak.domain.model
 
-import java.sql.Timestamp
+import java.time.Instant
 
 data class Artist(
     val id: Long?,
     val name: String,
     val filename: String?,
-    val createdAt: Timestamp?,
-    val updatedAt: Timestamp?
+    val createdAt: Instant?,
+    val updatedAt: Instant?
 )

@@ -2,7 +2,6 @@ package com.alex.musicfreak
 
 import com.alex.musicfreak.domain.model.Artist
 import com.alex.musicfreak.domain.model.Album
-import java.sql.Timestamp
 import java.time.Instant
 
 object Fixtures {
@@ -12,16 +11,16 @@ object Fixtures {
                 0,
                 "Korn",
                 null,
-                Timestamp.from(Instant.now()),
-                Timestamp.from(Instant.now())
+                Instant.now(),
+                Instant.now()
             )
 
             val slipknot = Artist(
                 0,
                 "Slipknot",
                 null,
-                Timestamp.from(Instant.now()),
-                Timestamp.from(Instant.now())
+                Instant.now(),
+                Instant.now()
             )
 
             val all = listOf(korn, slipknot)

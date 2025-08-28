@@ -8,7 +8,6 @@ import com.alex.musicfreak.repository.artist.ArtistRepository
 import io.quarkus.panache.common.Sort
 import jakarta.enterprise.context.ApplicationScoped
 import jakarta.transaction.Transactional
-import java.sql.Timestamp
 import java.time.Instant
 
 @ApplicationScoped
@@ -30,8 +29,8 @@ class AlbumService(
             album.year,
             album.tracks,
             null,
-            Timestamp.from(Instant.now()),
-            Timestamp.from(Instant.now())
+            Instant.now(),
+            Instant.now()
         )
 
         return albumRepository.save(entity).toDomain()
@@ -58,7 +57,7 @@ class AlbumService(
                 name = albumUpdate.name
                 year = albumUpdate.year
                 tracks = albumUpdate.tracks
-                updatedAt = Timestamp.from(Instant.now())
+                updatedAt = Instant.now()
             }.toDomain()
     }
 

@@ -1,6 +1,6 @@
 package com.alex.musicfreak.domain.model
 
-import java.sql.Timestamp
+import java.time.Instant
 
 data class Album(
     val id: Long?,
@@ -9,6 +9,6 @@ data class Album(
     val year: Int,
     val tracks: Int,
     val filename: String?,
-    val createdAt: Timestamp?,
-    val updatedAt: Timestamp?
+    val createdAt: Instant?,
+    val updatedAt: Instant?
 )

@@ -3,7 +3,7 @@ package com.alex.musicfreak.repository.artist
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.Id
-import java.sql.Timestamp
+import java.time.Instant
 
 @Entity
 data class ArtistEntity(
@@ -16,7 +16,7 @@ data class ArtistEntity(
 
     var filename: String?,
 
-    val createdAt: Timestamp,
+    val createdAt: Instant,
 
-    var updatedAt: Timestamp
+    var updatedAt: Instant
 )

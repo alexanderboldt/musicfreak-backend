@@ -7,7 +7,6 @@ import com.alex.musicfreak.repository.artist.ArtistRepository
 import io.quarkus.panache.common.Sort
 import jakarta.enterprise.context.ApplicationScoped
 import jakarta.transaction.Transactional
-import java.sql.Timestamp
 import java.time.Instant
 
 @ApplicationScoped
@@ -23,8 +22,8 @@ class ArtistService(
             0,
             artist.name,
             null,
-            Timestamp.from(Instant.now()),
-            Timestamp.from(Instant.now())
+            Instant.now(),
+            Instant.now()
         )
 
         return artistRepository.save(entity).toDomain()
@@ -46,7 +45,7 @@ class ArtistService(
             .findByIdOrThrowBadRequest(id)
             .apply {
                 name = artistUpdate.name
-                updatedAt = Timestamp.from(Instant.now())
+                updatedAt = Instant.now()
             }.toDomain()
     }
 
