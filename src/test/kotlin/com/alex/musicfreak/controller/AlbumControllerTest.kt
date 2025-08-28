@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test
 import software.amazon.awssdk.services.s3.model.NoSuchKeyException
 
 @QuarkusTest
-@TestSecurity(user = "test-user", roles = ["user"])
+@TestSecurity(user = "user", roles = [Role.USER])
 class AlbumControllerTest : BaseControllerTest() {
 
     private lateinit var artistPosted: Artist
@@ -221,7 +221,7 @@ class AlbumControllerTest : BaseControllerTest() {
     }
 
     @Test
-    @TestSecurity(user = "test-user", roles = [Role.ADMIN])
+    @TestSecurity(user = "user", roles = [Role.ADMIN, Role.USER])
     fun `should delete all albums with admin-role`() {
         // precondition: post an album
         postAlbum(albumWithArtistId)

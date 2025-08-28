@@ -7,6 +7,7 @@ import com.alex.musicfreak.extension.asArtists
 import com.alex.musicfreak.testresource.MinioTestResource
 import com.alex.musicfreak.util.ARTIST_ID
 import com.alex.musicfreak.util.Resource
+import com.alex.musicfreak.util.Role
 import com.alex.musicfreak.util.shouldBeArtist
 import com.alex.musicfreak.util.shouldBeArtists
 import io.kotest.assertions.throwables.shouldThrow
@@ -26,7 +27,7 @@ import software.amazon.awssdk.services.s3.model.NoSuchKeyException
 
 @QuarkusTest
 @QuarkusTestResource(MinioTestResource::class)
-@TestSecurity(user = "test-user", roles = ["user"])
+@TestSecurity(user = "user", roles = [Role.USER])
 class ArtistControllerTest : BaseControllerTest() {
 
     // region create

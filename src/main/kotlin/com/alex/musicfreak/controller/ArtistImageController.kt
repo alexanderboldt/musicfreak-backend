@@ -3,7 +3,8 @@ package com.alex.musicfreak.controller
 import com.alex.musicfreak.domain.service.ArtistImageService
 import com.alex.musicfreak.util.Answer
 import com.alex.musicfreak.util.Resource
-import io.quarkus.security.Authenticated
+import com.alex.musicfreak.util.Role
+import jakarta.annotation.security.RolesAllowed
 import jakarta.ws.rs.Consumes
 import jakarta.ws.rs.DELETE
 import jakarta.ws.rs.GET
@@ -19,7 +20,7 @@ import org.jboss.resteasy.reactive.multipart.FileUpload
 @Path(Resource.Path.ARTIST_IMAGE)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-@Authenticated
+@RolesAllowed(Role.USER)
 class ArtistImageController(private val artistImageService: ArtistImageService) {
 
     @POST

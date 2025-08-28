@@ -6,6 +6,7 @@ import com.alex.musicfreak.domain.model.Artist
 import com.alex.musicfreak.extension.asAlbum
 import com.alex.musicfreak.testresource.MinioTestResource
 import com.alex.musicfreak.util.Resource
+import com.alex.musicfreak.util.Role
 import io.kotest.matchers.comparables.shouldBeGreaterThan
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.string.shouldNotBeBlank
@@ -24,7 +25,7 @@ import org.junit.jupiter.api.Test
 
 @QuarkusTest
 @QuarkusTestResource(MinioTestResource::class)
-@TestSecurity(user = "test-user", roles = ["user"])
+@TestSecurity(user = "user", roles = [Role.USER])
 class AlbumImageControllerTest : BaseControllerTest() {
 
     private lateinit var artistPosted: Artist

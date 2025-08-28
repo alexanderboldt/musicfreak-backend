@@ -5,6 +5,7 @@ import com.alex.musicfreak.domain.model.Album
 import com.alex.musicfreak.domain.model.Artist
 import com.alex.musicfreak.extension.asAlbums
 import com.alex.musicfreak.util.Resource
+import com.alex.musicfreak.util.Role
 import com.alex.musicfreak.util.shouldBeAlbums
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldNotBeNull
@@ -20,7 +21,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @QuarkusTest
-@TestSecurity(user = "test-user", roles = ["user"])
+@TestSecurity(user = "user", roles = [Role.USER])
 class ArtistAlbumControllerTest : BaseControllerTest() {
 
     private lateinit var artistPosted: Artist

@@ -4,8 +4,9 @@ import com.alex.musicfreak.domain.model.Artist
 import com.alex.musicfreak.domain.service.ArtistService
 import com.alex.musicfreak.util.Answer
 import com.alex.musicfreak.util.Resource
+import com.alex.musicfreak.util.Role
 import com.alex.musicfreak.util.convertToSort
-import io.quarkus.security.Authenticated
+import jakarta.annotation.security.RolesAllowed
 import jakarta.ws.rs.Consumes
 import jakarta.ws.rs.DELETE
 import jakarta.ws.rs.GET
@@ -20,7 +21,7 @@ import jakarta.ws.rs.core.MediaType
 @Path(Resource.Path.ARTIST)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-@Authenticated
+@RolesAllowed(Role.USER)
 class ArtistController(private val artistService: ArtistService) {
 
     // create
