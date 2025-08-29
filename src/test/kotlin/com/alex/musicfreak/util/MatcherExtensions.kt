@@ -1,7 +1,7 @@
 package com.alex.musicfreak.util
 
-import com.alex.musicfreak.domain.model.Album
-import com.alex.musicfreak.domain.model.Artist
+import com.alex.musicfreak.domain.Album
+import com.alex.musicfreak.domain.Artist
 import io.kotest.matchers.comparables.shouldBeGreaterThan
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe

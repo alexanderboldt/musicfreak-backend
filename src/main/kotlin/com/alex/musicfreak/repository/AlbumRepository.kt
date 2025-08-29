@@ -1,5 +1,6 @@
-package com.alex.musicfreak.repository.album
+package com.alex.musicfreak.repository
 
+import com.alex.musicfreak.entity.AlbumEntity
 import com.alex.musicfreak.exception.BadRequestException
 import io.quarkus.hibernate.orm.panache.PanacheRepository
 import io.quarkus.panache.common.Sort

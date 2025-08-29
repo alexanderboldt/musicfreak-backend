@@ -1,9 +1,9 @@
-package com.alex.musicfreak.domain.service
+package com.alex.musicfreak.service
 
-import com.alex.musicfreak.domain.model.Artist
+import com.alex.musicfreak.domain.Artist
 import com.alex.musicfreak.exception.BadRequestException
 import com.alex.musicfreak.mapper.toDomain
-import com.alex.musicfreak.repository.artist.ArtistRepository
+import com.alex.musicfreak.repository.ArtistRepository
 import jakarta.enterprise.context.ApplicationScoped
 import jakarta.transaction.Transactional
 import org.jboss.resteasy.reactive.multipart.FileUpload

@@ -1,6 +1,6 @@
 package com.alex.musicfreak.controller
 
-import com.alex.musicfreak.domain.service.ArtistImageService
+import com.alex.musicfreak.service.ArtistImageService
 import com.alex.musicfreak.util.Answer
 import com.alex.musicfreak.util.Resource
 import com.alex.musicfreak.util.Role

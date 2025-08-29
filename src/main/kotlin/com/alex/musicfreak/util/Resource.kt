@@ -1,5 +1,8 @@
 package com.alex.musicfreak.util
 
+/**
+ * Contains convenient wordings for paths and parameters.
+ */
 object Resource {
     object Path {
         const val ALBUM = "v1/albums"

@@ -1,7 +1,7 @@
 package com.alex.musicfreak.controller
 
-import com.alex.musicfreak.domain.model.Album
-import com.alex.musicfreak.domain.service.ArtistAlbumService
+import com.alex.musicfreak.domain.Album
+import com.alex.musicfreak.service.ArtistAlbumService
 import com.alex.musicfreak.util.Resource
 import com.alex.musicfreak.util.Role
 import com.alex.musicfreak.util.convertToSort

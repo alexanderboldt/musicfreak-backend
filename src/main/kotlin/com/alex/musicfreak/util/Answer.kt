@@ -1,6 +1,6 @@
 package com.alex.musicfreak.util
 
-import com.alex.musicfreak.domain.model.Error
+import com.alex.musicfreak.domain.Error
 import jakarta.ws.rs.core.HttpHeaders
 import jakarta.ws.rs.core.Response
 
@@ -12,17 +12,17 @@ object Answer {
     /**
      * Sends a response with status-code 200.
      *
-     * @param entity The entity to show as a result.
-     * @return Returns the response.
+     * @param entity the entity to show as a result.
+     * @return the response as a [Response].
      */
     fun ok(entity: Any): Response = Response.ok(entity).build()
 
     /**
      * Sends a file-response with status-code 200.
      *
-     * @param entity The entity to show as a result.
-     * @param filename The filename as a [String].
-     * @return Returns the response as a stream.
+     * @param entity the entity to show as a result.
+     * @param filename the filename as a [String].
+     * @return the response as a [Response].
      */
     fun file(entity: Any, filename: String): Response = Response
         .ok(entity)
@@ -32,8 +32,8 @@ object Answer {
     /**
      * Sends a response with status-code 201.
      *
-     * @param entity The entity to show as a result.
-     * @return Returns the response.
+     * @param entity the entity to show as a result.
+     * @return the response as a [Response].
      */
     fun created(entity: Any): Response = Response
         .status(Response.Status.CREATED)
@@ -43,14 +43,14 @@ object Answer {
     /**
      * Sends a response with status-code 204.
      *
-     * @return Returns the response.
+     * @return the response as a [Response].
      */
     fun noContent(): Response = Response.noContent().build()
 
     /**
      * Sends a response with status-code 400.
      *
-     * @return Returns the response.
+     * @return the response as a [Response].
      */
     fun badRequest(): Response = Response
         .status(Response.Status.BAD_REQUEST)

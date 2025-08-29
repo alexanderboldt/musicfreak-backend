@@ -1,9 +1,9 @@
 package com.alex.musicfreak.controller
 
 import com.alex.musicfreak.Fixtures
-import com.alex.musicfreak.domain.model.Album
-import com.alex.musicfreak.domain.model.Artist
-import com.alex.musicfreak.domain.service.S3Bucket
+import com.alex.musicfreak.domain.Album
+import com.alex.musicfreak.domain.Artist
+import com.alex.musicfreak.service.S3Bucket
 import com.alex.musicfreak.extension.asAlbum
 import com.alex.musicfreak.extension.asAlbums
 import com.alex.musicfreak.util.ALBUM_ID

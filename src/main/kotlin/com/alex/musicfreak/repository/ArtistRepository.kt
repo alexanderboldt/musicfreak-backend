@@ -1,5 +1,6 @@
-package com.alex.musicfreak.repository.artist
+package com.alex.musicfreak.repository
 
+import com.alex.musicfreak.entity.ArtistEntity
 import com.alex.musicfreak.exception.BadRequestException
 import io.quarkus.hibernate.orm.panache.PanacheRepository
 import jakarta.enterprise.context.ApplicationScoped

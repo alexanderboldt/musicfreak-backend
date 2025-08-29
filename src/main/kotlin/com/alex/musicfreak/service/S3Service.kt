@@ -1,4 +1,4 @@
-package com.alex.musicfreak.domain.service
+package com.alex.musicfreak.service
 
 import jakarta.annotation.PostConstruct
 import jakarta.enterprise.context.ApplicationScoped
@@ -13,12 +13,20 @@ import java.net.URI
 import java.nio.file.Path
 import java.util.UUID
 
+/**
+ * Manages the connection to the S3-storage.
+ *
+ * @param endpoint the endpoint as a [String] will be automatically injected from the configuration.
+ * @param region the region as a [String] will be automatically injected from the configuration.
+ * @param accessKey the access-key as a [String] will be automatically injected from the configuration.
+ * @param secretKey the secret-key as a [String] will be automatically injected from the configuration.
+ */
 @ApplicationScoped
 class S3Service(
-    @param:ConfigProperty(name = "quarkus.s3.endpoint-override") private val endpoint: String,
-    @param:ConfigProperty(name = "quarkus.s3.aws.region") private val region: String,
-    @param:ConfigProperty(name = "quarkus.s3.aws.credentials.static-provider.access-key-id") private val accessKey: String,
-    @param:ConfigProperty(name = "quarkus.s3.aws.credentials.static-provider.secret-access-key") private val secretKey: String
+    @ConfigProperty(name = "quarkus.s3.endpoint-override") endpoint: String,
+    @ConfigProperty(name = "quarkus.s3.aws.region") region: String,
+    @ConfigProperty(name = "quarkus.s3.aws.credentials.static-provider.access-key-id") accessKey: String,
+    @ConfigProperty(name = "quarkus.s3.aws.credentials.static-provider.secret-access-key") secretKey: String
 ) {
 
     private val s3Client = S3Client.builder()
@@ -31,6 +39,9 @@ class S3Service(
             )
         ).build()
 
+    /**
+     * Will be triggered after the creation of this class. All available buckets will be created in S3.
+     */
     @PostConstruct
     fun init() {
         // try to create all buckets, if they don't exist
@@ -39,6 +50,11 @@ class S3Service(
         }
     }
 
+    /**
+     * Creates the assigned bucket, if it doesn't exist yet.
+     *
+     * @param bucket the bucket to create as a [S3Bucket].
+     */
     fun createBucket(bucket: S3Bucket) {
         val bucketExists = s3Client
             .listBuckets { it.build() }
@@ -50,6 +66,14 @@ class S3Service(
         }
     }
 
+    /**
+     * Uploads a file to S3.
+     *
+     * @param bucket the bucket where to store as a [S3Bucket].
+     * @param path the path of the file as a [Path].
+     * @param filename the filename as a [String].
+     * @return returns
+     */
     fun uploadFile(bucket: S3Bucket, path: Path, filename: String): String {
         val extension = filename
             .substringAfterLast(".", "")
@@ -65,12 +89,25 @@ class S3Service(
         return filename
     }
 
+    /**
+     * Downloads a file.
+     *
+     * @param bucket the bucket to download from as a [S3Bucket].
+     * @param filename the filename of the file as a [String].
+     * @return the result as a [InputStream].
+     */
     fun downloadFile(bucket: S3Bucket, filename: String): InputStream {
         return s3Client.getObject {
             it.bucket(bucket.bucketName).key(filename).build()
         }
     }
 
+    /**
+     * Deletes a file.
+     *
+     * @param bucket the bucket to delete from as a [S3Bucket].
+     * @param filename the filename of the file as a [String].
+     */
     fun deleteFile(bucket: S3Bucket, filename: String) {
         s3Client.deleteObject {
             it.bucket(bucket.bucketName).key(filename).build()

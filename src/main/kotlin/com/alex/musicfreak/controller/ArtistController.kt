@@ -1,7 +1,7 @@
 package com.alex.musicfreak.controller
 
-import com.alex.musicfreak.domain.model.Artist
-import com.alex.musicfreak.domain.service.ArtistService
+import com.alex.musicfreak.domain.Artist
+import com.alex.musicfreak.service.ArtistService
 import com.alex.musicfreak.util.Answer
 import com.alex.musicfreak.util.Resource
 import com.alex.musicfreak.util.Role

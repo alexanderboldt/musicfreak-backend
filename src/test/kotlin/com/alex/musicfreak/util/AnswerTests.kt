@@ -1,8 +1,8 @@
 package com.alex.musicfreak.util
 
 import com.alex.musicfreak.Fixtures
-import com.alex.musicfreak.domain.model.Artist
-import com.alex.musicfreak.domain.model.Error
+import com.alex.musicfreak.domain.Artist
+import com.alex.musicfreak.domain.Error
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldBeNull

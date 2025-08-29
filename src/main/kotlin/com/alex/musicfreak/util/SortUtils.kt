@@ -2,6 +2,21 @@ package com.alex.musicfreak.util
 
 import io.quarkus.panache.common.Sort
 
+/**
+ * Converts a [String] to a [Sort] object.
+ *
+ * Values are separated with a comma and can have a `-` for a descending order,
+ * otherwise the ascending order will be used as default.
+ *
+ * @receiver the [String] that contains the values separate with commas.
+ * @return the [Sort] object or `Sort.empty()` if the receiver is `null` or blank.
+ *
+ * Example:
+ * ```
+ * "id,title".convertToSort()
+ * "id,-title,description".convertToSort()
+ * ```
+ */
 fun String?.convertToSort(): Sort {
     if (this.isNullOrBlank()) return Sort.empty()
 

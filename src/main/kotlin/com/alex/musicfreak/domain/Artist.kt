@@ -1,4 +1,4 @@
-package com.alex.musicfreak.domain.model
+package com.alex.musicfreak.domain
 
 import java.time.Instant
 

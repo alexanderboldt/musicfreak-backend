@@ -1,7 +1,7 @@
 package com.alex.musicfreak.mapper
 
-import com.alex.musicfreak.domain.model.Artist
-import com.alex.musicfreak.repository.artist.ArtistEntity
+import com.alex.musicfreak.domain.Artist
+import com.alex.musicfreak.entity.ArtistEntity
 
 // from entity to domain
 

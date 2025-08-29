@@ -1,4 +1,4 @@
-package com.alex.musicfreak.repository.artist
+package com.alex.musicfreak.entity
 
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -6,13 +6,19 @@ import jakarta.persistence.Id
 import java.time.Instant
 
 @Entity
-data class ArtistEntity(
+data class AlbumEntity(
 
     @Id
     @GeneratedValue
     val id: Long,
 
+    var artistId: Long,
+
     var name: String,
+
+    var year: Int,
+
+    var tracks: Int,
 
     var filename: String?,
 

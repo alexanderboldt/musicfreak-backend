@@ -1,10 +1,10 @@
-package com.alex.musicfreak.domain.service
+package com.alex.musicfreak.service
 
-import com.alex.musicfreak.domain.model.Album
+import com.alex.musicfreak.domain.Album
 import com.alex.musicfreak.mapper.toDomain
-import com.alex.musicfreak.repository.album.AlbumEntity
-import com.alex.musicfreak.repository.album.AlbumRepository
-import com.alex.musicfreak.repository.artist.ArtistRepository
+import com.alex.musicfreak.entity.AlbumEntity
+import com.alex.musicfreak.repository.AlbumRepository
+import com.alex.musicfreak.repository.ArtistRepository
 import io.quarkus.panache.common.Sort
 import jakarta.enterprise.context.ApplicationScoped
 import jakarta.transaction.Transactional

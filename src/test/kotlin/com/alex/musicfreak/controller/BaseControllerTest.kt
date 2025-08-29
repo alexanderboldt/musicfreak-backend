@@ -1,12 +1,12 @@
 package com.alex.musicfreak.controller
 
-import com.alex.musicfreak.domain.model.Album
-import com.alex.musicfreak.domain.model.Artist
-import com.alex.musicfreak.domain.service.S3Service
+import com.alex.musicfreak.domain.Album
+import com.alex.musicfreak.domain.Artist
+import com.alex.musicfreak.service.S3Service
 import com.alex.musicfreak.extension.asAlbum
 import com.alex.musicfreak.extension.asArtist
-import com.alex.musicfreak.repository.album.AlbumRepository
-import com.alex.musicfreak.repository.artist.ArtistRepository
+import com.alex.musicfreak.repository.AlbumRepository
+import com.alex.musicfreak.repository.ArtistRepository
 import com.alex.musicfreak.util.Resource
 import io.restassured.RestAssured
 import io.restassured.http.ContentType

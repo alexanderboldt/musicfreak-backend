@@ -1,7 +1,7 @@
 package com.alex.musicfreak.controller
 
 import com.alex.musicfreak.Fixtures
-import com.alex.musicfreak.domain.model.Artist
+import com.alex.musicfreak.domain.Artist
 import com.alex.musicfreak.extension.asArtist
 import com.alex.musicfreak.testresource.MinioTestResource
 import com.alex.musicfreak.util.Resource

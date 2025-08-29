@@ -1,7 +1,7 @@
 package com.alex.musicfreak.extension
 
-import com.alex.musicfreak.domain.model.Album
-import com.alex.musicfreak.domain.model.Artist
+import com.alex.musicfreak.domain.Album
+import com.alex.musicfreak.domain.Artist
 import io.restassured.common.mapper.TypeRef
 import io.restassured.response.ResponseBodyExtractionOptions
 
