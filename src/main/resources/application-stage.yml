@@ -15,9 +15,7 @@ quarkus:
     application-type: service
     token:
       issuer: http://localhost:${KEYCLOAK_PORT}/realms/${KEYCLOAK_REALM}
-    authentication:
-      jwt:
-        required: true
+      principal-claim: sub
   s3:
     endpoint-override: http://minio:${S3_PORT}
     path-style-access: true

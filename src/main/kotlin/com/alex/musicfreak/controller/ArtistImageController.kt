@@ -1,9 +1,6 @@
 package com.alex.musicfreak.controller
 
 import com.alex.musicfreak.service.ArtistImageService
-import com.alex.musicfreak.util.Answer
-import com.alex.musicfreak.util.Resource
-import com.alex.musicfreak.util.Role
 import jakarta.annotation.security.RolesAllowed
 import jakarta.ws.rs.Consumes
 import jakarta.ws.rs.DELETE

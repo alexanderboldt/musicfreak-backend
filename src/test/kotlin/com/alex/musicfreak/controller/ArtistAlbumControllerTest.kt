@@ -4,8 +4,6 @@ import com.alex.musicfreak.Fixtures
 import com.alex.musicfreak.domain.Album
 import com.alex.musicfreak.domain.Artist
 import com.alex.musicfreak.extension.asAlbums
-import com.alex.musicfreak.util.Resource
-import com.alex.musicfreak.util.Role
 import com.alex.musicfreak.util.shouldBeAlbums
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldNotBeNull

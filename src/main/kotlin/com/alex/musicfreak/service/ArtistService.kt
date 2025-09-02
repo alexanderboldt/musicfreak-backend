@@ -25,14 +25,15 @@ class ArtistService(
             Instant.now(),
             Instant.now()
         )
-
         return artistRepository.save(entity).toDomain()
     }
 
     // read
 
     @Transactional
-    fun readAll(sort: Sort) = artistRepository.listAll(sort).map { it.toDomain() }
+    fun readAll(sort: Sort): List<Artist> {
+        return artistRepository.listAll(sort).map { it.toDomain() }
+    }
 
     @Transactional
     fun read(id: Long) = artistRepository.findByIdOrThrowBadRequest(id).toDomain()

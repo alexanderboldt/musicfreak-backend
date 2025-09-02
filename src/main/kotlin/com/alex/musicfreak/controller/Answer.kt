@@ -1,4 +1,4 @@
-package com.alex.musicfreak.util
+package com.alex.musicfreak.controller
 
 import com.alex.musicfreak.domain.Error
 import jakarta.ws.rs.core.HttpHeaders
@@ -13,7 +13,7 @@ object Answer {
      * Sends a response with status-code 200.
      *
      * @param entity the entity to show as a result.
-     * @return the response as a [Response].
+     * @return the response as a [jakarta.ws.rs.core.Response].
      */
     fun ok(entity: Any): Response = Response.ok(entity).build()
 

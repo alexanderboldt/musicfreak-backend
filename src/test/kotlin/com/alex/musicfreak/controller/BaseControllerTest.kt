@@ -7,7 +7,6 @@ import com.alex.musicfreak.extension.asAlbum
 import com.alex.musicfreak.extension.asArtist
 import com.alex.musicfreak.repository.AlbumRepository
 import com.alex.musicfreak.repository.ArtistRepository
-import com.alex.musicfreak.util.Resource
 import io.restassured.RestAssured
 import io.restassured.http.ContentType
 import io.restassured.module.kotlin.extensions.Extract

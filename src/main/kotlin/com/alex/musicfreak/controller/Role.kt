@@ -1,4 +1,4 @@
-package com.alex.musicfreak.util
+package com.alex.musicfreak.controller
 
 /**
  * Contains the roles that will be used in keycloak and for the routes.

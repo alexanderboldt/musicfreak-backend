@@ -2,9 +2,6 @@ package com.alex.musicfreak.controller
 
 import com.alex.musicfreak.domain.Album
 import com.alex.musicfreak.service.AlbumService
-import com.alex.musicfreak.util.Answer
-import com.alex.musicfreak.util.Resource
-import com.alex.musicfreak.util.Role
 import com.alex.musicfreak.util.convertToSort
 import jakarta.annotation.security.RolesAllowed
 import jakarta.ws.rs.Consumes

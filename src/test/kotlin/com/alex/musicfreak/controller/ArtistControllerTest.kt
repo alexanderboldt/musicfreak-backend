@@ -6,8 +6,6 @@ import com.alex.musicfreak.extension.asArtist
 import com.alex.musicfreak.extension.asArtists
 import com.alex.musicfreak.testresource.MinioTestResource
 import com.alex.musicfreak.util.ARTIST_ID
-import com.alex.musicfreak.util.Resource
-import com.alex.musicfreak.util.Role
 import com.alex.musicfreak.util.shouldBeArtist
 import com.alex.musicfreak.util.shouldBeArtists
 import io.kotest.assertions.throwables.shouldThrow

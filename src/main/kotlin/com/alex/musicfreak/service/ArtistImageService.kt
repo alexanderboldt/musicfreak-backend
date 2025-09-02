@@ -1,7 +1,7 @@
 package com.alex.musicfreak.service
 
 import com.alex.musicfreak.domain.Artist
-import com.alex.musicfreak.exception.BadRequestException
+import com.alex.musicfreak.util.BadRequestException
 import com.alex.musicfreak.mapper.toDomain
 import com.alex.musicfreak.repository.ArtistRepository
 import jakarta.enterprise.context.ApplicationScoped

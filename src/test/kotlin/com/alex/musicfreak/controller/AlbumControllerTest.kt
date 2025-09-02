@@ -7,8 +7,6 @@ import com.alex.musicfreak.service.S3Bucket
 import com.alex.musicfreak.extension.asAlbum
 import com.alex.musicfreak.extension.asAlbums
 import com.alex.musicfreak.util.ALBUM_ID
-import com.alex.musicfreak.util.Resource
-import com.alex.musicfreak.util.Role
 import com.alex.musicfreak.util.shouldBeAlbum
 import com.alex.musicfreak.util.shouldBeAlbums
 import io.kotest.assertions.throwables.shouldThrow
