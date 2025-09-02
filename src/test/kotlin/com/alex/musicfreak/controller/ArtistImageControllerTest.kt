@@ -75,7 +75,7 @@ class ArtistImageControllerTest : BaseControllerTest() {
     @Test
     fun `should not download an image and throw bad-request with invalid id`() {
         // precondition: upload an image
-        uploadArtistImage(artistPosted.id!!)
+        uploadArtistImage(artistPosted.id)
 
         When {
             get(Resource.Path.ARTIST_IMAGE, 100)
@@ -88,7 +88,7 @@ class ArtistImageControllerTest : BaseControllerTest() {
     @Test
     fun `should download an image and with valid id`() {
         // precondition: upload an image
-        uploadArtistImage(artistPosted.id!!)
+        uploadArtistImage(artistPosted.id)
 
         val bytes = When {
             get(Resource.Path.ARTIST_IMAGE, artistPosted.id)
@@ -110,7 +110,7 @@ class ArtistImageControllerTest : BaseControllerTest() {
     @Test
     fun `should not delete an image and throw bad-request with invalid id`() {
         // precondition: upload an image
-        uploadArtistImage(artistPosted.id!!)
+        uploadArtistImage(artistPosted.id)
 
         When {
             delete(Resource.Path.ARTIST_IMAGE, 100)
@@ -131,7 +131,7 @@ class ArtistImageControllerTest : BaseControllerTest() {
     @Test
     fun `should delete an image and with valid id and existing image`() {
         // precondition: upload an image
-        uploadArtistImage(artistPosted.id!!)
+        uploadArtistImage(artistPosted.id)
 
         When {
             delete(Resource.Path.ARTIST_IMAGE, artistPosted.id)

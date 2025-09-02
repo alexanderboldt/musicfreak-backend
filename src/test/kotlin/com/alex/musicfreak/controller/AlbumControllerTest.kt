@@ -39,7 +39,7 @@ class AlbumControllerTest : BaseControllerTest() {
     fun beforeEach() {
         // precondition to all tests: post an album
         artistPosted = postArtist(Fixtures.Artist.Domain.korn)
-        albumWithArtistId = Fixtures.Album.Domain.issues.copy(artistId = artistPosted.id!!)
+        albumWithArtistId = Fixtures.Album.Domain.issues.copy(artistId = artistPosted.id)
     }
 
     // region create
@@ -163,7 +163,7 @@ class AlbumControllerTest : BaseControllerTest() {
         postAlbum(albumWithArtistId)
 
         Given {
-            body(Fixtures.Album.Domain.untouchables.copy(artistId = artistPosted.id!!))
+            body(Fixtures.Album.Domain.untouchables.copy(artistId = artistPosted.id))
         } When {
             put(Resource.Path.ALBUM_ID, 100)
         } Then {
@@ -187,7 +187,7 @@ class AlbumControllerTest : BaseControllerTest() {
     @Test
     fun `should update and return an album with valid id`() {
         val albumPosted = postAlbum(albumWithArtistId)
-        val albumUpdate = Fixtures.Album.Domain.untouchables.copy(artistId = artistPosted.id!!)
+        val albumUpdate = Fixtures.Album.Domain.untouchables.copy(artistId = artistPosted.id)
 
         val album = Given {
             body(albumUpdate)
@@ -270,7 +270,7 @@ class AlbumControllerTest : BaseControllerTest() {
 
     @Test
     fun `should delete an album and an image with valid id`() {
-        val albumPosted = uploadAlbumImage(postAlbum(albumWithArtistId).id!!)
+        val albumPosted = uploadAlbumImage(postAlbum(albumWithArtistId).id)
 
         When {
             delete(Resource.Path.ALBUM_ID, albumPosted.id)

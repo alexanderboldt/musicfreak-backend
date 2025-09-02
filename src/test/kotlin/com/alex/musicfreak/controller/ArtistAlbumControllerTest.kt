@@ -31,7 +31,7 @@ class ArtistAlbumControllerTest : BaseControllerTest() {
     @Transactional
     fun beforeEach() {
         artistPosted = postArtist(Fixtures.Artist.Domain.korn)
-        albumWithArtistId = Fixtures.Album.Domain.issues.copy(artistId = artistPosted.id!!)
+        albumWithArtistId = Fixtures.Album.Domain.issues.copy(artistId = artistPosted.id)
     }
 
     // region read all

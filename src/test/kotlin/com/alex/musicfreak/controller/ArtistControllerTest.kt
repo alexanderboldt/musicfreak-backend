@@ -194,7 +194,7 @@ class ArtistControllerTest : BaseControllerTest() {
     @Test
     fun `should delete an artist and an image with valid id`() {
         // precondition: post an artist and upload an image
-        val artistPosted = uploadArtistImage(postArtist(Fixtures.Artist.Domain.korn).id!!)
+        val artistPosted = uploadArtistImage(postArtist(Fixtures.Artist.Domain.korn).id)
 
         // execute the delete and verify
         When {

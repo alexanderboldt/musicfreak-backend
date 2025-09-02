@@ -30,7 +30,7 @@ object Fixtures {
     object Album {
         object Domain {
             val issues = Album(
-                null,
+                0,
                 10,
                 "Issues",
                 1999,
@@ -41,7 +41,7 @@ object Fixtures {
             )
 
             val untouchables = Album(
-                null,
+                0,
                 10,
                 "Untouchables",
                 2002,

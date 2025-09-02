@@ -36,7 +36,7 @@ class AlbumImageControllerTest : BaseControllerTest() {
     fun beforeEach() {
         // precondition to all tests: post an artist and the corresponding album
         artistPosted = postArtist(Fixtures.Artist.Domain.korn)
-        albumPosted = postAlbum(Fixtures.Album.Domain.issues.copy(artistId = artistPosted.id!!))
+        albumPosted = postAlbum(Fixtures.Album.Domain.issues.copy(artistId = artistPosted.id))
     }
 
     // region upload image
@@ -78,7 +78,7 @@ class AlbumImageControllerTest : BaseControllerTest() {
     @Test
     fun `should not download an image and throw bad-request with invalid id`() {
         // precondition: upload an image
-        uploadAlbumImage(albumPosted.id!!)
+        uploadAlbumImage(albumPosted.id)
 
         When {
             get(Resource.Path.ALBUM_IMAGE, 100)
@@ -91,7 +91,7 @@ class AlbumImageControllerTest : BaseControllerTest() {
     @Test
     fun `should download an image and with valid id`() {
         // precondition: upload an image
-        uploadAlbumImage(albumPosted.id!!)
+        uploadAlbumImage(albumPosted.id)
 
         val bytes = When {
             get(Resource.Path.ALBUM_IMAGE, albumPosted.id)
@@ -113,7 +113,7 @@ class AlbumImageControllerTest : BaseControllerTest() {
     @Test
     fun `should not delete an image and throw bad-request with invalid id`() {
         // precondition: upload an image
-        uploadAlbumImage(albumPosted.id!!)
+        uploadAlbumImage(albumPosted.id)
 
         When {
             delete(Resource.Path.ALBUM_IMAGE, 100)
@@ -134,7 +134,7 @@ class AlbumImageControllerTest : BaseControllerTest() {
     @Test
     fun `should delete an image and with valid id and existing image`() {
         // precondition: upload an image
-        uploadAlbumImage(albumPosted.id!!)
+        uploadAlbumImage(albumPosted.id)
 
         When {
             delete(Resource.Path.ALBUM_IMAGE, albumPosted.id)
