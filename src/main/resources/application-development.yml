@@ -13,7 +13,8 @@ quarkus:
   oidc:
     auth-server-url: http://localhost:${KEYCLOAK_PORT}/realms/${KEYCLOAK_REALM}
     application-type: service
-    token.principal-claim: sub
+    token:
+      principal-claim: sub
   s3:
     endpoint-override: http://localhost:${S3_PORT}
     path-style-access: true
