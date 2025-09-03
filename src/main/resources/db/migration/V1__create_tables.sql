@@ -1,5 +1,6 @@
 create table if not exists artistentity (
     id serial primary key,
+    userId varchar(255) not null,
     name varchar(255) not null,
     filename varchar(255),
     createdAt timestamp not null,
@@ -10,6 +11,7 @@ CREATE SEQUENCE artistentity_seq START 1 INCREMENT 1;
 
 create table if not exists albumentity (
     id serial primary key,
+    userId varchar(255) not null,
     artistid int not null,
     name varchar(255) not null,
     year int not null,
