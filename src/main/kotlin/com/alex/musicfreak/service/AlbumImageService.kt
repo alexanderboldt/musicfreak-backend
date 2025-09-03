@@ -8,6 +8,7 @@ import jakarta.enterprise.context.ApplicationScoped
 import jakarta.transaction.Transactional
 import org.jboss.resteasy.reactive.multipart.FileUpload
 import java.io.InputStream
+import java.time.Instant
 
 @ApplicationScoped
 class AlbumImageService(
@@ -27,10 +28,12 @@ class AlbumImageService(
         // 2. upload the new image and get the filename
         val filename = s3Service.uploadFile(S3Bucket.ALBUM, image.uploadedFile(), image.fileName())
 
-        // 3. update the album with the filename
-        albumSaved.filename = filename
-
-        return albumSaved.toDomain()
+        // 3. update the album and return it
+        return albumSaved
+            .also {
+                it.filename = filename
+                it.updatedAt = Instant.now()
+            }.toDomain()
     }
 
     fun downloadImage(id: Long): Pair<InputStream, String> {
@@ -50,7 +53,10 @@ class AlbumImageService(
         // delete the file
         s3Service.deleteFile(S3Bucket.ALBUM, filename)
 
-        // update the album by deleting the filename
-        albumSaved.filename = null
+        // update the album
+        albumSaved.also {
+            it.filename = null
+            it.updatedAt = Instant.now()
+        }
     }
 }
