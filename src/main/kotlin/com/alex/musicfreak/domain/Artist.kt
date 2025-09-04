@@ -4,6 +4,7 @@ import java.time.Instant
 
 data class Artist(
     val id: Long,
+    val userId: String?,
     val name: String,
     val filename: String?,
     val createdAt: Instant?,

@@ -12,6 +12,8 @@ data class AlbumEntity(
     @GeneratedValue
     val id: Long,
 
+    val userId: String,
+
     var artistId: Long,
 
     var name: String,

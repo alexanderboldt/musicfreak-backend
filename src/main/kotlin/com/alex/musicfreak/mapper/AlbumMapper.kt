@@ -7,6 +7,7 @@ import com.alex.musicfreak.entity.AlbumEntity
 
 fun AlbumEntity.toDomain() = Album(
     id,
+    userId,
     artistId,
     name,
     year,

@@ -4,6 +4,7 @@ import java.time.Instant
 
 data class Album(
     val id: Long,
+    val userId: String?,
     val artistId: Long,
     val name: String,
     val year: Int,

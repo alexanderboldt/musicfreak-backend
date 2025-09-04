@@ -12,6 +12,8 @@ data class ArtistEntity(
     @GeneratedValue
     val id: Long,
 
+    val userId: String,
+
     var name: String,
 
     var filename: String?,

@@ -9,6 +9,7 @@ object Fixtures {
         object Domain {
             val korn = Artist(
                 0,
+                "",
                 "Korn",
                 null,
                 Instant.now(),
@@ -17,6 +18,7 @@ object Fixtures {
 
             val slipknot = Artist(
                 0,
+                "",
                 "Slipknot",
                 null,
                 Instant.now(),
@@ -31,6 +33,7 @@ object Fixtures {
         object Domain {
             val issues = Album(
                 0,
+                "",
                 10,
                 "Issues",
                 1999,
@@ -42,6 +45,7 @@ object Fixtures {
 
             val untouchables = Album(
                 0,
+                "",
                 10,
                 "Untouchables",
                 2002,
