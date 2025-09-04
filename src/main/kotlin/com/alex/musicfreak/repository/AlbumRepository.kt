@@ -1,20 +1,11 @@
 package com.alex.musicfreak.repository
 
 import com.alex.musicfreak.entity.AlbumEntity
-import com.alex.musicfreak.util.BadRequestException
-import io.quarkus.hibernate.orm.panache.PanacheRepository
 import io.quarkus.panache.common.Sort
 import jakarta.enterprise.context.ApplicationScoped
 
 @ApplicationScoped
-class AlbumRepository : PanacheRepository<AlbumEntity> {
+class AlbumRepository : BaseRepository<AlbumEntity> {
 
-    fun findByIdOrThrowBadRequest(id: Long) = findById(id) ?: throw BadRequestException()
-
-    fun save(entity: AlbumEntity): AlbumEntity {
-        persist(entity)
-        return entity
-    }
-
-    fun listByArtistId(artistId: Long, sort: Sort): List<AlbumEntity> = list("artistId", sort, artistId)
+    fun findByArtistId(userId: String, artistId: Long, sort: Sort): List<AlbumEntity> = list("userId = ?1 and artistId = ?2", sort, userId, artistId)
 }
