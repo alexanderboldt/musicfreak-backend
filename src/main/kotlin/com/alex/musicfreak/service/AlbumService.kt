@@ -13,6 +13,7 @@ import java.time.Instant
 @ApplicationScoped
 class AlbumService(
     private val s3Service: S3Service,
+    private val userService: UserService,
     private val albumRepository: AlbumRepository,
     private val artistRepository: ArtistRepository
 ) {
@@ -20,10 +21,11 @@ class AlbumService(
 
     @Transactional
     fun create(album: Album): Album {
-        artistRepository.existsOrThrowBadRequest(album.artistId)
+        artistRepository.existsOrThrow(album.artistId, userService.userId)
 
         val entity = AlbumEntity(
             0,
+            userService.userId,
             album.artistId,
             album.name,
             album.year,
@@ -39,19 +41,23 @@ class AlbumService(
     // read
 
     @Transactional
-    fun readAll(sort: Sort) = albumRepository.listAll(sort).map { it.toDomain() }
+    fun readAll(sort: Sort) = albumRepository
+        .findAll(userService.userId, sort)
+        .map { it.toDomain() }
 
     @Transactional
-    fun read(id: Long) = albumRepository.findByIdOrThrowBadRequest(id).toDomain()
+    fun read(id: Long) = albumRepository
+        .findOrThrow(id, userService.userId)
+        .toDomain()
 
     // update
 
     @Transactional
     fun update(id: Long, albumUpdate: Album): Album {
-        artistRepository.existsOrThrowBadRequest(albumUpdate.artistId)
+        artistRepository.existsOrThrow(albumUpdate.artistId, userService.userId)
 
         return albumRepository
-            .findByIdOrThrowBadRequest(id)
+            .findOrThrow(id, userService.userId)
             .apply {
                 artistId = albumUpdate.artistId
                 name = albumUpdate.name
@@ -70,7 +76,7 @@ class AlbumService(
 
     @Transactional
     fun delete(id: Long) {
-        val albumSaved = albumRepository.findByIdOrThrowBadRequest(id)
+        val albumSaved = albumRepository.findOrThrow(id, userService.userId)
 
         // delete an existing image from the storage and the album
         albumSaved.filename?.also { s3Service.deleteFile(S3Bucket.ALBUM, it) }

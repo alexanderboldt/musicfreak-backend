@@ -10,14 +10,17 @@ import jakarta.transaction.Transactional
 
 @ApplicationScoped
 class ArtistAlbumService(
+    private val userService: UserService,
     private val albumRepository: AlbumRepository,
     private val artistRepository: ArtistRepository
 ) {
 
     @Transactional
     fun readAll(artistId: Long, sort: Sort): List<Album> {
-        artistRepository.existsOrThrowBadRequest(artistId)
+        artistRepository.existsOrThrow(artistId, userService.userId)
 
-        return albumRepository.listByArtistId(artistId, sort).map { it.toDomain() }
+        return albumRepository
+            .findByArtistId(userService.userId, artistId, sort)
+            .map { it.toDomain() }
     }
 }

@@ -12,6 +12,7 @@ import java.time.Instant
 @ApplicationScoped
 class ArtistService(
     private val s3Service: S3Service,
+    private val userService: UserService,
     private val artistRepository: ArtistRepository
 ) {
     // create
@@ -20,6 +21,7 @@ class ArtistService(
     fun create(artist: Artist): Artist {
         val entity = ArtistEntity(
             0,
+            userService.userId,
             artist.name,
             null,
             Instant.now(),
@@ -31,30 +33,30 @@ class ArtistService(
     // read
 
     @Transactional
-    fun readAll(sort: Sort): List<Artist> {
-        return artistRepository.listAll(sort).map { it.toDomain() }
-    }
+    fun readAll(sort: Sort) = artistRepository
+        .findAll(userService.userId, sort)
+        .map { it.toDomain() }
 
     @Transactional
-    fun read(id: Long) = artistRepository.findByIdOrThrowBadRequest(id).toDomain()
+    fun read(id: Long) = artistRepository
+        .findOrThrow(id, userService.userId)
+        .toDomain()
 
     // update
 
     @Transactional
-    fun update(id: Long, artistUpdate: Artist): Artist {
-        return artistRepository
-            .findByIdOrThrowBadRequest(id)
-            .apply {
-                name = artistUpdate.name
-                updatedAt = Instant.now()
-            }.toDomain()
-    }
+    fun update(id: Long, artistUpdate: Artist) = artistRepository
+        .findOrThrow(id, userService.userId)
+        .apply {
+            name = artistUpdate.name
+            updatedAt = Instant.now()
+        }.toDomain()
 
     // delete
 
     @Transactional
     fun delete(id: Long) {
-        val artistSaved = artistRepository.findByIdOrThrowBadRequest(id)
+        val artistSaved = artistRepository.findOrThrow(id, userService.userId)
 
         // delete an existing image from the storage and the artist
         artistSaved.filename?.also { s3Service.deleteFile(S3Bucket.ARTIST, it) }

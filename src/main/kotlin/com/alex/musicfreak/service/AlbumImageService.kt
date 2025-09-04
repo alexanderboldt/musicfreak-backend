@@ -13,13 +13,14 @@ import java.time.Instant
 @ApplicationScoped
 class AlbumImageService(
     private val s3Service: S3Service,
+    private val userService: UserService,
     private val albumRepository: AlbumRepository
 ) {
 
     @Transactional
     fun uploadImage(id: Long, image: FileUpload?): Album {
         // check if the album and the image are existing
-        val albumSaved = albumRepository.findByIdOrThrowBadRequest(id)
+        val albumSaved = albumRepository.findOrThrow(id, userService.userId)
         if (image == null || image.uploadedFile() == null) throw BadRequestException()
 
         // 1. if there is already an image saved, delete it first
@@ -38,7 +39,7 @@ class AlbumImageService(
 
     fun downloadImage(id: Long): Pair<InputStream, String> {
         // check if the album and image are existing
-        val filename = albumRepository.findByIdOrThrowBadRequest(id).filename ?: throw BadRequestException()
+        val filename = albumRepository.findOrThrow(id, userService.userId).filename ?: throw BadRequestException()
 
         // download the file and return it with the filename
         return s3Service.downloadFile(S3Bucket.ALBUM, filename) to filename
@@ -47,7 +48,7 @@ class AlbumImageService(
     @Transactional
     fun deleteImage(id: Long) {
         // check if the album and image are existing
-        val albumSaved = albumRepository.findByIdOrThrowBadRequest(id)
+        val albumSaved = albumRepository.findOrThrow(id, userService.userId)
         val filename = albumSaved.filename ?: throw BadRequestException()
 
         // delete the file
