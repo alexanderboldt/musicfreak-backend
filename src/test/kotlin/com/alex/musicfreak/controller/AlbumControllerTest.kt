@@ -35,7 +35,7 @@ class AlbumControllerTest : BaseControllerTest() {
     @BeforeEach
     @Transactional
     fun beforeEach() {
-        // precondition to all tests: post an album
+        // precondition to all tests: post an artist
         artistPosted = postArtist(Fixtures.Artist.Domain.korn)
         albumWithArtistId = Fixtures.Album.Domain.issues.copy(artistId = artistPosted.id)
     }

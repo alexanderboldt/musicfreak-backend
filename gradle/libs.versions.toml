@@ -5,6 +5,7 @@ quarkus-version = "3.25.3"
 aws-s3-version = "2.32.29"
 
 # test versions
+mockito-kotlin-version = "6.0.0"
 kotest-version = "6.0.0"
 rest-assured-version = "5.5.5"
 testcontainer-version = "1.21.3"
@@ -30,7 +31,10 @@ aws-s3 = { group = "software.amazon.awssdk", name = "s3", version.ref = "aws-s3-
 
 # test libraries
 quarkus-junit5 = { group = "io.quarkus", name = "quarkus-junit5", version.ref = "quarkus-version" }
+quarkus-junit5-mockito = { group = "io.quarkus", name = "quarkus-junit5-mockito", version.ref = "quarkus-version" }
 quarkus-test-security = { group = "io.quarkus", name = "quarkus-test-security", version.ref = "quarkus-version" }
+
+mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockito-kotlin-version" }
 
 kotest-runner-junit = { group = "io.kotest", name = "kotest-runner-junit5", version.ref = "kotest-version" }
 kotest-assertions-core = { group = "io.kotest", name = "kotest-assertions-core", version.ref = "kotest-version" }

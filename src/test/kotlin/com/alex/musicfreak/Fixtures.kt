@@ -5,6 +5,10 @@ import com.alex.musicfreak.domain.Album
 import java.time.Instant
 
 object Fixtures {
+    object User {
+        const val USER_ID = "12345"
+    }
+
     object Artist {
         object Domain {
             val korn = Artist(

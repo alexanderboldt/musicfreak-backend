@@ -1,5 +1,6 @@
 package com.alex.musicfreak.util
 
+import com.alex.musicfreak.Fixtures
 import com.alex.musicfreak.domain.Album
 import com.alex.musicfreak.domain.Artist
 import io.kotest.matchers.comparables.shouldBeGreaterThan
@@ -15,9 +16,8 @@ infix fun List<Artist>.shouldBeArtists(expected: List<Artist>) {
 }
 
 infix fun Artist.shouldBeArtist(expected: Artist) {
-    id.shouldNotBeNull()
     id shouldBeGreaterThan 0
-    name.shouldNotBeNull()
+    userId shouldBe Fixtures.User.USER_ID
     name shouldBe expected.name
     filename shouldBe expected.filename
     createdAt.shouldNotBeNull()
@@ -35,15 +35,11 @@ infix fun List<Album>.shouldBeAlbums(expected: List<Album>) {
 }
 
 infix fun Album.shouldBeAlbum(expected: Album) {
-    id.shouldNotBeNull()
     id shouldBeGreaterThan 0
-    artistId.shouldNotBeNull()
+    userId shouldBe Fixtures.User.USER_ID
     artistId shouldBe expected.artistId
-    name.shouldNotBeNull()
     name shouldBe expected.name
-    year.shouldNotBeNull()
     year shouldBe expected.year
-    tracks.shouldNotBeNull()
     tracks shouldBe expected.tracks
     filename shouldBe expected.filename
     createdAt.shouldNotBeNull()

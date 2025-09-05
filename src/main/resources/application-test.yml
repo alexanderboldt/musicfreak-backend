@@ -7,6 +7,8 @@ quarkus:
     db-kind: postgresql
     username: test
     password: test
+    devservices:
+      image-name: postgres:17.4
   flyway:
     enabled: true
     migrate-at-start: true

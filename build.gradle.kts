@@ -42,7 +42,10 @@ dependencies {
 
     // test libraries
     testImplementation(libs.quarkus.junit5)
+    testImplementation(libs.quarkus.junit5.mockito)
     testImplementation(libs.quarkus.test.security)
+
+    testImplementation(libs.mockito.kotlin)
 
     testImplementation(libs.kotest.runner.junit)
     testImplementation(libs.kotest.assertions.core)
