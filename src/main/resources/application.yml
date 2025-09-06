@@ -1,6 +1,6 @@
 quarkus:
   http:
-    port: ${APP_PORT}
+    port: 4000
     root-path: /api
   log:
     level: INFO
