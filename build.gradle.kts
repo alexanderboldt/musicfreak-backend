@@ -58,7 +58,6 @@ dependencies {
 }
 
 group = "com.alex"
-version = "5.1.0"
 
 tasks.withType<Test> {
     systemProperty("java.util.logging.manager", "org.jboss.logmanager.LogManager")
