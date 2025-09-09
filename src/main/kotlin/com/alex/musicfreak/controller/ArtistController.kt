@@ -1,6 +1,6 @@
 package com.alex.musicfreak.controller
 
-import com.alex.musicfreak.domain.Artist
+import com.alex.musicfreak.domain.ArtistRequest
 import com.alex.musicfreak.service.ArtistService
 import com.alex.musicfreak.util.convertToSort
 import jakarta.annotation.security.RolesAllowed
@@ -24,7 +24,7 @@ class ArtistController(private val artistService: ArtistService) {
     // create
 
     @POST
-    fun post(artist: Artist) = Answer.created(artistService.create(artist))
+    fun post(artist: ArtistRequest) = Answer.created(artistService.create(artist))
 
     // read
 
@@ -39,7 +39,7 @@ class ArtistController(private val artistService: ArtistService) {
 
     @PUT
     @Path(Resource.Path.ID)
-    fun update(@PathParam(Resource.Param.ID) id: Long, artist: Artist) = artistService.update(id, artist)
+    fun update(@PathParam(Resource.Param.ID) id: Long, artist: ArtistRequest) = artistService.update(id, artist)
 
     // delete
 

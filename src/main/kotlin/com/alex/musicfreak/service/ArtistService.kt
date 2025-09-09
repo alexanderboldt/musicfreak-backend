@@ -1,6 +1,7 @@
 package com.alex.musicfreak.service
 
-import com.alex.musicfreak.domain.Artist
+import com.alex.musicfreak.domain.ArtistResponse
+import com.alex.musicfreak.domain.ArtistRequest
 import com.alex.musicfreak.mapper.toDomain
 import com.alex.musicfreak.entity.ArtistEntity
 import com.alex.musicfreak.repository.ArtistRepository
@@ -18,7 +19,7 @@ class ArtistService(
     // create
 
     @Transactional
-    fun create(artist: Artist): Artist {
+    fun create(artist: ArtistRequest): ArtistResponse {
         val entity = ArtistEntity(
             0,
             userService.userId,
@@ -45,10 +46,10 @@ class ArtistService(
     // update
 
     @Transactional
-    fun update(id: Long, artistUpdate: Artist) = artistRepository
+    fun update(id: Long, artist: ArtistRequest) = artistRepository
         .findOrThrow(id, userService.userId)
         .apply {
-            name = artistUpdate.name
+            name = artist.name
             updatedAt = Instant.now()
         }.toDomain()
 

@@ -1,6 +1,6 @@
 package com.alex.musicfreak.service
 
-import com.alex.musicfreak.domain.Artist
+import com.alex.musicfreak.domain.ArtistResponse
 import com.alex.musicfreak.util.BadRequestException
 import com.alex.musicfreak.mapper.toDomain
 import com.alex.musicfreak.repository.ArtistRepository
@@ -18,7 +18,7 @@ class ArtistImageService(
 ) {
 
     @Transactional
-    fun uploadImage(id: Long, image: FileUpload?): Artist {
+    fun uploadImage(id: Long, image: FileUpload?): ArtistResponse {
         // check if the artist and the image are existing
         val artistSaved = artistRepository.findOrThrow(id, userService.userId)
         if (image == null || image.uploadedFile() == null) throw BadRequestException()
