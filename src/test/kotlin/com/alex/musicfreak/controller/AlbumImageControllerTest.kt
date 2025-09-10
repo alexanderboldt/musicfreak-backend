@@ -1,7 +1,7 @@
 package com.alex.musicfreak.controller
 
 import com.alex.musicfreak.Fixtures
-import com.alex.musicfreak.domain.Album
+import com.alex.musicfreak.domain.AlbumResponse
 import com.alex.musicfreak.domain.ArtistResponse
 import com.alex.musicfreak.util.asAlbum
 import com.alex.musicfreak.testresource.MinioTestResource
@@ -27,14 +27,14 @@ import org.junit.jupiter.api.Test
 class AlbumImageControllerTest : BaseControllerTest() {
 
     private lateinit var artistPosted: ArtistResponse
-    private lateinit var albumPosted: Album
+    private lateinit var albumPosted: AlbumResponse
 
     @BeforeEach
     @Transactional
     fun beforeEach() {
         // precondition to all tests: post an artist and the corresponding album
         artistPosted = postArtist(Fixtures.Artist.korn)
-        albumPosted = postAlbum(Fixtures.Album.Domain.issues.copy(artistId = artistPosted.id))
+        albumPosted = postAlbum(Fixtures.Album.issues.copy(artistId = artistPosted.id))
     }
 
     // region upload image
@@ -53,7 +53,7 @@ class AlbumImageControllerTest : BaseControllerTest() {
 
     @Test
     fun `should upload image and return ok with valid id`() {
-        val album = Given {
+        val albumResponse = Given {
             multiPart("image", image)
             contentType(ContentType.MULTIPART)
         } When {
@@ -64,9 +64,9 @@ class AlbumImageControllerTest : BaseControllerTest() {
             asAlbum()
         }
 
-        album.shouldNotBeNull()
-        album.filename.shouldNotBeNull()
-        album.filename.shouldNotBeBlank()
+        albumResponse.shouldNotBeNull()
+        albumResponse.filename.shouldNotBeNull()
+        albumResponse.filename.shouldNotBeBlank()
     }
 
     // endregion

@@ -1,7 +1,8 @@
 package com.alex.musicfreak.controller
 
 import com.alex.musicfreak.Fixtures
-import com.alex.musicfreak.domain.Album
+import com.alex.musicfreak.domain.AlbumRequest
+import com.alex.musicfreak.domain.AlbumResponse
 import com.alex.musicfreak.domain.ArtistRequest
 import com.alex.musicfreak.domain.ArtistResponse
 import com.alex.musicfreak.service.S3Service
@@ -60,7 +61,7 @@ abstract class BaseControllerTest {
         deleteOnExit()
     }
 
-    protected fun postAlbum(album: Album): Album {
+    protected fun postAlbum(album: AlbumRequest): AlbumResponse {
         return Given {
             body(album)
         } When {
@@ -84,7 +85,7 @@ abstract class BaseControllerTest {
         }
     }
 
-    protected fun uploadAlbumImage(albumId: Long): Album {
+    protected fun uploadAlbumImage(albumId: Long): AlbumResponse {
         return Given {
             multiPart("image", image)
             contentType(ContentType.MULTIPART)

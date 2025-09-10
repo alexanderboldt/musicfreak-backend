@@ -1,7 +1,8 @@
 package com.alex.musicfreak.util
 
 import com.alex.musicfreak.Fixtures
-import com.alex.musicfreak.domain.Album
+import com.alex.musicfreak.domain.AlbumRequest
+import com.alex.musicfreak.domain.AlbumResponse
 import com.alex.musicfreak.domain.ArtistRequest
 import com.alex.musicfreak.domain.ArtistResponse
 import io.kotest.matchers.comparables.shouldBeGreaterThan
@@ -30,20 +31,20 @@ infix fun ArtistResponse.shouldBeArtist(expected: ArtistRequest) {
 
 // region album
 
-infix fun List<Album>.shouldBeAlbums(expected: List<Album>) {
+infix fun List<AlbumResponse>.shouldBeAlbums(expected: List<AlbumRequest>) {
     zip(expected).forEach { (albumActual, albumExpected) ->
         albumActual shouldBeAlbum albumExpected
     }
 }
 
-infix fun Album.shouldBeAlbum(expected: Album) {
+infix fun AlbumResponse.shouldBeAlbum(expected: AlbumRequest) {
     id shouldBeGreaterThan 0
     userId shouldBe Fixtures.User.USER_ID
     artistId shouldBe expected.artistId
     name shouldBe expected.name
     year shouldBe expected.year
     tracks shouldBe expected.tracks
-    filename shouldBe expected.filename
+    filename.shouldBeNull()
     createdAt.shouldNotBeNull()
     updatedAt.shouldNotBeNull()
 }

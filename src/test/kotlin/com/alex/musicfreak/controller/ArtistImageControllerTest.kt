@@ -50,7 +50,7 @@ class ArtistImageControllerTest : BaseControllerTest() {
 
     @Test
     fun `should upload image and return ok with valid id`() {
-        val artist = Given {
+        val artistResponse = Given {
             multiPart("image", image)
             contentType(ContentType.MULTIPART)
         } When {
@@ -61,9 +61,9 @@ class ArtistImageControllerTest : BaseControllerTest() {
             asArtist()
         }
 
-        artist.shouldNotBeNull()
-        artist.filename.shouldNotBeNull()
-        artist.filename.shouldNotBeBlank()
+        artistResponse.shouldNotBeNull()
+        artistResponse.filename.shouldNotBeNull()
+        artistResponse.filename.shouldNotBeBlank()
     }
 
     // endregion

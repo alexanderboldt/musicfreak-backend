@@ -1,7 +1,7 @@
 package com.alex.musicfreak.controller
 
 import com.alex.musicfreak.Fixtures
-import com.alex.musicfreak.domain.Album
+import com.alex.musicfreak.domain.AlbumRequest
 import com.alex.musicfreak.domain.ArtistResponse
 import com.alex.musicfreak.util.asAlbums
 import com.alex.musicfreak.util.shouldBeAlbums
@@ -23,14 +23,15 @@ import org.junit.jupiter.api.Test
 class ArtistAlbumControllerTest : BaseControllerTest() {
 
     private lateinit var artistPosted: ArtistResponse
-    private lateinit var albumWithArtistId: Album
+
+    private val Fixtures.Album.issuesWithArtistId: AlbumRequest
+        get() = Fixtures.Album.issues.copy(artistId = artistPosted.id)
 
     @BeforeEach
     @Transactional
     fun beforeEach() {
         // precondition to all tests: post an artist
         artistPosted = postArtist(Fixtures.Artist.korn)
-        albumWithArtistId = Fixtures.Album.Domain.issues.copy(artistId = artistPosted.id)
     }
 
     // region read all
@@ -60,7 +61,7 @@ class ArtistAlbumControllerTest : BaseControllerTest() {
 
     @Test
     fun `should return a list with one album`() {
-        postAlbum(albumWithArtistId)
+        postAlbum(Fixtures.Album.issuesWithArtistId)
 
         val albums = When {
             get(Resource.Path.ARTIST_ALBUM, artistPosted.id)
@@ -71,12 +72,12 @@ class ArtistAlbumControllerTest : BaseControllerTest() {
         }
 
         albums shouldHaveSize 1
-        albums shouldBeAlbums listOf(albumWithArtistId)
+        albums shouldBeAlbums listOf(Fixtures.Album.issuesWithArtistId)
     }
 
     @Test
     fun `should return a list with ten albums`() {
-        val albumsRequest = (1..10).map { albumWithArtistId }
+        val albumsRequest = (1..10).map { Fixtures.Album.issuesWithArtistId }
 
         albumsRequest.forEach { postAlbum(it) }
 

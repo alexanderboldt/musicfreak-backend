@@ -1,7 +1,7 @@
 package com.alex.musicfreak.controller
 
 import com.alex.musicfreak.Fixtures
-import com.alex.musicfreak.domain.Album
+import com.alex.musicfreak.domain.AlbumRequest
 import com.alex.musicfreak.domain.ArtistResponse
 import com.alex.musicfreak.service.S3Bucket
 import com.alex.musicfreak.util.asAlbum
@@ -30,14 +30,15 @@ import software.amazon.awssdk.services.s3.model.NoSuchKeyException
 class AlbumControllerTest : BaseControllerTest() {
 
     private lateinit var artistPosted: ArtistResponse
-    private lateinit var albumWithArtistId: Album
+
+    private val Fixtures.Album.issuesWithArtistId: AlbumRequest
+        get() = Fixtures.Album.issues.copy(artistId = artistPosted.id)
 
     @BeforeEach
     @Transactional
     fun beforeEach() {
         // precondition to all tests: post an artist
         artistPosted = postArtist(Fixtures.Artist.korn)
-        albumWithArtistId = Fixtures.Album.Domain.issues.copy(artistId = artistPosted.id)
     }
 
     // region create
@@ -45,7 +46,7 @@ class AlbumControllerTest : BaseControllerTest() {
     @Test
     fun `should not create an album with invalid artist-id`() {
         Given {
-            body(Fixtures.Album.Domain.issues)
+            body(Fixtures.Album.issues)
         } When {
             post(Resource.Path.ALBUM)
         } Then {
@@ -55,8 +56,8 @@ class AlbumControllerTest : BaseControllerTest() {
 
     @Test
     fun `should create an album with valid request`() {
-        val album = Given {
-            body(albumWithArtistId)
+        val albumResponse = Given {
+            body(Fixtures.Album.issuesWithArtistId)
         } When {
             post(Resource.Path.ALBUM)
         } Then {
@@ -65,8 +66,8 @@ class AlbumControllerTest : BaseControllerTest() {
             asAlbum()
         }
 
-        album.shouldNotBeNull()
-        album shouldBeAlbum albumWithArtistId
+        albumResponse.shouldNotBeNull()
+        albumResponse shouldBeAlbum Fixtures.Album.issuesWithArtistId
     }
 
     // endregion
@@ -75,7 +76,7 @@ class AlbumControllerTest : BaseControllerTest() {
 
     @Test
     fun `should return an empty list`() {
-        val albums = When {
+        val albumResponse = When {
             get(Resource.Path.ALBUM)
         } Then {
             statusCode(HttpStatus.SC_OK)
@@ -83,13 +84,13 @@ class AlbumControllerTest : BaseControllerTest() {
             asAlbums()
         }
 
-        albums.shouldNotBeNull()
-        albums shouldBe emptyList()
+        albumResponse.shouldNotBeNull()
+        albumResponse shouldBe emptyList()
     }
 
     @Test
     fun `should return a list with one album`() {
-        postAlbum(albumWithArtistId)
+        postAlbum(Fixtures.Album.issuesWithArtistId)
 
         val albums = When {
             get(Resource.Path.ALBUM)
@@ -100,16 +101,16 @@ class AlbumControllerTest : BaseControllerTest() {
         }
 
         albums shouldHaveSize 1
-        albums shouldBeAlbums listOf(albumWithArtistId)
+        albums shouldBeAlbums listOf(Fixtures.Album.issuesWithArtistId)
     }
 
     @Test
     fun `should return a list with ten albums`() {
-        val albumsRequest = (1..10).map { albumWithArtistId }
+        val albumsRequest = (1..10).map { Fixtures.Album.issuesWithArtistId }
 
         albumsRequest.forEach { postAlbum(it) }
 
-        val albums = When {
+        val albumResponse = When {
             get(Resource.Path.ALBUM)
         } Then {
             statusCode(HttpStatus.SC_OK)
@@ -117,8 +118,8 @@ class AlbumControllerTest : BaseControllerTest() {
             asAlbums()
         }
 
-        albums shouldHaveSize 10
-        albums shouldBeAlbums albumsRequest
+        albumResponse shouldHaveSize 10
+        albumResponse shouldBeAlbums albumsRequest
     }
 
     // endregion
@@ -127,7 +128,7 @@ class AlbumControllerTest : BaseControllerTest() {
 
     @Test
     fun `should throw bad-request with invalid id`() {
-        postAlbum(albumWithArtistId)
+        postAlbum(Fixtures.Album.issuesWithArtistId)
 
         When {
             get(Resource.Path.ALBUM_ID, 100)
@@ -138,9 +139,9 @@ class AlbumControllerTest : BaseControllerTest() {
 
     @Test
     fun `should return one album with valid id`() {
-        val albumPosted = postAlbum(albumWithArtistId)
+        val albumPosted = postAlbum(Fixtures.Album.issuesWithArtistId)
 
-        val album = When {
+        val albumResponse = When {
             get(Resource.Path.ALBUM_ID, albumPosted.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
@@ -148,8 +149,8 @@ class AlbumControllerTest : BaseControllerTest() {
             asAlbum()
         }
 
-        album.shouldNotBeNull()
-        album shouldBeAlbum albumWithArtistId
+        albumResponse.shouldNotBeNull()
+        albumResponse shouldBeAlbum Fixtures.Album.issuesWithArtistId
     }
 
     // endregion
@@ -158,10 +159,10 @@ class AlbumControllerTest : BaseControllerTest() {
 
     @Test
     fun `should not update an album and throw bad-request with invalid id`() {
-        postAlbum(albumWithArtistId)
+        postAlbum(Fixtures.Album.issuesWithArtistId)
 
         Given {
-            body(Fixtures.Album.Domain.untouchables.copy(artistId = artistPosted.id))
+            body(Fixtures.Album.untouchables.copy(artistId = artistPosted.id))
         } When {
             put(Resource.Path.ALBUM_ID, 100)
         } Then {
@@ -171,10 +172,10 @@ class AlbumControllerTest : BaseControllerTest() {
 
     @Test
     fun `should not update an album and throw bad-request with invalid artist-id`() {
-        val albumPosted = postAlbum(albumWithArtistId)
+        val albumPosted = postAlbum(Fixtures.Album.issuesWithArtistId)
 
         Given {
-            body(Fixtures.Album.Domain.untouchables.copy(artistId = 100))
+            body(Fixtures.Album.untouchables.copy(artistId = 100))
         } When {
             put(Resource.Path.ALBUM_ID, albumPosted.id)
         } Then {
@@ -184,10 +185,10 @@ class AlbumControllerTest : BaseControllerTest() {
 
     @Test
     fun `should update and return an album with valid id`() {
-        val albumPosted = postAlbum(albumWithArtistId)
-        val albumUpdate = Fixtures.Album.Domain.untouchables.copy(artistId = artistPosted.id)
+        val albumPosted = postAlbum(Fixtures.Album.issuesWithArtistId)
+        val albumUpdate = Fixtures.Album.untouchables.copy(artistId = artistPosted.id)
 
-        val album = Given {
+        val albumResponse = Given {
             body(albumUpdate)
         } When {
             put(Resource.Path.ALBUM_ID, albumPosted.id)
@@ -197,8 +198,8 @@ class AlbumControllerTest : BaseControllerTest() {
             asAlbum()
         }
 
-        album.shouldNotBeNull()
-        album shouldBeAlbum albumUpdate
+        albumResponse.shouldNotBeNull()
+        albumResponse shouldBeAlbum albumUpdate
     }
 
     // endregion
@@ -208,7 +209,7 @@ class AlbumControllerTest : BaseControllerTest() {
     @Test
     fun `should not delete all albums with user-role`() {
         // precondition: post an album
-        postAlbum(albumWithArtistId)
+        postAlbum(Fixtures.Album.issuesWithArtistId)
 
         // delete all albums
         When {
@@ -222,7 +223,7 @@ class AlbumControllerTest : BaseControllerTest() {
     @TestSecurity(user = "user", roles = [Role.ADMIN, Role.USER])
     fun `should delete all albums with admin-role`() {
         // precondition: post an album
-        postAlbum(albumWithArtistId)
+        postAlbum(Fixtures.Album.issuesWithArtistId)
 
         // delete all albums
         When {
@@ -246,7 +247,7 @@ class AlbumControllerTest : BaseControllerTest() {
 
     @Test
     fun `should not delete an album and throw bad-request with invalid id`() {
-        postAlbum(albumWithArtistId)
+        postAlbum(Fixtures.Album.issuesWithArtistId)
 
         When {
             delete(Resource.Path.ALBUM_ID, 100)
@@ -257,7 +258,7 @@ class AlbumControllerTest : BaseControllerTest() {
 
     @Test
     fun `should delete an album with valid id`() {
-        val albumPosted = postAlbum(albumWithArtistId)
+        val albumPosted = postAlbum(Fixtures.Album.issuesWithArtistId)
 
         When {
             delete(Resource.Path.ALBUM_ID, albumPosted.id)
@@ -268,7 +269,7 @@ class AlbumControllerTest : BaseControllerTest() {
 
     @Test
     fun `should delete an album and an image with valid id`() {
-        val albumPosted = uploadAlbumImage(postAlbum(albumWithArtistId).id)
+        val albumPosted = uploadAlbumImage(postAlbum(Fixtures.Album.issuesWithArtistId).id)
 
         When {
             delete(Resource.Path.ALBUM_ID, albumPosted.id)

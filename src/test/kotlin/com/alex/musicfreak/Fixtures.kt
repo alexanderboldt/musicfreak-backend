@@ -1,6 +1,6 @@
 package com.alex.musicfreak
 
-import com.alex.musicfreak.domain.Album
+import com.alex.musicfreak.domain.AlbumRequest
 import com.alex.musicfreak.domain.ArtistRequest
 
 object Fixtures {
@@ -16,30 +16,18 @@ object Fixtures {
     }
 
     object Album {
-        object Domain {
-            val issues = Album(
-                0,
-                "",
-                10,
-                "Issues",
-                1999,
-                16,
-                null,
-                null,
-                null
-            )
+        val issues = AlbumRequest(
+            0,
+            "Issues",
+            1999,
+            16
+        )
 
-            val untouchables = Album(
-                0,
-                "",
-                10,
-                "Untouchables",
-                2002,
-                14,
-                null,
-                null,
-                null
-            )
-        }
+        val untouchables = AlbumRequest(
+            0,
+            "Untouchables",
+            2002,
+            14
+        )
     }
 }
