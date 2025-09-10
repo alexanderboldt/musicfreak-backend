@@ -28,6 +28,7 @@ class ArtistService(
             Instant.now(),
             Instant.now()
         )
+
         return artistRepository.save(entity).toDomain()
     }
 

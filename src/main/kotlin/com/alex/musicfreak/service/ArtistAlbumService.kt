@@ -1,6 +1,6 @@
 package com.alex.musicfreak.service
 
-import com.alex.musicfreak.domain.Album
+import com.alex.musicfreak.domain.AlbumResponse
 import com.alex.musicfreak.mapper.toDomain
 import com.alex.musicfreak.repository.AlbumRepository
 import com.alex.musicfreak.repository.ArtistRepository
@@ -16,7 +16,7 @@ class ArtistAlbumService(
 ) {
 
     @Transactional
-    fun readAll(artistId: Long, sort: Sort): List<Album> {
+    fun readAll(artistId: Long, sort: Sort): List<AlbumResponse> {
         artistRepository.existsOrThrow(artistId, userService.userId)
 
         return albumRepository

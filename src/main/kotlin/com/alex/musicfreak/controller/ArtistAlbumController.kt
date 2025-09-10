@@ -1,6 +1,6 @@
 package com.alex.musicfreak.controller
 
-import com.alex.musicfreak.domain.Album
+import com.alex.musicfreak.domain.AlbumResponse
 import com.alex.musicfreak.service.ArtistAlbumService
 import com.alex.musicfreak.util.convertToSort
 import jakarta.annotation.security.RolesAllowed
@@ -22,7 +22,7 @@ class ArtistAlbumController(private val artistAlbumService: ArtistAlbumService) 
     fun getAllAlbumsFromArtist(
         @PathParam(Resource.Param.ID) artistId: Long,
         @QueryParam(Resource.Param.SORT) sort: String?
-    ): List<Album> {
+    ): List<AlbumResponse> {
         return artistAlbumService.readAll(artistId, sort.convertToSort())
     }
 }

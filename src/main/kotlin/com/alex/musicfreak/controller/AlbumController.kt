@@ -1,6 +1,6 @@
 package com.alex.musicfreak.controller
 
-import com.alex.musicfreak.domain.Album
+import com.alex.musicfreak.domain.AlbumRequest
 import com.alex.musicfreak.service.AlbumService
 import com.alex.musicfreak.util.convertToSort
 import jakarta.annotation.security.RolesAllowed
@@ -24,7 +24,7 @@ class AlbumController(private val albumService: AlbumService) {
     // create
 
     @POST
-    fun post(album: Album) = Answer.created(albumService.create(album))
+    fun post(album: AlbumRequest) = Answer.created(albumService.create(album))
 
     // read
 
@@ -39,7 +39,7 @@ class AlbumController(private val albumService: AlbumService) {
 
     @PUT
     @Path(Resource.Path.ID)
-    fun update(@PathParam(Resource.Param.ID) id: Long, album: Album) = albumService.update(id, album)
+    fun update(@PathParam(Resource.Param.ID) id: Long, album: AlbumRequest) = albumService.update(id, album)
 
     // delete
 
