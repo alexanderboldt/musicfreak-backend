@@ -2,7 +2,7 @@ package com.alex.musicfreak.util
 
 import com.alex.musicfreak.Fixtures
 import com.alex.musicfreak.controller.Answer
-import com.alex.musicfreak.domain.Artist
+import com.alex.musicfreak.domain.ArtistResponse
 import com.alex.musicfreak.domain.Error
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldHaveSize
@@ -14,18 +14,18 @@ import java.io.InputStream
 class AnswerTests : StringSpec({
 
     "should set response to ok" {
-        val answer = Answer.ok(Fixtures.Artist.Domain.korn)
+        val answer = Answer.ok(Fixtures.Artist.korn)
 
         answer.status shouldBe HttpStatus.SC_OK
-        answer.entity shouldBe Fixtures.Artist.Domain.korn
+        answer.entity shouldBe Fixtures.Artist.korn
     }
 
     "should set response to ok with multiple artists" {
-        val answer = Answer.ok(Fixtures.Artist.Domain.all)
+        val answer = Answer.ok(Fixtures.Artist.all)
 
         answer.status shouldBe HttpStatus.SC_OK
-        answer.entity as List<Artist> shouldHaveSize Fixtures.Artist.Domain.all.size
-        answer.entity shouldBe Fixtures.Artist.Domain.all
+        answer.entity as List<ArtistResponse> shouldHaveSize Fixtures.Artist.all.size
+        answer.entity shouldBe Fixtures.Artist.all
     }
 
     "should set response to ok with a stream" {
@@ -37,10 +37,10 @@ class AnswerTests : StringSpec({
     }
 
     "should set response to created" {
-        val answer = Answer.created(Fixtures.Artist.Domain.korn)
+        val answer = Answer.created(Fixtures.Artist.korn)
 
         answer.status shouldBe HttpStatus.SC_CREATED
-        answer.entity shouldBe Fixtures.Artist.Domain.korn
+        answer.entity shouldBe Fixtures.Artist.korn
     }
 
     "should set response to no-content" {

@@ -1,8 +1,7 @@
 package com.alex.musicfreak
 
-import com.alex.musicfreak.domain.Artist
 import com.alex.musicfreak.domain.Album
-import java.time.Instant
+import com.alex.musicfreak.domain.ArtistRequest
 
 object Fixtures {
     object User {
@@ -10,27 +9,10 @@ object Fixtures {
     }
 
     object Artist {
-        object Domain {
-            val korn = Artist(
-                0,
-                "",
-                "Korn",
-                null,
-                Instant.now(),
-                Instant.now()
-            )
+        val korn = ArtistRequest("Korn")
+        val slipknot = ArtistRequest("Slipknot")
 
-            val slipknot = Artist(
-                0,
-                "",
-                "Slipknot",
-                null,
-                Instant.now(),
-                Instant.now()
-            )
-
-            val all = listOf(korn, slipknot)
-        }
+        val all = listOf(korn, slipknot)
     }
 
     object Album {

@@ -2,10 +2,10 @@ package com.alex.musicfreak.controller
 
 import com.alex.musicfreak.Fixtures
 import com.alex.musicfreak.domain.Album
-import com.alex.musicfreak.domain.Artist
+import com.alex.musicfreak.domain.ArtistResponse
 import com.alex.musicfreak.service.S3Bucket
-import com.alex.musicfreak.extension.asAlbum
-import com.alex.musicfreak.extension.asAlbums
+import com.alex.musicfreak.util.asAlbum
+import com.alex.musicfreak.util.asAlbums
 import com.alex.musicfreak.util.ALBUM_ID
 import com.alex.musicfreak.util.shouldBeAlbum
 import com.alex.musicfreak.util.shouldBeAlbums
@@ -29,14 +29,14 @@ import software.amazon.awssdk.services.s3.model.NoSuchKeyException
 @TestSecurity(user = "user", roles = [Role.USER])
 class AlbumControllerTest : BaseControllerTest() {
 
-    private lateinit var artistPosted: Artist
+    private lateinit var artistPosted: ArtistResponse
     private lateinit var albumWithArtistId: Album
 
     @BeforeEach
     @Transactional
     fun beforeEach() {
         // precondition to all tests: post an artist
-        artistPosted = postArtist(Fixtures.Artist.Domain.korn)
+        artistPosted = postArtist(Fixtures.Artist.korn)
         albumWithArtistId = Fixtures.Album.Domain.issues.copy(artistId = artistPosted.id)
     }
 

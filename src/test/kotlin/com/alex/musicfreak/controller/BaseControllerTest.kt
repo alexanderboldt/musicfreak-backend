@@ -2,10 +2,11 @@ package com.alex.musicfreak.controller
 
 import com.alex.musicfreak.Fixtures
 import com.alex.musicfreak.domain.Album
-import com.alex.musicfreak.domain.Artist
+import com.alex.musicfreak.domain.ArtistRequest
+import com.alex.musicfreak.domain.ArtistResponse
 import com.alex.musicfreak.service.S3Service
-import com.alex.musicfreak.extension.asAlbum
-import com.alex.musicfreak.extension.asArtist
+import com.alex.musicfreak.util.asAlbum
+import com.alex.musicfreak.util.asArtist
 import com.alex.musicfreak.repository.AlbumRepository
 import com.alex.musicfreak.repository.ArtistRepository
 import com.alex.musicfreak.service.UserService
@@ -71,7 +72,7 @@ abstract class BaseControllerTest {
         }
     }
 
-    protected fun postArtist(artist: Artist): Artist {
+    protected fun postArtist(artist: ArtistRequest): ArtistResponse {
         return Given {
             body(artist)
         } When {
@@ -96,7 +97,7 @@ abstract class BaseControllerTest {
         }
     }
 
-    protected fun uploadArtistImage(artistId: Long): Artist {
+    protected fun uploadArtistImage(artistId: Long): ArtistResponse {
         return Given {
             multiPart("image", image)
             contentType(ContentType.MULTIPART)

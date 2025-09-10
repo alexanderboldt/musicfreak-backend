@@ -1,8 +1,8 @@
 package com.alex.musicfreak.controller
 
 import com.alex.musicfreak.Fixtures
-import com.alex.musicfreak.domain.Artist
-import com.alex.musicfreak.extension.asArtist
+import com.alex.musicfreak.domain.ArtistResponse
+import com.alex.musicfreak.util.asArtist
 import com.alex.musicfreak.testresource.MinioTestResource
 import io.kotest.matchers.comparables.shouldBeGreaterThan
 import io.kotest.matchers.nulls.shouldNotBeNull
@@ -25,13 +25,13 @@ import org.junit.jupiter.api.Test
 @TestSecurity(user = "user", roles = [Role.USER])
 class ArtistImageControllerTest : BaseControllerTest() {
 
-    private lateinit var artistPosted: Artist
+    private lateinit var artistPosted: ArtistResponse
 
     @BeforeEach
     @Transactional
     fun beforeEach() {
         // precondition to all tests: post an artist
-        artistPosted = postArtist(Fixtures.Artist.Domain.korn)
+        artistPosted = postArtist(Fixtures.Artist.korn)
     }
 
     // region upload image

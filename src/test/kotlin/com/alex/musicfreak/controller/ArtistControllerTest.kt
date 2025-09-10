@@ -2,8 +2,8 @@ package com.alex.musicfreak.controller
 
 import com.alex.musicfreak.Fixtures
 import com.alex.musicfreak.service.S3Bucket
-import com.alex.musicfreak.extension.asArtist
-import com.alex.musicfreak.extension.asArtists
+import com.alex.musicfreak.util.asArtist
+import com.alex.musicfreak.util.asArtists
 import com.alex.musicfreak.testresource.MinioTestResource
 import com.alex.musicfreak.util.ARTIST_ID
 import com.alex.musicfreak.util.shouldBeArtist
@@ -33,8 +33,8 @@ class ArtistControllerTest : BaseControllerTest() {
     @Test
     fun `should create an artist with valid request`() {
         // execute and verify
-        val artist = Given {
-            body(Fixtures.Artist.Domain.korn)
+        val artistResponse = Given {
+            body(Fixtures.Artist.korn)
         } When {
             post(Resource.Path.ARTIST)
         } Then {
@@ -43,8 +43,8 @@ class ArtistControllerTest : BaseControllerTest() {
             asArtist()
         }
 
-        artist.shouldNotBeNull()
-        artist shouldBeArtist Fixtures.Artist.Domain.korn
+        artistResponse.shouldNotBeNull()
+        artistResponse shouldBeArtist Fixtures.Artist.korn
     }
 
     // endregion
@@ -54,7 +54,7 @@ class ArtistControllerTest : BaseControllerTest() {
     @Test
     fun `should return an empty list`() {
         // execute and verify
-        val artists = When {
+        val artistResponse = When {
             get(Resource.Path.ARTIST)
         } Then {
             statusCode(HttpStatus.SC_OK)
@@ -63,17 +63,17 @@ class ArtistControllerTest : BaseControllerTest() {
             asArtists()
         }
 
-        artists.shouldNotBeNull()
-        artists shouldBe emptyList()
+        artistResponse.shouldNotBeNull()
+        artistResponse shouldBe emptyList()
     }
 
     @Test
     fun `should return a list with one artist`() {
         // precondition: post an artist
-        postArtist(Fixtures.Artist.Domain.korn)
+        postArtist(Fixtures.Artist.korn)
 
         // execute and verify
-        val artists = When {
+        val artistResponse = When {
             get(Resource.Path.ARTIST)
         } Then {
             statusCode(HttpStatus.SC_OK)
@@ -81,8 +81,8 @@ class ArtistControllerTest : BaseControllerTest() {
             asArtists()
         }
 
-        artists.shouldNotBeNull()
-        artists shouldBeArtists listOf(Fixtures.Artist.Domain.korn)
+        artistResponse.shouldNotBeNull()
+        artistResponse shouldBeArtists listOf(Fixtures.Artist.korn)
     }
 
     // endregion
@@ -92,7 +92,7 @@ class ArtistControllerTest : BaseControllerTest() {
     @Test
     fun `should throw bad-request with invalid id`() {
         // precondition: post an artist
-        postArtist(Fixtures.Artist.Domain.korn)
+        postArtist(Fixtures.Artist.korn)
 
         // execute and verify
         When {
@@ -105,10 +105,10 @@ class ArtistControllerTest : BaseControllerTest() {
     @Test
     fun `should return one artist with valid id`() {
         // precondition: post an artist
-        val artistPosted = postArtist(Fixtures.Artist.Domain.korn)
+        val artistPosted = postArtist(Fixtures.Artist.korn)
 
         // execute and verify
-        val artist = When {
+        val artistResponse = When {
             get(Resource.Path.ARTIST_ID, artistPosted.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
@@ -116,8 +116,8 @@ class ArtistControllerTest : BaseControllerTest() {
             asArtist()
         }
 
-        artist.shouldNotBeNull()
-        artist shouldBeArtist Fixtures.Artist.Domain.korn
+        artistResponse.shouldNotBeNull()
+        artistResponse shouldBeArtist Fixtures.Artist.korn
     }
 
     // endregion
@@ -127,11 +127,11 @@ class ArtistControllerTest : BaseControllerTest() {
     @Test
     fun `should not update an artist and throw bad-request with invalid id`() {
         // precondition: post an artist
-        postArtist(Fixtures.Artist.Domain.korn)
+        postArtist(Fixtures.Artist.korn)
 
         // execute the update and verify
         Given {
-            body(Fixtures.Artist.Domain.slipknot)
+            body(Fixtures.Artist.slipknot)
         } When {
             put(Resource.Path.ARTIST_ID, 100)
         } Then {
@@ -142,11 +142,11 @@ class ArtistControllerTest : BaseControllerTest() {
     @Test
     fun `should update and return an artist with valid id`() {
         // precondition: post an artist
-        val artistPosted = postArtist(Fixtures.Artist.Domain.korn)
+        val artistPosted = postArtist(Fixtures.Artist.korn)
 
         // execute the update and verify
-        val artist = Given {
-            body(Fixtures.Artist.Domain.slipknot)
+        val artistResponse = Given {
+            body(Fixtures.Artist.slipknot)
         } When {
             put(Resource.Path.ARTIST_ID, artistPosted.id)
         } Then {
@@ -155,8 +155,8 @@ class ArtistControllerTest : BaseControllerTest() {
             asArtist()
         }
 
-        artist.shouldNotBeNull()
-        artist shouldBeArtist Fixtures.Artist.Domain.slipknot
+        artistResponse.shouldNotBeNull()
+        artistResponse shouldBeArtist Fixtures.Artist.slipknot
     }
 
     // endregion
@@ -166,7 +166,7 @@ class ArtistControllerTest : BaseControllerTest() {
     @Test
     fun `should not delete an artist and throw bad-request with invalid id`() {
         // precondition: post an artist
-        postArtist(Fixtures.Artist.Domain.korn)
+        postArtist(Fixtures.Artist.korn)
 
         // execute the delete and verify
         When {
@@ -179,7 +179,7 @@ class ArtistControllerTest : BaseControllerTest() {
     @Test
     fun `should delete an artist with valid id`() {
         // precondition: post an artist
-        val artistPosted = postArtist(Fixtures.Artist.Domain.korn)
+        val artistPosted = postArtist(Fixtures.Artist.korn)
 
         // execute the delete and verify
         When {
@@ -192,7 +192,7 @@ class ArtistControllerTest : BaseControllerTest() {
     @Test
     fun `should delete an artist and an image with valid id`() {
         // precondition: post an artist and upload an image
-        val artistPosted = uploadArtistImage(postArtist(Fixtures.Artist.Domain.korn).id)
+        val artistPosted = uploadArtistImage(postArtist(Fixtures.Artist.korn).id)
 
         // execute the delete and verify
         When {
