@@ -6,8 +6,10 @@ import com.alex.musicfreak.util.asArtist
 import com.alex.musicfreak.util.asArtists
 import com.alex.musicfreak.testresource.MinioTestResource
 import com.alex.musicfreak.util.ARTIST_ID
+import com.alex.musicfreak.util.postArtist
 import com.alex.musicfreak.util.shouldBeArtist
 import com.alex.musicfreak.util.shouldBeArtists
+import com.alex.musicfreak.util.uploadArtistImage
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe

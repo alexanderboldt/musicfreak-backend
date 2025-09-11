@@ -5,6 +5,9 @@ import com.alex.musicfreak.domain.AlbumResponse
 import com.alex.musicfreak.domain.ArtistResponse
 import com.alex.musicfreak.util.asAlbum
 import com.alex.musicfreak.testresource.MinioTestResource
+import com.alex.musicfreak.util.postAlbum
+import com.alex.musicfreak.util.postArtist
+import com.alex.musicfreak.util.uploadAlbumImage
 import io.kotest.matchers.comparables.shouldBeGreaterThan
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.string.shouldNotBeBlank
@@ -42,7 +45,7 @@ class AlbumImageResourceTest : BaseResourceTest() {
     @Test
     fun `should throw bad-request with invalid id`() {
         Given {
-            multiPart("file", image)
+            multiPart("file", Fixtures.image)
             contentType(ContentType.MULTIPART)
         } When {
             post(Resource.Path.ALBUM_IMAGE, 100)
@@ -54,7 +57,7 @@ class AlbumImageResourceTest : BaseResourceTest() {
     @Test
     fun `should upload image and return ok with valid id`() {
         val albumResponse = Given {
-            multiPart("image", image)
+            multiPart("image", Fixtures.image)
             contentType(ContentType.MULTIPART)
         } When {
             post(Resource.Path.ALBUM_IMAGE, albumPosted.id)

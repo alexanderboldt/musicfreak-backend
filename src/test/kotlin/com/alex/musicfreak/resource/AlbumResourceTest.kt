@@ -7,8 +7,11 @@ import com.alex.musicfreak.service.S3Bucket
 import com.alex.musicfreak.util.asAlbum
 import com.alex.musicfreak.util.asAlbums
 import com.alex.musicfreak.util.ALBUM_ID
+import com.alex.musicfreak.util.postAlbum
+import com.alex.musicfreak.util.postArtist
 import com.alex.musicfreak.util.shouldBeAlbum
 import com.alex.musicfreak.util.shouldBeAlbums
+import com.alex.musicfreak.util.uploadAlbumImage
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldNotBeNull

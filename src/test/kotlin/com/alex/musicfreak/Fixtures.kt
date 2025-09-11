@@ -2,6 +2,7 @@ package com.alex.musicfreak
 
 import com.alex.musicfreak.domain.AlbumRequest
 import com.alex.musicfreak.domain.ArtistRequest
+import java.io.File
 
 object Fixtures {
     object User {
@@ -29,5 +30,10 @@ object Fixtures {
             2002,
             14
         )
+    }
+
+    val image: File = File.createTempFile("image", ".jpg").apply {
+        writeText("Image Content")
+        deleteOnExit()
     }
 }
