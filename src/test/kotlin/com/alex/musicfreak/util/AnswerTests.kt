@@ -1,7 +1,7 @@
 package com.alex.musicfreak.util
 
 import com.alex.musicfreak.Fixtures
-import com.alex.musicfreak.controller.Answer
+import com.alex.musicfreak.resource.Answer
 import com.alex.musicfreak.domain.ArtistResponse
 import com.alex.musicfreak.domain.Error
 import io.kotest.core.spec.style.StringSpec

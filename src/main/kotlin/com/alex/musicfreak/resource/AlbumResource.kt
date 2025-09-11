@@ -1,4 +1,4 @@
-package com.alex.musicfreak.controller
+package com.alex.musicfreak.resource
 
 import com.alex.musicfreak.domain.AlbumRequest
 import com.alex.musicfreak.service.AlbumService
@@ -19,7 +19,7 @@ import jakarta.ws.rs.core.MediaType
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @RolesAllowed(Role.USER)
-class AlbumController(private val albumService: AlbumService) {
+class AlbumResource(private val albumService: AlbumService) {
 
     // create
 

@@ -1,4 +1,4 @@
-package com.alex.musicfreak.controller
+package com.alex.musicfreak.resource
 
 import com.alex.musicfreak.Fixtures
 import com.alex.musicfreak.service.S3Bucket
@@ -26,7 +26,7 @@ import software.amazon.awssdk.services.s3.model.NoSuchKeyException
 @QuarkusTest
 @QuarkusTestResource(MinioTestResource::class)
 @TestSecurity(user = "user", roles = [Role.USER])
-class ArtistControllerTest : BaseControllerTest() {
+class ArtistResourceTest : BaseResourceTest() {
 
     // region create
 

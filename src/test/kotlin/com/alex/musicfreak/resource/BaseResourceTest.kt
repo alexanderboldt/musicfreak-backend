@@ -1,4 +1,4 @@
-package com.alex.musicfreak.controller
+package com.alex.musicfreak.resource
 
 import com.alex.musicfreak.Fixtures
 import com.alex.musicfreak.domain.AlbumRequest
@@ -27,7 +27,7 @@ import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.whenever
 import java.io.File
 
-abstract class BaseControllerTest {
+abstract class BaseResourceTest {
 
     @InjectMock
     lateinit var userService: UserService

@@ -1,4 +1,4 @@
-package com.alex.musicfreak.controller
+package com.alex.musicfreak.resource
 
 import com.alex.musicfreak.Fixtures
 import com.alex.musicfreak.domain.AlbumRequest
@@ -27,7 +27,7 @@ import software.amazon.awssdk.services.s3.model.NoSuchKeyException
 
 @QuarkusTest
 @TestSecurity(user = "user", roles = [Role.USER])
-class AlbumControllerTest : BaseControllerTest() {
+class AlbumResourceTest : BaseResourceTest() {
 
     private lateinit var artistPosted: ArtistResponse
 

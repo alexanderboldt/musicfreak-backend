@@ -1,4 +1,4 @@
-package com.alex.musicfreak.controller
+package com.alex.musicfreak.resource
 
 import com.alex.musicfreak.domain.Error
 import jakarta.ws.rs.core.HttpHeaders

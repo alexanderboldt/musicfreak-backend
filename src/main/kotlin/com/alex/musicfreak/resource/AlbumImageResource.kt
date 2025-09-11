@@ -1,4 +1,4 @@
-package com.alex.musicfreak.controller
+package com.alex.musicfreak.resource
 
 import com.alex.musicfreak.service.AlbumImageService
 import jakarta.annotation.security.RolesAllowed
@@ -18,7 +18,7 @@ import org.jboss.resteasy.reactive.multipart.FileUpload
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @RolesAllowed(Role.USER)
-class AlbumImageController(private val albumImageService: AlbumImageService) {
+class AlbumImageResource(private val albumImageService: AlbumImageService) {
 
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)

@@ -1,4 +1,4 @@
-package com.alex.musicfreak.controller
+package com.alex.musicfreak.resource
 
 import com.alex.musicfreak.domain.AlbumResponse
 import com.alex.musicfreak.service.ArtistAlbumService
@@ -16,7 +16,7 @@ import jakarta.ws.rs.core.MediaType
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @RolesAllowed(Role.USER)
-class ArtistAlbumController(private val artistAlbumService: ArtistAlbumService) {
+class ArtistAlbumResource(private val artistAlbumService: ArtistAlbumService) {
 
     @GET
     fun getAllAlbumsFromArtist(

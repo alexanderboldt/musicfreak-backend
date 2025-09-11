@@ -1,4 +1,4 @@
-package com.alex.musicfreak.controller
+package com.alex.musicfreak.resource
 
 import com.alex.musicfreak.Fixtures
 import com.alex.musicfreak.domain.AlbumRequest
@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test
 
 @QuarkusTest
 @TestSecurity(user = "user", roles = [Role.USER])
-class ArtistAlbumControllerTest : BaseControllerTest() {
+class ArtistAlbumResourceTest : BaseResourceTest() {
 
     private lateinit var artistPosted: ArtistResponse
 

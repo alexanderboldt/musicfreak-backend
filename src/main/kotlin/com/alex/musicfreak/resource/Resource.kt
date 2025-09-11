@@ -1,4 +1,4 @@
-package com.alex.musicfreak.controller
+package com.alex.musicfreak.resource
 
 /**
  * Contains convenient wordings for paths and parameters.

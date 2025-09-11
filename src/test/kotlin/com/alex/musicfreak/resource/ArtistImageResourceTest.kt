@@ -1,9 +1,8 @@
-package com.alex.musicfreak.controller
+package com.alex.musicfreak.resource
 
 import com.alex.musicfreak.Fixtures
-import com.alex.musicfreak.domain.AlbumResponse
 import com.alex.musicfreak.domain.ArtistResponse
-import com.alex.musicfreak.util.asAlbum
+import com.alex.musicfreak.util.asArtist
 import com.alex.musicfreak.testresource.MinioTestResource
 import io.kotest.matchers.comparables.shouldBeGreaterThan
 import io.kotest.matchers.nulls.shouldNotBeNull
@@ -24,17 +23,15 @@ import org.junit.jupiter.api.Test
 @QuarkusTest
 @QuarkusTestResource(MinioTestResource::class)
 @TestSecurity(user = "user", roles = [Role.USER])
-class AlbumImageControllerTest : BaseControllerTest() {
+class ArtistImageResourceTest : BaseResourceTest() {
 
     private lateinit var artistPosted: ArtistResponse
-    private lateinit var albumPosted: AlbumResponse
 
     @BeforeEach
     @Transactional
     fun beforeEach() {
-        // precondition to all tests: post an artist and the corresponding album
+        // precondition to all tests: post an artist
         artistPosted = postArtist(Fixtures.Artist.korn)
-        albumPosted = postAlbum(Fixtures.Album.issues.copy(artistId = artistPosted.id))
     }
 
     // region upload image
@@ -45,7 +42,7 @@ class AlbumImageControllerTest : BaseControllerTest() {
             multiPart("file", image)
             contentType(ContentType.MULTIPART)
         } When {
-            post(Resource.Path.ALBUM_IMAGE, 100)
+            post(Resource.Path.ARTIST_IMAGE, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -53,20 +50,20 @@ class AlbumImageControllerTest : BaseControllerTest() {
 
     @Test
     fun `should upload image and return ok with valid id`() {
-        val albumResponse = Given {
+        val artistResponse = Given {
             multiPart("image", image)
             contentType(ContentType.MULTIPART)
         } When {
-            post(Resource.Path.ALBUM_IMAGE, albumPosted.id)
+            post(Resource.Path.ARTIST_IMAGE, artistPosted.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
-            asAlbum()
+            asArtist()
         }
 
-        albumResponse.shouldNotBeNull()
-        albumResponse.filename.shouldNotBeNull()
-        albumResponse.filename.shouldNotBeBlank()
+        artistResponse.shouldNotBeNull()
+        artistResponse.filename.shouldNotBeNull()
+        artistResponse.filename.shouldNotBeBlank()
     }
 
     // endregion
@@ -76,10 +73,10 @@ class AlbumImageControllerTest : BaseControllerTest() {
     @Test
     fun `should not download an image and throw bad-request with invalid id`() {
         // precondition: upload an image
-        uploadAlbumImage(albumPosted.id)
+        uploadArtistImage(artistPosted.id)
 
         When {
-            get(Resource.Path.ALBUM_IMAGE, 100)
+            get(Resource.Path.ARTIST_IMAGE, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
             contentType(ContentType.BINARY)
@@ -89,10 +86,10 @@ class AlbumImageControllerTest : BaseControllerTest() {
     @Test
     fun `should download an image and with valid id`() {
         // precondition: upload an image
-        uploadAlbumImage(albumPosted.id)
+        uploadArtistImage(artistPosted.id)
 
         val bytes = When {
-            get(Resource.Path.ALBUM_IMAGE, albumPosted.id)
+            get(Resource.Path.ARTIST_IMAGE, artistPosted.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
             contentType(ContentType.BINARY)
@@ -111,10 +108,10 @@ class AlbumImageControllerTest : BaseControllerTest() {
     @Test
     fun `should not delete an image and throw bad-request with invalid id`() {
         // precondition: upload an image
-        uploadAlbumImage(albumPosted.id)
+        uploadArtistImage(artistPosted.id)
 
         When {
-            delete(Resource.Path.ALBUM_IMAGE, 100)
+            delete(Resource.Path.ARTIST_IMAGE, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -123,7 +120,7 @@ class AlbumImageControllerTest : BaseControllerTest() {
     @Test
     fun `should not delete an image and with non existing image`() {
         When {
-            delete(Resource.Path.ALBUM_IMAGE, albumPosted.id)
+            delete(Resource.Path.ARTIST_IMAGE, artistPosted.id)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -132,10 +129,10 @@ class AlbumImageControllerTest : BaseControllerTest() {
     @Test
     fun `should delete an image and with valid id and existing image`() {
         // precondition: upload an image
-        uploadAlbumImage(albumPosted.id)
+        uploadArtistImage(artistPosted.id)
 
         When {
-            delete(Resource.Path.ALBUM_IMAGE, albumPosted.id)
+            delete(Resource.Path.ARTIST_IMAGE, artistPosted.id)
         } Then {
             statusCode(HttpStatus.SC_NO_CONTENT)
         }
