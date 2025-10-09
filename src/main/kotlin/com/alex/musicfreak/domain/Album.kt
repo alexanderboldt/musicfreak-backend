@@ -2,6 +2,13 @@ package com.alex.musicfreak.domain
 
 import java.time.Instant
 
+data class AlbumRequest(
+    val artistId: Long,
+    val name: String,
+    val year: Int,
+    val tracks: Int
+)
+
 data class AlbumResponse(
     val id: Long,
     val userId: String,

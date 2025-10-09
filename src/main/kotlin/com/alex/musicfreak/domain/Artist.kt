@@ -2,6 +2,10 @@ package com.alex.musicfreak.domain
 
 import java.time.Instant
 
+data class ArtistRequest(
+    val name: String
+)
+
 data class ArtistResponse(
     val id: Long,
     val userId: String,
