@@ -1,11 +1,11 @@
 [versions]
 # development versions
 kotlin-version = "2.2.20"
-quarkus-version = "3.28.1"
+quarkus-version = "3.28.3"
 aws-s3-version = "2.34.5"
 
 # test versions
-mockito-kotlin-version = "6.0.0"
+mockito-kotlin-version = "6.1.0"
 kotest-version = "6.0.3"
 rest-assured-version = "5.5.5"
 testcontainer-version = "1.21.3"
