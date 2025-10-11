@@ -7,18 +7,12 @@ import java.time.Instant
 
 @Entity
 data class ArtistEntity(
-
     @Id
     @GeneratedValue
     val id: Long,
-
     val userId: String,
-
     var name: String,
-
     var filename: String?,
-
     val createdAt: Instant,
-
     var updatedAt: Instant
 )
