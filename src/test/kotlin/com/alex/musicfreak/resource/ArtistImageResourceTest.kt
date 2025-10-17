@@ -4,7 +4,7 @@ import com.alex.musicfreak.Fixtures
 import com.alex.musicfreak.domain.ArtistResponse
 import com.alex.musicfreak.util.asArtist
 import com.alex.musicfreak.testresource.MinioTestResource
-import com.alex.musicfreak.util.postArtist
+import com.alex.musicfreak.util.createArtist
 import com.alex.musicfreak.util.uploadArtistImage
 import io.kotest.matchers.comparables.shouldBeGreaterThan
 import io.kotest.matchers.nulls.shouldNotBeNull
@@ -27,13 +27,13 @@ import org.junit.jupiter.api.Test
 @TestSecurity(user = "user", roles = [Role.USER])
 class ArtistImageResourceTest : BaseResourceTest() {
 
-    private lateinit var artistPosted: ArtistResponse
+    private lateinit var artistCreated: ArtistResponse
 
     @BeforeEach
     @Transactional
     fun beforeEach() {
-        // precondition to all tests: post an artist
-        artistPosted = postArtist(Fixtures.Artist.korn)
+        // precondition to all tests: create an artist
+        artistCreated = createArtist(Fixtures.Artist.korn)
     }
 
     // region upload image
@@ -56,7 +56,7 @@ class ArtistImageResourceTest : BaseResourceTest() {
             multiPart("image", Fixtures.image)
             contentType(ContentType.MULTIPART)
         } When {
-            post(Resource.Path.ARTIST_IMAGE, artistPosted.id)
+            post(Resource.Path.ARTIST_IMAGE, artistCreated.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -75,7 +75,7 @@ class ArtistImageResourceTest : BaseResourceTest() {
     @Test
     fun `should not download an image and throw bad-request with invalid id`() {
         // precondition: upload an image
-        uploadArtistImage(artistPosted.id)
+        uploadArtistImage(artistCreated.id)
 
         When {
             get(Resource.Path.ARTIST_IMAGE, 100)
@@ -88,10 +88,10 @@ class ArtistImageResourceTest : BaseResourceTest() {
     @Test
     fun `should download an image and with valid id`() {
         // precondition: upload an image
-        uploadArtistImage(artistPosted.id)
+        uploadArtistImage(artistCreated.id)
 
         val bytes = When {
-            get(Resource.Path.ARTIST_IMAGE, artistPosted.id)
+            get(Resource.Path.ARTIST_IMAGE, artistCreated.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
             contentType(ContentType.BINARY)
@@ -110,7 +110,7 @@ class ArtistImageResourceTest : BaseResourceTest() {
     @Test
     fun `should not delete an image and throw bad-request with invalid id`() {
         // precondition: upload an image
-        uploadArtistImage(artistPosted.id)
+        uploadArtistImage(artistCreated.id)
 
         When {
             delete(Resource.Path.ARTIST_IMAGE, 100)
@@ -122,7 +122,7 @@ class ArtistImageResourceTest : BaseResourceTest() {
     @Test
     fun `should not delete an image and with non existing image`() {
         When {
-            delete(Resource.Path.ARTIST_IMAGE, artistPosted.id)
+            delete(Resource.Path.ARTIST_IMAGE, artistCreated.id)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -131,10 +131,10 @@ class ArtistImageResourceTest : BaseResourceTest() {
     @Test
     fun `should delete an image and with valid id and existing image`() {
         // precondition: upload an image
-        uploadArtistImage(artistPosted.id)
+        uploadArtistImage(artistCreated.id)
 
         When {
-            delete(Resource.Path.ARTIST_IMAGE, artistPosted.id)
+            delete(Resource.Path.ARTIST_IMAGE, artistCreated.id)
         } Then {
             statusCode(HttpStatus.SC_NO_CONTENT)
         }

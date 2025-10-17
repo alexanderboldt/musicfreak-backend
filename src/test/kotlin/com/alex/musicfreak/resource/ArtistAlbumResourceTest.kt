@@ -4,8 +4,8 @@ import com.alex.musicfreak.Fixtures
 import com.alex.musicfreak.domain.AlbumRequest
 import com.alex.musicfreak.domain.ArtistResponse
 import com.alex.musicfreak.util.asAlbums
-import com.alex.musicfreak.util.postAlbum
-import com.alex.musicfreak.util.postArtist
+import com.alex.musicfreak.util.createAlbum
+import com.alex.musicfreak.util.createArtist
 import com.alex.musicfreak.util.shouldBeAlbums
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldNotBeNull
@@ -24,16 +24,16 @@ import org.junit.jupiter.api.Test
 @TestSecurity(user = "user", roles = [Role.USER])
 class ArtistAlbumResourceTest : BaseResourceTest() {
 
-    private lateinit var artistPosted: ArtistResponse
+    private lateinit var artistCreated: ArtistResponse
 
     private val Fixtures.Album.issuesWithArtistId: AlbumRequest
-        get() = issues.copy(artistId = artistPosted.id)
+        get() = issues.copy(artistId = artistCreated.id)
 
     @BeforeEach
     @Transactional
     fun beforeEach() {
-        // precondition to all tests: post an artist
-        artistPosted = postArtist(Fixtures.Artist.korn)
+        // precondition to all tests: create an artist
+        artistCreated = createArtist(Fixtures.Artist.korn)
     }
 
     // region read all
@@ -50,7 +50,7 @@ class ArtistAlbumResourceTest : BaseResourceTest() {
     @Test
     fun `should return an empty list`() {
         val albums = When {
-            get(Resource.Path.ARTIST_ALBUM, artistPosted.id)
+            get(Resource.Path.ARTIST_ALBUM, artistCreated.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -63,10 +63,10 @@ class ArtistAlbumResourceTest : BaseResourceTest() {
 
     @Test
     fun `should return a list with one album`() {
-        postAlbum(Fixtures.Album.issuesWithArtistId)
+        createAlbum(Fixtures.Album.issuesWithArtistId)
 
         val albums = When {
-            get(Resource.Path.ARTIST_ALBUM, artistPosted.id)
+            get(Resource.Path.ARTIST_ALBUM, artistCreated.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -81,10 +81,10 @@ class ArtistAlbumResourceTest : BaseResourceTest() {
     fun `should return a list with ten albums`() {
         val albumsRequest = (1..10).map { Fixtures.Album.issuesWithArtistId }
 
-        albumsRequest.forEach { postAlbum(it) }
+        albumsRequest.forEach { createAlbum(it) }
 
         val albums = When {
-            get(Resource.Path.ARTIST_ALBUM, artistPosted.id)
+            get(Resource.Path.ARTIST_ALBUM, artistCreated.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {

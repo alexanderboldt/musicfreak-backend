@@ -6,7 +6,7 @@ import com.alex.musicfreak.util.asArtist
 import com.alex.musicfreak.util.asArtists
 import com.alex.musicfreak.testresource.MinioTestResource
 import com.alex.musicfreak.util.ARTIST_ID
-import com.alex.musicfreak.util.postArtist
+import com.alex.musicfreak.util.createArtist
 import com.alex.musicfreak.util.shouldBeArtist
 import com.alex.musicfreak.util.shouldBeArtists
 import com.alex.musicfreak.util.uploadArtistImage
@@ -71,8 +71,8 @@ class ArtistResourceTest : BaseResourceTest() {
 
     @Test
     fun `should return a list with one artist`() {
-        // precondition: post an artist
-        postArtist(Fixtures.Artist.korn)
+        // precondition: create an artist
+        createArtist(Fixtures.Artist.korn)
 
         // execute and verify
         val artistResponse = When {
@@ -93,8 +93,8 @@ class ArtistResourceTest : BaseResourceTest() {
 
     @Test
     fun `should throw bad-request with invalid id`() {
-        // precondition: post an artist
-        postArtist(Fixtures.Artist.korn)
+        // precondition: create an artist
+        createArtist(Fixtures.Artist.korn)
 
         // execute and verify
         When {
@@ -106,12 +106,12 @@ class ArtistResourceTest : BaseResourceTest() {
 
     @Test
     fun `should return one artist with valid id`() {
-        // precondition: post an artist
-        val artistPosted = postArtist(Fixtures.Artist.korn)
+        // precondition: create an artist
+        val artistCreated = createArtist(Fixtures.Artist.korn)
 
         // execute and verify
         val artistResponse = When {
-            get(Resource.Path.ARTIST_ID, artistPosted.id)
+            get(Resource.Path.ARTIST_ID, artistCreated.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -128,8 +128,8 @@ class ArtistResourceTest : BaseResourceTest() {
 
     @Test
     fun `should not update an artist and throw bad-request with invalid id`() {
-        // precondition: post an artist
-        postArtist(Fixtures.Artist.korn)
+        // precondition: create an artist
+        createArtist(Fixtures.Artist.korn)
 
         // execute the update and verify
         Given {
@@ -143,14 +143,14 @@ class ArtistResourceTest : BaseResourceTest() {
 
     @Test
     fun `should update and return an artist with valid id`() {
-        // precondition: post an artist
-        val artistPosted = postArtist(Fixtures.Artist.korn)
+        // precondition: create an artist
+        val artistCreated = createArtist(Fixtures.Artist.korn)
 
         // execute the update and verify
         val artistResponse = Given {
             body(Fixtures.Artist.slipknot)
         } When {
-            put(Resource.Path.ARTIST_ID, artistPosted.id)
+            put(Resource.Path.ARTIST_ID, artistCreated.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -167,8 +167,8 @@ class ArtistResourceTest : BaseResourceTest() {
 
     @Test
     fun `should not delete an artist and throw bad-request with invalid id`() {
-        // precondition: post an artist
-        postArtist(Fixtures.Artist.korn)
+        // precondition: create an artist
+        createArtist(Fixtures.Artist.korn)
 
         // execute the delete and verify
         When {
@@ -180,12 +180,12 @@ class ArtistResourceTest : BaseResourceTest() {
 
     @Test
     fun `should delete an artist with valid id`() {
-        // precondition: post an artist
-        val artistPosted = postArtist(Fixtures.Artist.korn)
+        // precondition: create an artist
+        val artistCreated = createArtist(Fixtures.Artist.korn)
 
         // execute the delete and verify
         When {
-            delete(Resource.Path.ARTIST_ID, artistPosted.id)
+            delete(Resource.Path.ARTIST_ID, artistCreated.id)
         } Then {
             statusCode(HttpStatus.SC_NO_CONTENT)
         }
@@ -193,19 +193,19 @@ class ArtistResourceTest : BaseResourceTest() {
 
     @Test
     fun `should delete an artist and an image with valid id`() {
-        // precondition: post an artist and upload an image
-        val artistPosted = uploadArtistImage(postArtist(Fixtures.Artist.korn).id)
+        // precondition: create an artist and upload an image
+        val artistCreated = uploadArtistImage(createArtist(Fixtures.Artist.korn).id)
 
         // execute the delete and verify
         When {
-            delete(Resource.Path.ARTIST_ID, artistPosted.id)
+            delete(Resource.Path.ARTIST_ID, artistCreated.id)
         } Then {
             statusCode(HttpStatus.SC_NO_CONTENT)
         }
 
         // try to download the image and verify, that it is deleted
         shouldThrow<NoSuchKeyException> {
-            s3Service.downloadFile(S3Bucket.ARTIST, artistPosted.filename!!)
+            s3Service.downloadFile(S3Bucket.ARTIST, artistCreated.filename!!)
         }
     }
 

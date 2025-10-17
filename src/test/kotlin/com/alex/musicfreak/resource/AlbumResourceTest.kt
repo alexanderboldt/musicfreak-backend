@@ -7,8 +7,8 @@ import com.alex.musicfreak.service.S3Bucket
 import com.alex.musicfreak.util.asAlbum
 import com.alex.musicfreak.util.asAlbums
 import com.alex.musicfreak.util.ALBUM_ID
-import com.alex.musicfreak.util.postAlbum
-import com.alex.musicfreak.util.postArtist
+import com.alex.musicfreak.util.createAlbum
+import com.alex.musicfreak.util.createArtist
 import com.alex.musicfreak.util.shouldBeAlbum
 import com.alex.musicfreak.util.shouldBeAlbums
 import com.alex.musicfreak.util.uploadAlbumImage
@@ -32,16 +32,16 @@ import software.amazon.awssdk.services.s3.model.NoSuchKeyException
 @TestSecurity(user = "user", roles = [Role.USER])
 class AlbumResourceTest : BaseResourceTest() {
 
-    private lateinit var artistPosted: ArtistResponse
+    private lateinit var artistCreated: ArtistResponse
 
     private val Fixtures.Album.issuesWithArtistId: AlbumRequest
-        get() = issues.copy(artistId = artistPosted.id)
+        get() = issues.copy(artistId = artistCreated.id)
 
     @BeforeEach
     @Transactional
     fun beforeEach() {
-        // precondition to all tests: post an artist
-        artistPosted = postArtist(Fixtures.Artist.korn)
+        // precondition to all tests: create an artist
+        artistCreated = createArtist(Fixtures.Artist.korn)
     }
 
     // region create
@@ -93,7 +93,7 @@ class AlbumResourceTest : BaseResourceTest() {
 
     @Test
     fun `should return a list with one album`() {
-        postAlbum(Fixtures.Album.issuesWithArtistId)
+        createAlbum(Fixtures.Album.issuesWithArtistId)
 
         val albums = When {
             get(Resource.Path.ALBUM)
@@ -111,7 +111,7 @@ class AlbumResourceTest : BaseResourceTest() {
     fun `should return a list with ten albums`() {
         val albumsRequest = (1..10).map { Fixtures.Album.issuesWithArtistId }
 
-        albumsRequest.forEach { postAlbum(it) }
+        albumsRequest.forEach { createAlbum(it) }
 
         val albumResponse = When {
             get(Resource.Path.ALBUM)
@@ -131,7 +131,7 @@ class AlbumResourceTest : BaseResourceTest() {
 
     @Test
     fun `should throw bad-request with invalid id`() {
-        postAlbum(Fixtures.Album.issuesWithArtistId)
+        createAlbum(Fixtures.Album.issuesWithArtistId)
 
         When {
             get(Resource.Path.ALBUM_ID, 100)
@@ -142,10 +142,10 @@ class AlbumResourceTest : BaseResourceTest() {
 
     @Test
     fun `should return one album with valid id`() {
-        val albumPosted = postAlbum(Fixtures.Album.issuesWithArtistId)
+        val albumCreated = createAlbum(Fixtures.Album.issuesWithArtistId)
 
         val albumResponse = When {
-            get(Resource.Path.ALBUM_ID, albumPosted.id)
+            get(Resource.Path.ALBUM_ID, albumCreated.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -162,10 +162,10 @@ class AlbumResourceTest : BaseResourceTest() {
 
     @Test
     fun `should not update an album and throw bad-request with invalid id`() {
-        postAlbum(Fixtures.Album.issuesWithArtistId)
+        createAlbum(Fixtures.Album.issuesWithArtistId)
 
         Given {
-            body(Fixtures.Album.untouchables.copy(artistId = artistPosted.id))
+            body(Fixtures.Album.untouchables.copy(artistId = artistCreated.id))
         } When {
             put(Resource.Path.ALBUM_ID, 100)
         } Then {
@@ -175,12 +175,12 @@ class AlbumResourceTest : BaseResourceTest() {
 
     @Test
     fun `should not update an album and throw bad-request with invalid artist-id`() {
-        val albumPosted = postAlbum(Fixtures.Album.issuesWithArtistId)
+        val albumCreated = createAlbum(Fixtures.Album.issuesWithArtistId)
 
         Given {
             body(Fixtures.Album.untouchables.copy(artistId = 100))
         } When {
-            put(Resource.Path.ALBUM_ID, albumPosted.id)
+            put(Resource.Path.ALBUM_ID, albumCreated.id)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -188,13 +188,13 @@ class AlbumResourceTest : BaseResourceTest() {
 
     @Test
     fun `should update and return an album with valid id`() {
-        val albumPosted = postAlbum(Fixtures.Album.issuesWithArtistId)
-        val albumUpdate = Fixtures.Album.untouchables.copy(artistId = artistPosted.id)
+        val albumCreated = createAlbum(Fixtures.Album.issuesWithArtistId)
+        val albumUpdate = Fixtures.Album.untouchables.copy(artistId = artistCreated.id)
 
         val albumResponse = Given {
             body(albumUpdate)
         } When {
-            put(Resource.Path.ALBUM_ID, albumPosted.id)
+            put(Resource.Path.ALBUM_ID, albumCreated.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -211,8 +211,8 @@ class AlbumResourceTest : BaseResourceTest() {
 
     @Test
     fun `should not delete all albums with user-role`() {
-        // precondition: post an album
-        postAlbum(Fixtures.Album.issuesWithArtistId)
+        // precondition: create an album
+        createAlbum(Fixtures.Album.issuesWithArtistId)
 
         // delete all albums
         When {
@@ -225,8 +225,8 @@ class AlbumResourceTest : BaseResourceTest() {
     @Test
     @TestSecurity(user = "user", roles = [Role.ADMIN, Role.USER])
     fun `should delete all albums with admin-role`() {
-        // precondition: post an album
-        postAlbum(Fixtures.Album.issuesWithArtistId)
+        // precondition: create an album
+        createAlbum(Fixtures.Album.issuesWithArtistId)
 
         // delete all albums
         When {
@@ -250,7 +250,7 @@ class AlbumResourceTest : BaseResourceTest() {
 
     @Test
     fun `should not delete an album and throw bad-request with invalid id`() {
-        postAlbum(Fixtures.Album.issuesWithArtistId)
+        createAlbum(Fixtures.Album.issuesWithArtistId)
 
         When {
             delete(Resource.Path.ALBUM_ID, 100)
@@ -261,10 +261,10 @@ class AlbumResourceTest : BaseResourceTest() {
 
     @Test
     fun `should delete an album with valid id`() {
-        val albumPosted = postAlbum(Fixtures.Album.issuesWithArtistId)
+        val albumCreated = createAlbum(Fixtures.Album.issuesWithArtistId)
 
         When {
-            delete(Resource.Path.ALBUM_ID, albumPosted.id)
+            delete(Resource.Path.ALBUM_ID, albumCreated.id)
         } Then {
             statusCode(HttpStatus.SC_NO_CONTENT)
         }
@@ -272,17 +272,17 @@ class AlbumResourceTest : BaseResourceTest() {
 
     @Test
     fun `should delete an album and an image with valid id`() {
-        val albumPosted = uploadAlbumImage(postAlbum(Fixtures.Album.issuesWithArtistId).id)
+        val albumCreated = uploadAlbumImage(createAlbum(Fixtures.Album.issuesWithArtistId).id)
 
         When {
-            delete(Resource.Path.ALBUM_ID, albumPosted.id)
+            delete(Resource.Path.ALBUM_ID, albumCreated.id)
         } Then {
             statusCode(HttpStatus.SC_NO_CONTENT)
         }
 
         // try to download the image and verify, that it is deleted
         shouldThrow<NoSuchKeyException> {
-            s3Service.downloadFile(S3Bucket.ALBUM, albumPosted.filename!!)
+            s3Service.downloadFile(S3Bucket.ALBUM, albumCreated.filename!!)
         }
     }
 

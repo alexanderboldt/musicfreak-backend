@@ -20,7 +20,7 @@ import jakarta.ws.rs.core.MediaType
 class ArtistAlbumResource(private val artistAlbumService: ArtistAlbumService) {
 
     @GET
-    fun getAllAlbumsFromArtist(
+    fun readAllAlbumsFromArtist(
         @PathParam(Resource.Param.ID) artistId: Long,
         @QueryParam(Resource.Param.SORT) sort: String?
     ): List<AlbumResponse> {

@@ -25,16 +25,16 @@ class ArtistResource(private val artistService: ArtistService) {
     // create
 
     @POST
-    fun post(artist: ArtistRequest) = Answer.created(artistService.create(artist))
+    fun create(artist: ArtistRequest) = Answer.created(artistService.create(artist))
 
     // read
 
     @GET
-    fun getAll(@QueryParam(Resource.Param.SORT) sort: String?) = artistService.readAll(sort.convertToSort())
+    fun readAll(@QueryParam(Resource.Param.SORT) sort: String?) = artistService.readAll(sort.convertToSort())
 
     @GET
     @Path(Resource.Path.ID)
-    fun get(@PathParam(Resource.Param.ID) id: Long) = artistService.read(id)
+    fun read(@PathParam(Resource.Param.ID) id: Long) = artistService.read(id)
 
     // update
 

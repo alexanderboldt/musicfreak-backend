@@ -25,16 +25,16 @@ class AlbumResource(private val albumService: AlbumService) {
     // create
 
     @POST
-    fun post(album: AlbumRequest) = Answer.created(albumService.create(album))
+    fun create(album: AlbumRequest) = Answer.created(albumService.create(album))
 
     // read
 
     @GET
-    fun getAll(@QueryParam(Resource.Param.SORT) sort: String?) = albumService.readAll(sort.convertToSort())
+    fun readAll(@QueryParam(Resource.Param.SORT) sort: String?) = albumService.readAll(sort.convertToSort())
 
     @GET
     @Path(Resource.Path.ID)
-    fun get(@PathParam(Resource.Param.ID) id: Long) = albumService.read(id)
+    fun read(@PathParam(Resource.Param.ID) id: Long) = albumService.read(id)
 
     // update
 

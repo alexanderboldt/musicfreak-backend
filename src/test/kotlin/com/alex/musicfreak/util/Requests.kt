@@ -13,7 +13,7 @@ import io.restassured.module.kotlin.extensions.Then
 import io.restassured.module.kotlin.extensions.When
 import org.apache.http.HttpStatus
 
-fun postAlbum(album: AlbumRequest): AlbumResponse {
+fun createAlbum(album: AlbumRequest): AlbumResponse {
     return Given {
         body(album)
     } When {
@@ -25,7 +25,7 @@ fun postAlbum(album: AlbumRequest): AlbumResponse {
     }
 }
 
-fun postArtist(artist: ArtistRequest): ArtistResponse {
+fun createArtist(artist: ArtistRequest): ArtistResponse {
     return Given {
         body(artist)
     } When {
