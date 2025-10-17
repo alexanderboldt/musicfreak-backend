@@ -27,7 +27,7 @@ class ArtistAlbumResourceTest : BaseResourceTest() {
     private lateinit var artistPosted: ArtistResponse
 
     private val Fixtures.Album.issuesWithArtistId: AlbumRequest
-        get() = Fixtures.Album.issues.copy(artistId = artistPosted.id)
+        get() = issues.copy(artistId = artistPosted.id)
 
     @BeforeEach
     @Transactional

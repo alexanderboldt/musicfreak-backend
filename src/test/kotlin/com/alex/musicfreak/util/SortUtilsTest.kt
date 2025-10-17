@@ -5,6 +5,7 @@ import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
 import io.quarkus.panache.common.Sort
 
+@Suppress("unused")
 class SortUtilsTest : StringSpec({
 
     "should convert null" {

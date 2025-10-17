@@ -11,6 +11,7 @@ import io.kotest.matchers.shouldBe
 import org.apache.http.HttpStatus
 import java.io.InputStream
 
+@Suppress("unused")
 class AnswerTests : StringSpec({
 
     "should set response to ok" {

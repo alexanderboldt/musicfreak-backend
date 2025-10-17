@@ -42,6 +42,7 @@ class S3Service(
     /**
      * Will be triggered after the creation of this class. All available buckets will be created in S3.
      */
+    @Suppress("unused")
     @PostConstruct
     fun init() {
         // try to create all buckets, if they don't exist
