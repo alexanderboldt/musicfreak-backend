@@ -1,6 +1,6 @@
 [versions]
 # development versions
-kotlin-version = "2.2.20"
+kotlin-version = "2.2.21"
 quarkus-version = "3.28.3"
 aws-s3-version = "2.34.5"
 
