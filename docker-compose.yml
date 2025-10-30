@@ -59,7 +59,7 @@ services:
       - backend
 
   app:
-    image: musicfreak:5.3.0
+    image: musicfreak:5.4.0
     build: .
     ports:
       - ${APP_PORT}:4000
