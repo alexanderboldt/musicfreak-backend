@@ -7,3 +7,9 @@ quarkus:
   hibernate-orm:
     database:
       generation: none
+  fault-tolerance:
+    global:
+      rate-limit:
+        value: 50
+      window:
+        value: 10

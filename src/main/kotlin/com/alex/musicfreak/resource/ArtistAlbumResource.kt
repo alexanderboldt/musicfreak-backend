@@ -3,6 +3,7 @@ package com.alex.musicfreak.resource
 import com.alex.musicfreak.domain.AlbumResponse
 import com.alex.musicfreak.service.ArtistAlbumService
 import com.alex.musicfreak.util.convertToSort
+import io.smallrye.faulttolerance.api.RateLimit
 import jakarta.annotation.security.RolesAllowed
 import jakarta.ws.rs.Consumes
 import jakarta.ws.rs.GET
@@ -17,6 +18,7 @@ import jakarta.ws.rs.core.MediaType
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @RolesAllowed(Role.USER)
+@RateLimit
 class ArtistAlbumResource(private val artistAlbumService: ArtistAlbumService) {
 
     @GET
