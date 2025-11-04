@@ -35,6 +35,8 @@ dependencies {
     implementation(libs.quarkus.oidc)
     implementation(libs.quarkus.security)
 
+    implementation(libs.quarkus.messaging.kafka)
+
     implementation(libs.quarkus.arc)
 
     implementation(libs.quarkus.config.yaml)
