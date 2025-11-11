@@ -25,7 +25,6 @@ quarkus-jdbc-postgresql = { group = "io.quarkus", name = "quarkus-jdbc-postgresq
 quarkus-flyway = { group = "io.quarkus", name = "quarkus-flyway", version.ref = "quarkus-version" }
 quarkus-oidc = { group = "io.quarkus", name = "quarkus-oidc", version.ref = "quarkus-version" }
 quarkus-security = { group = "io.quarkus", name = "quarkus-security", version.ref = "quarkus-version" }
-quarkus-messaging-kafka = { group = "io.quarkus", name = "quarkus-messaging-kafka", version.ref = "quarkus-version" }
 quarkus-arc = { group = "io.quarkus", name = "quarkus-arc", version.ref = "quarkus-version" }
 quarkus-config-yaml = { group = "io.quarkus", name = "quarkus-config-yaml", version.ref = "quarkus-version" }
 
