@@ -1,53 +1,53 @@
 [versions]
 # development versions
-kotlin-version = "2.2.21"
-quarkus-version = "3.29.0"
-aws-s3-version = "2.34.5"
+kotlin = "2.2.21"
+quarkus = "3.29.0"
+aws-s3 = "2.34.5"
 
 # test versions
-mockito-kotlin-version = "6.1.0"
-kotest-version = "6.0.3"
-rest-assured-version = "5.5.5"
-testcontainer-version = "1.21.3"
+mockito-kotlin = "6.1.0"
+kotest = "6.0.3"
+rest-assured = "5.5.5"
+testcontainer = "1.21.3"
 
 [libraries]
 # development libraries
-kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version.ref = "kotlin-version" }
+kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version.ref = "kotlin" }
 jackson-kotlin = { group = "com.fasterxml.jackson.module", name = "jackson-module-kotlin" }
 
-quarkus-platform = { group = "io.quarkus.platform", name = "quarkus-bom", version.ref = "quarkus-version" }
-quarkus-kotlin = { group = "io.quarkus", name = "quarkus-kotlin", version.ref = "quarkus-version" }
-quarkus-rest = { group = "io.quarkus", name = "quarkus-rest", version.ref = "quarkus-version" }
-quarkus-rest-jackson = { group = "io.quarkus", name = "quarkus-rest-jackson", version.ref = "quarkus-version" }
-quarkus-smallrye = { group = "io.quarkus", name = "quarkus-smallrye-fault-tolerance", version.ref = "quarkus-version" }
-quarkus-hibernate-orm-panache = { group = "io.quarkus", name = "quarkus-hibernate-orm-panache", version.ref = "quarkus-version" }
-quarkus-jdbc-postgresql = { group = "io.quarkus", name = "quarkus-jdbc-postgresql", version.ref = "quarkus-version" }
-quarkus-flyway = { group = "io.quarkus", name = "quarkus-flyway", version.ref = "quarkus-version" }
-quarkus-oidc = { group = "io.quarkus", name = "quarkus-oidc", version.ref = "quarkus-version" }
-quarkus-security = { group = "io.quarkus", name = "quarkus-security", version.ref = "quarkus-version" }
-quarkus-arc = { group = "io.quarkus", name = "quarkus-arc", version.ref = "quarkus-version" }
-quarkus-config-yaml = { group = "io.quarkus", name = "quarkus-config-yaml", version.ref = "quarkus-version" }
+quarkus-platform = { group = "io.quarkus.platform", name = "quarkus-bom", version.ref = "quarkus" }
+quarkus-kotlin = { group = "io.quarkus", name = "quarkus-kotlin", version.ref = "quarkus" }
+quarkus-rest = { group = "io.quarkus", name = "quarkus-rest", version.ref = "quarkus" }
+quarkus-rest-jackson = { group = "io.quarkus", name = "quarkus-rest-jackson", version.ref = "quarkus" }
+quarkus-smallrye = { group = "io.quarkus", name = "quarkus-smallrye-fault-tolerance", version.ref = "quarkus" }
+quarkus-hibernate-orm-panache = { group = "io.quarkus", name = "quarkus-hibernate-orm-panache", version.ref = "quarkus" }
+quarkus-jdbc-postgresql = { group = "io.quarkus", name = "quarkus-jdbc-postgresql", version.ref = "quarkus" }
+quarkus-flyway = { group = "io.quarkus", name = "quarkus-flyway", version.ref = "quarkus" }
+quarkus-oidc = { group = "io.quarkus", name = "quarkus-oidc", version.ref = "quarkus" }
+quarkus-security = { group = "io.quarkus", name = "quarkus-security", version.ref = "quarkus" }
+quarkus-arc = { group = "io.quarkus", name = "quarkus-arc", version.ref = "quarkus" }
+quarkus-config-yaml = { group = "io.quarkus", name = "quarkus-config-yaml", version.ref = "quarkus" }
 
-aws-s3 = { group = "software.amazon.awssdk", name = "s3", version.ref = "aws-s3-version" }
+aws-s3 = { group = "software.amazon.awssdk", name = "s3", version.ref = "aws-s3" }
 
 # test libraries
-quarkus-junit5 = { group = "io.quarkus", name = "quarkus-junit5", version.ref = "quarkus-version" }
-quarkus-junit5-mockito = { group = "io.quarkus", name = "quarkus-junit5-mockito", version.ref = "quarkus-version" }
-quarkus-test-security = { group = "io.quarkus", name = "quarkus-test-security", version.ref = "quarkus-version" }
+quarkus-junit5 = { group = "io.quarkus", name = "quarkus-junit5", version.ref = "quarkus" }
+quarkus-junit5-mockito = { group = "io.quarkus", name = "quarkus-junit5-mockito", version.ref = "quarkus" }
+quarkus-test-security = { group = "io.quarkus", name = "quarkus-test-security", version.ref = "quarkus" }
 
-mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockito-kotlin-version" }
+mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockito-kotlin" }
 
-kotest-runner-junit = { group = "io.kotest", name = "kotest-runner-junit5", version.ref = "kotest-version" }
-kotest-assertions-core = { group = "io.kotest", name = "kotest-assertions-core", version.ref = "kotest-version" }
+kotest-runner-junit = { group = "io.kotest", name = "kotest-runner-junit5", version.ref = "kotest" }
+kotest-assertions-core = { group = "io.kotest", name = "kotest-assertions-core", version.ref = "kotest" }
 
-rest-assured = { group = "io.rest-assured", name = "kotlin-extensions", version.ref = "rest-assured-version" }
+rest-assured = { group = "io.rest-assured", name = "kotlin-extensions", version.ref = "rest-assured" }
 
-testcontainers-junit-jupiter = { group = "org.testcontainers", name = "junit-jupiter", version.ref = "testcontainer-version"  }
-testcontainers-postgresql = { group = "org.testcontainers", name = "postgresql", version.ref = "testcontainer-version"  }
-testcontainers-minio = { group = "org.testcontainers", name = "minio", version.ref = "testcontainer-version"  }
+testcontainers-junit-jupiter = { group = "org.testcontainers", name = "junit-jupiter", version.ref = "testcontainer"  }
+testcontainers-postgresql = { group = "org.testcontainers", name = "postgresql", version.ref = "testcontainer"  }
+testcontainers-minio = { group = "org.testcontainers", name = "minio", version.ref = "testcontainer"  }
 
 [plugins]
-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-version" }
-kotlin-jpa = { id = "org.jetbrains.kotlin.plugin.jpa", version.ref = "kotlin-version" }
-kotlin-allopen = { id = "org.jetbrains.kotlin.plugin.allopen", version.ref = "kotlin-version" }
-quarkus = { id = "io.quarkus", version.ref = "quarkus-version" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-jpa = { id = "org.jetbrains.kotlin.plugin.jpa", version.ref = "kotlin" }
+kotlin-allopen = { id = "org.jetbrains.kotlin.plugin.allopen", version.ref = "kotlin" }
+quarkus = { id = "io.quarkus", version.ref = "quarkus" }
