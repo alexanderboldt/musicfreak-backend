@@ -2,7 +2,7 @@
 # development versions
 kotlin = "2.2.21"
 quarkus = "3.29.4"
-aws-s3 = "2.34.5"
+aws-s3 = "2.39.4"
 
 # test versions
 mockito-kotlin = "6.1.0"
