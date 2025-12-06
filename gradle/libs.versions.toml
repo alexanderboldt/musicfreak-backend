@@ -27,6 +27,7 @@ quarkus-oidc = { group = "io.quarkus", name = "quarkus-oidc", version.ref = "qua
 quarkus-security = { group = "io.quarkus", name = "quarkus-security", version.ref = "quarkus" }
 quarkus-arc = { group = "io.quarkus", name = "quarkus-arc", version.ref = "quarkus" }
 quarkus-config-yaml = { group = "io.quarkus", name = "quarkus-config-yaml", version.ref = "quarkus" }
+quarkus-container-image-jib = { group = "io.quarkus", name = "quarkus-container-image-jib", version.ref = "quarkus" }
 
 aws-s3 = { group = "software.amazon.awssdk", name = "s3", version.ref = "aws-s3" }
 

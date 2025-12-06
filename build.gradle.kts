@@ -14,7 +14,6 @@ kotlin {
 
 repositories {
     mavenCentral()
-    mavenLocal()
 }
 
 dependencies {
@@ -38,6 +37,8 @@ dependencies {
     implementation(libs.quarkus.arc)
 
     implementation(libs.quarkus.config.yaml)
+
+    implementation(libs.quarkus.container.image.jib)
 
     implementation(libs.aws.s3)
 

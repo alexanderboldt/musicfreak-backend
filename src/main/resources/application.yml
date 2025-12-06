@@ -13,3 +13,8 @@ quarkus:
         value: 50
       window:
         value: 10
+  container-image:
+    build: true
+    group: musicfreak
+    name: app
+    tag: 6.0.0

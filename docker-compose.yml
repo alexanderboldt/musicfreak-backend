@@ -65,7 +65,6 @@ services:
   app:
     image: musicfreak/app:6.0.0
     container_name: musicfreak-app
-    build: .
     ports:
       - ${APP_PORT}:4000
     environment:
