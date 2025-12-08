@@ -1,4 +1,4 @@
-# Musicfreak
+# Music Collection
 
 This is a backend application for managing the music-library like artists and albums.
 

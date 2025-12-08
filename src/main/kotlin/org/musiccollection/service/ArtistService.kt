@@ -1,0 +1,67 @@
+package org.musiccollection.service
+
+import org.musiccollection.domain.ArtistResponse
+import org.musiccollection.domain.ArtistRequest
+import org.musiccollection.mapper.toDomain
+import org.musiccollection.entity.ArtistEntity
+import org.musiccollection.repository.ArtistRepository
+import io.quarkus.panache.common.Sort
+import jakarta.enterprise.context.ApplicationScoped
+import jakarta.transaction.Transactional
+import java.time.Instant
+
+@ApplicationScoped
+class ArtistService(
+    private val s3Service: S3Service,
+    private val userService: UserService,
+    private val artistRepository: ArtistRepository
+) {
+    // create
+
+    @Transactional
+    fun create(artist: ArtistRequest): ArtistResponse {
+        val entity = ArtistEntity(
+            0,
+            userService.userId,
+            artist.name,
+            null,
+            Instant.now(),
+            Instant.now()
+        )
+
+        return artistRepository.save(entity).toDomain()
+    }
+
+    // read
+
+    @Transactional
+    fun readAll(sort: Sort) = artistRepository
+        .findAll(userService.userId, sort)
+        .map { it.toDomain() }
+
+    @Transactional
+    fun read(id: Long) = artistRepository
+        .findOrThrow(id, userService.userId)
+        .toDomain()
+
+    // update
+
+    @Transactional
+    fun update(id: Long, artist: ArtistRequest) = artistRepository
+        .findOrThrow(id, userService.userId)
+        .apply {
+            name = artist.name
+            updatedAt = Instant.now()
+        }.toDomain()
+
+    // delete
+
+    @Transactional
+    fun delete(id: Long) {
+        val artistSaved = artistRepository.findOrThrow(id, userService.userId)
+
+        // delete an existing image from the storage and the artist
+        artistSaved.filename?.also { s3Service.deleteFile(S3Bucket.ARTIST, it) }
+        artistRepository.deleteById(id)
+    }
+}

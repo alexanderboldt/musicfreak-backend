@@ -1,0 +1,213 @@
+package org.musiccollection.resource
+
+import org.musiccollection.Fixtures
+import org.musiccollection.service.S3Bucket
+import org.musiccollection.util.asArtist
+import org.musiccollection.util.asArtists
+import org.musiccollection.testresource.MinioTestResource
+import org.musiccollection.util.ARTIST_ID
+import org.musiccollection.util.createArtist
+import org.musiccollection.util.shouldBeArtist
+import org.musiccollection.util.shouldBeArtists
+import org.musiccollection.util.uploadArtistImage
+import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.matchers.nulls.shouldNotBeNull
+import io.kotest.matchers.shouldBe
+import io.quarkus.test.common.QuarkusTestResource
+import io.quarkus.test.junit.QuarkusTest
+import io.quarkus.test.security.TestSecurity
+import io.restassured.module.kotlin.extensions.Extract
+import io.restassured.module.kotlin.extensions.Given
+import io.restassured.module.kotlin.extensions.Then
+import io.restassured.module.kotlin.extensions.When
+import org.apache.http.HttpStatus
+import org.hamcrest.CoreMatchers.equalTo
+import org.junit.jupiter.api.Test
+import software.amazon.awssdk.services.s3.model.NoSuchKeyException
+
+@QuarkusTest
+@QuarkusTestResource(MinioTestResource::class)
+@TestSecurity(user = "user", roles = [Role.USER])
+class ArtistResourceTest : BaseResourceTest() {
+
+    // region create
+
+    @Test
+    fun `should create an artist with valid request`() {
+        // execute and verify
+        val artistResponse = Given {
+            body(Fixtures.Artist.korn)
+        } When {
+            post(Resource.Path.ARTIST)
+        } Then {
+            statusCode(HttpStatus.SC_CREATED)
+        } Extract {
+            asArtist()
+        }
+
+        artistResponse.shouldNotBeNull()
+        artistResponse shouldBeArtist Fixtures.Artist.korn
+    }
+
+    // endregion
+
+    // region read all
+
+    @Test
+    fun `should return an empty list`() {
+        // execute and verify
+        val artistResponse = When {
+            get(Resource.Path.ARTIST)
+        } Then {
+            statusCode(HttpStatus.SC_OK)
+            body("size()", equalTo(0))
+        } Extract {
+            asArtists()
+        }
+
+        artistResponse.shouldNotBeNull()
+        artistResponse shouldBe emptyList()
+    }
+
+    @Test
+    fun `should return a list with one artist`() {
+        // precondition: create an artist
+        createArtist(Fixtures.Artist.korn)
+
+        // execute and verify
+        val artistResponse = When {
+            get(Resource.Path.ARTIST)
+        } Then {
+            statusCode(HttpStatus.SC_OK)
+        } Extract {
+            asArtists()
+        }
+
+        artistResponse.shouldNotBeNull()
+        artistResponse shouldBeArtists listOf(Fixtures.Artist.korn)
+    }
+
+    // endregion
+
+    // region read one
+
+    @Test
+    fun `should throw bad-request with invalid id`() {
+        // precondition: create an artist
+        createArtist(Fixtures.Artist.korn)
+
+        // execute and verify
+        When {
+            get(Resource.Path.ARTIST_ID, 100)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
+
+    @Test
+    fun `should return one artist with valid id`() {
+        // precondition: create an artist
+        val artistCreated = createArtist(Fixtures.Artist.korn)
+
+        // execute and verify
+        val artistResponse = When {
+            get(Resource.Path.ARTIST_ID, artistCreated.id)
+        } Then {
+            statusCode(HttpStatus.SC_OK)
+        } Extract {
+            asArtist()
+        }
+
+        artistResponse.shouldNotBeNull()
+        artistResponse shouldBeArtist Fixtures.Artist.korn
+    }
+
+    // endregion
+
+    // region update
+
+    @Test
+    fun `should not update an artist and throw bad-request with invalid id`() {
+        // precondition: create an artist
+        createArtist(Fixtures.Artist.korn)
+
+        // execute the update and verify
+        Given {
+            body(Fixtures.Artist.slipknot)
+        } When {
+            put(Resource.Path.ARTIST_ID, 100)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
+
+    @Test
+    fun `should update and return an artist with valid id`() {
+        // precondition: create an artist
+        val artistCreated = createArtist(Fixtures.Artist.korn)
+
+        // execute the update and verify
+        val artistResponse = Given {
+            body(Fixtures.Artist.slipknot)
+        } When {
+            put(Resource.Path.ARTIST_ID, artistCreated.id)
+        } Then {
+            statusCode(HttpStatus.SC_OK)
+        } Extract {
+            asArtist()
+        }
+
+        artistResponse.shouldNotBeNull()
+        artistResponse shouldBeArtist Fixtures.Artist.slipknot
+    }
+
+    // endregion
+
+    // region delete
+
+    @Test
+    fun `should not delete an artist and throw bad-request with invalid id`() {
+        // precondition: create an artist
+        createArtist(Fixtures.Artist.korn)
+
+        // execute the delete and verify
+        When {
+            delete(Resource.Path.ARTIST_ID, 100)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
+
+    @Test
+    fun `should delete an artist with valid id`() {
+        // precondition: create an artist
+        val artistCreated = createArtist(Fixtures.Artist.korn)
+
+        // execute the delete and verify
+        When {
+            delete(Resource.Path.ARTIST_ID, artistCreated.id)
+        } Then {
+            statusCode(HttpStatus.SC_NO_CONTENT)
+        }
+    }
+
+    @Test
+    fun `should delete an artist and an image with valid id`() {
+        // precondition: create an artist and upload an image
+        val artistCreated = uploadArtistImage(createArtist(Fixtures.Artist.korn).id)
+
+        // execute the delete and verify
+        When {
+            delete(Resource.Path.ARTIST_ID, artistCreated.id)
+        } Then {
+            statusCode(HttpStatus.SC_NO_CONTENT)
+        }
+
+        // try to download the image and verify, that it is deleted
+        shouldThrow<NoSuchKeyException> {
+            s3Service.downloadFile(S3Bucket.ARTIST, artistCreated.filename!!)
+        }
+    }
+
+    // endregion
+}

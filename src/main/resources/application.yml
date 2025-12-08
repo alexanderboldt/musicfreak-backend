@@ -15,6 +15,6 @@ quarkus:
         value: 10
   container-image:
     build: true
-    group: musicfreak
+    group: musiccollection
     name: app
     tag: 6.0.0

@@ -1,7 +1,7 @@
 services:
   postgres:
     image: postgres:17.4
-    container_name: musicfreak-postgres
+    container_name: musiccollection-postgres
     environment:
       POSTGRES_DB: ${DB_MAIN_DB}
       POSTGRES_USER: ${DB_MAIN_USERNAME}
@@ -11,11 +11,11 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-      - musicfreak
+      - musiccollection
 
   postgres-keycloak:
     image: postgres:17.4
-    container_name: musicfreak-postgres-keycloak
+    container_name: musiccollection-postgres-keycloak
     environment:
       POSTGRES_DB: ${DB_KEYCLOAK_DB}
       POSTGRES_USER: ${DB_KEYCLOAK_USERNAME}
@@ -25,11 +25,11 @@ services:
     volumes:
       - postgres_keycloak_data:/var/lib/postgresql/data
     networks:
-      - musicfreak
+      - musiccollection
 
   keycloak:
     image: quay.io/keycloak/keycloak:26.3.2
-    container_name: musicfreak-keycloak
+    container_name: musiccollection-keycloak
     environment:
       KC_DB: postgres
       KC_DB_URL: jdbc:postgresql://postgres-keycloak:5432/${DB_KEYCLOAK_DB}
@@ -43,13 +43,13 @@ services:
     command:
       - start-dev
     networks:
-      - musicfreak
+      - musiccollection
     depends_on:
       - postgres-keycloak
 
   minio:
     image: minio/minio
-    container_name: musicfreak-minio
+    container_name: musiccollection-minio
     ports:
       - ${S3_PORT}:9000
       - ${S3_WEB_PORT}:9001
@@ -60,11 +60,11 @@ services:
       - minio_data:/data
     command: server --console-address ":${S3_WEB_PORT}" /data
     networks:
-      - musicfreak
+      - musiccollection
 
   app:
-    image: musicfreak/app:6.0.0
-    container_name: musicfreak-app
+    image: musiccollection/app:6.0.0
+    container_name: musiccollection-app
     ports:
       - ${APP_PORT}:4000
     environment:
@@ -83,7 +83,7 @@ services:
       - keycloak
       - minio
     networks:
-      - musicfreak
+      - musiccollection
 
 volumes:
   postgres_data:
@@ -91,6 +91,6 @@ volumes:
   minio_data:
 
 networks:
-  musicfreak:
-    name: musicfreak
+  musiccollection:
+    name: musiccollection
     driver: bridge

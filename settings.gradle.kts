@@ -1,1 +1,1 @@
-rootProject.name="musicfreak"
+rootProject.name="musiccollection"

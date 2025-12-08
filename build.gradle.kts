@@ -59,7 +59,7 @@ dependencies {
     testImplementation(libs.testcontainers.minio)
 }
 
-group = "com.alex"
+group = "org.musiccollection"
 
 tasks.withType<Test> {
     systemProperty("java.util.logging.manager", "org.jboss.logmanager.LogManager")
