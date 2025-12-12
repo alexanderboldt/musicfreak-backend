@@ -68,12 +68,13 @@ class S3Service(
     }
 
     /**
-     * Uploads a file to S3.
+     * Uploads a file. The filename will be created with a random UUID and the extension from the assigned filename.
+     * The final filename will be returned and should be used to associate the file.
      *
      * @param bucket the bucket where to store as a [S3Bucket].
      * @param path the path of the file as a [Path].
      * @param filename the filename as a [String].
-     * @return returns
+     * @return returns the created filename as a [String].
      */
     fun uploadFile(bucket: S3Bucket, path: Path, filename: String): String {
         val extension = filename
